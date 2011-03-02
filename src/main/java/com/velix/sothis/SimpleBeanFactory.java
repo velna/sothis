@@ -10,7 +10,7 @@ public class SimpleBeanFactory implements BeanFactory {
 	}
 
 	@Override
-	public Object getBean(Class<?> beanClass) throws Exception {
+	public <T> T getBean(Class<T> beanClass) throws Exception {
 		return beanClass.newInstance();
 	}
 

@@ -1,45 +1,26 @@
 package com.velix.sothis;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 public class Action {
 	private final Method method;
-	private final Class<?> paramClass;
+	private final Controller controller;
 
-	public Action(Method method) {
+	public Action(Method method, Controller controller) {
 		this.method = method;
-		Class<?>[] paramTypes = method.getParameterTypes();
-		if (paramTypes.length == 0) {
-			paramClass = null;
-		} else if (paramTypes.length == 1) {
-			paramClass = paramTypes[0];
-		} else {
-			throw new RuntimeException("invalid params type length: "
-					+ paramTypes.length);
-		}
+		this.controller = controller;
 	}
 
-	public Object invoke(Object controllerInstance, ActionContext context)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException, InstantiationException {
-		if (paramClass != null) {
-			Object param = paramClass.newInstance();
-			BeanUtils.populate(param, context.getRequest().getParameterMap());
-			if (param instanceof HttpServletRequestAware) {
-				((HttpServletRequestAware) param).setRequest(context
-						.getRequest());
-			}
-			if (param instanceof HttpServletResponseAware) {
-				((HttpServletResponseAware) param).setResponse(context
-						.getResponse());
-			}
-			return this.method.invoke(controllerInstance,
-					new Object[] { param });
-		} else {
-			return this.method.invoke(controllerInstance, (Object[]) null);
-		}
+	public Object invoke(ActionContext context, Object... params)
+			throws Exception {
+		return this.method.invoke(controller.newInstance(), params);
+	}
+
+	public Controller getController() {
+		return controller;
+	}
+
+	public Class<?>[] getParameterTypes() {
+		return this.method.getParameterTypes();
 	}
 }

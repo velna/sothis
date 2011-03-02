@@ -1,9 +1,11 @@
-package com.velix.sothis;
+package com.velix.sothis.spring;
 
 import javax.servlet.ServletContext;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.velix.sothis.BeanFactory;
 
 public class SpringBeanFactory implements BeanFactory {
 
@@ -15,9 +17,10 @@ public class SpringBeanFactory implements BeanFactory {
 				.getWebApplicationContext(servletContext);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getBean(Class<?> beanClass) throws Exception {
-		return appContext.getBean(beanClass.getName());
+	public <T> T getBean(Class<T> beanClass) throws Exception {
+		return (T) appContext.getBean(beanClass.getName());
 	}
 
 }

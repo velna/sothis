@@ -9,44 +9,81 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.velix.sothis.interceptor.Interceptor;
+import com.velix.sothis.view.DefaultModelAndViewResolver;
+import com.velix.sothis.view.ModelAndViewResolver;
+
 public class SothisConfig {
+
+	public static final String DEFAULT_STACK_NAME = "default";
 
 	private static SothisConfig config;
 
-	private Map<String, Class<?>> interceptorMap;
-	private Map<String, List<Class<?>>> interceptorStackMap;
+	private Map<String, Class<? extends Interceptor>> interceptorMap;
+	private Map<String, List<Class<? extends Interceptor>>> interceptorStackMap;
 	private BeanFactory beanFactory;
+	private String[] controllerPackages;
+	private Class<? extends ModelAndViewResolver> viewResolverClass;
 
 	private Properties properties = new Properties();
 
+	@SuppressWarnings("unchecked")
 	private SothisConfig() throws Exception {
 		InputStream input = SothisConfig.class.getClassLoader()
 				.getResourceAsStream("sothis.properties");
-		if (null != input) {
-			properties.load(input);
-			interceptorMap = findInterceptors();
-			interceptorStackMap = findInterceptorStacks(interceptorMap);
-			String beanFactroyClassName = getProperty("sothis.beanFactory");
-			if (null != beanFactroyClassName) {
-				Class<?> beanFactoryClass = Class.forName(beanFactroyClassName);
-				beanFactory = (BeanFactory) beanFactoryClass.newInstance();
-			} else {
-				beanFactory = new SimpleBeanFactory();
-			}
+		if (null == input) {
+			throw new RuntimeException(
+					"file sothis.properties can not be found!");
+		}
+		properties.load(input);
+
+		// sothis.interceptor.*.class
+		interceptorMap = findInterceptors();
+
+		// sothis.interceptor.stack.*.class
+		interceptorStackMap = findInterceptorStacks(interceptorMap);
+
+		// sothis.beanFactory
+		String beanFactroyClassName = getProperty("sothis.beanFactory.class");
+		if (null != beanFactroyClassName) {
+			Class<?> beanFactoryClass = Class.forName(beanFactroyClassName);
+			beanFactory = (BeanFactory) beanFactoryClass.newInstance();
+		} else {
+			beanFactory = new SimpleBeanFactory();
+		}
+
+		// sothis.controller.packages
+		String property = getProperty("sothis.controller.packages");
+		if (null != property) {
+			controllerPackages = property.split(",");
+		} else {
+			controllerPackages = new String[0];
+		}
+
+		property = getProperty("sothis.viewResolver.class");
+		if (null != property) {
+			viewResolverClass = (Class<? extends ModelAndViewResolver>) Class
+					.forName(property);
+		} else {
+			viewResolverClass = DefaultModelAndViewResolver.class;
 		}
 	}
 
-	private Map<String, Class<?>> findInterceptors() throws Exception {
+	private Map<String, Class<? extends Interceptor>> findInterceptors()
+			throws Exception {
 		Map<String, String> pMap = getPropertyByPattern(Pattern
 				.compile("sothis\\.interceptor\\.(\\w+)\\.class"));
-		return asClassMap(pMap);
+		return asClassMap(pMap, Interceptor.class);
 	}
 
-	private Map<String, Class<?>> asClassMap(Map<String, String> map)
+	@SuppressWarnings("unchecked")
+	private <T> Map<String, Class<? extends T>> asClassMap(
+			Map<String, String> map, Class<T> beanClass)
 			throws ClassNotFoundException {
-		Map<String, Class<?>> ret = new HashMap<String, Class<?>>(map.size());
+		Map<String, Class<? extends T>> ret = new HashMap<String, Class<? extends T>>(
+				map.size());
 		for (String key : map.keySet()) {
-			ret.put(key, Class.forName(map.get(key)));
+			ret.put(key, (Class<? extends T>) Class.forName(map.get(key)));
 		}
 		return ret;
 	}
@@ -63,14 +100,16 @@ public class SothisConfig {
 		return map;
 	}
 
-	private Map<String, List<Class<?>>> findInterceptorStacks(
-			Map<String, Class<?>> interceptorMap) throws Exception {
-		Map<String, List<Class<?>>> map = new HashMap<String, List<Class<?>>>();
+	private Map<String, List<Class<? extends Interceptor>>> findInterceptorStacks(
+			Map<String, Class<? extends Interceptor>> interceptorMap)
+			throws Exception {
+		Map<String, List<Class<? extends Interceptor>>> map = new HashMap<String, List<Class<? extends Interceptor>>>();
 		Map<String, String> stackMap = getPropertyByPattern(Pattern
-				.compile("sothis\\.interceptor\\.stack\\.(\\w)"));
+				.compile("sothis\\.interceptor\\.stack\\.(\\w+)"));
 		for (String key : stackMap.keySet()) {
 			String[] names = stackMap.get(key).split(",");
-			List<Class<?>> stack = new ArrayList<Class<?>>(names.length);
+			List<Class<? extends Interceptor>> stack = new ArrayList<Class<? extends Interceptor>>(
+					names.length);
 			for (String n : names) {
 				if (interceptorMap.containsKey(n)) {
 					stack.add(interceptorMap.get(n));
@@ -96,10 +135,10 @@ public class SothisConfig {
 		return properties.getProperty(name);
 	}
 
-	private String getProperty(String name, String defaultValue) {
-		String property = properties.getProperty(name);
-		return null == property ? defaultValue : property;
-	}
+	// private String getProperty(String name, String defaultValue) {
+	// String property = properties.getProperty(name);
+	// return null == property ? defaultValue : property;
+	// }
 
 	public BeanFactory getBeanFactory() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
@@ -107,19 +146,23 @@ public class SothisConfig {
 	}
 
 	public String[] getControllerPackages() {
-		String property = getProperty("sothis.controller.packages");
-		if (null != property) {
-			return property.split(",");
-		} else {
-			return new String[0];
-		}
+		return controllerPackages;
 	}
 
-	public List<Class<?>> getInterceptorStack(String stackName) {
+	public List<Class<? extends Interceptor>> getInterceptorStackClasses(
+			String stackName) {
 		return this.interceptorStackMap.get(stackName);
+	}
+
+	public List<Class<? extends Interceptor>> getDefaultInterceptorStackClasses() {
+		return this.interceptorStackMap.get(DEFAULT_STACK_NAME);
 	}
 
 	public Class<?> getInterceptor(String name) {
 		return this.interceptorMap.get(name);
+	}
+
+	public Class<? extends ModelAndViewResolver> getViewResolverClass() {
+		return viewResolverClass;
 	}
 }

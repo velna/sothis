@@ -14,11 +14,14 @@ public class Controller {
 	private final Class<?> controllerClass;
 	private final Map<String, Action> actionMap;
 	private final BeanFactory beanFactory;
+	private final String name;
 
-	public Controller(Class<?> controllerClass, BeanFactory beanFactory) {
+	public Controller(String name, Class<?> controllerClass,
+			BeanFactory beanFactory) {
+		this.name = name;
 		this.controllerClass = controllerClass;
 		this.beanFactory = beanFactory;
-		actionMap = new HashMap<String, Action>();
+		this.actionMap = new HashMap<String, Action>();
 		Method[] methods = this.controllerClass.getMethods();
 		for (Method method : methods) {
 			String methodName = method.getName();
@@ -40,7 +43,7 @@ public class Controller {
 								actionName, controllerClass);
 					}
 				} else {
-					actionMap.put(actionName, new Action(method));
+					actionMap.put(actionName, new Action(method, this));
 				}
 			}
 		}
@@ -53,4 +56,13 @@ public class Controller {
 	public Object newInstance() throws Exception {
 		return beanFactory.getBean(this.controllerClass);
 	}
+
+	public Class<?> getControllerClass() {
+		return controllerClass;
+	}
+
+	public String getName() {
+		return name;
+	}
+
 }

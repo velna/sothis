@@ -1,9 +1,9 @@
 package com.velix.sothis;
 
 public interface ActionInvocation {
-	Object getController();
+	Action getAction();
 
 	ActionContext getInvocationContext();
 
-	Object invoke();
+	Object invoke() throws Exception;
 }

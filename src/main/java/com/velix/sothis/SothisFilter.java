@@ -1,7 +1,9 @@
 package com.velix.sothis;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.Filter;
@@ -18,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.velix.sothis.util.ClassUtils;
+import com.velix.sothis.view.ModelAndViewResolver;
+import com.velix.sothis.view.ResolvedModelAndView;
 
 public class SothisFilter implements Filter {
 
@@ -26,12 +30,14 @@ public class SothisFilter implements Filter {
 	private Map<String, Controller> controllers;
 	private ServletContext servletContext;
 	private BeanFactory beanFactory;
+	private SothisConfig config;
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		try {
+			config = SothisConfig.getConfig();
 			servletContext = filterConfig.getServletContext();
 			controllers = new HashMap<String, Controller>();
-			beanFactory = SothisConfig.getConfig().getBeanFactory();
+			beanFactory = config.getBeanFactory();
 			beanFactory.init(servletContext);
 			initControllers();
 		} catch (Exception e) {
@@ -40,33 +46,32 @@ public class SothisFilter implements Filter {
 	}
 
 	private void initControllers() throws Exception {
-		String[] packageNames = SothisConfig.getConfig()
-				.getControllerPackages();
+		String[] packageNames = config.getControllerPackages();
 		for (String packageName : packageNames) {
 			Class<?>[] classes = ClassUtils.getClasses(packageName);
 			for (Class<?> c : classes) {
-				String name = c.getName();
+				String className = c.getName();
 				String pathName;
-				int i = name.lastIndexOf('.');
+				int i = className.lastIndexOf('.');
 				if (i > 0) {
-					pathName = name.substring(0, i + 1)
+					pathName = className.substring(0, i + 1)
 							.substring(packageName.length())
 							.replaceAll("\\.", "/");
 				} else {
 					pathName = "/";
 				}
-				String className = c.getSimpleName();
-				i = className.indexOf("Controller");
-				String uri;
+				String simpleName = c.getSimpleName();
+				i = simpleName.indexOf("Controller");
+				String name;
 				if (i > 0) {
-					char ch = Character.toLowerCase(className.charAt(0));
-					uri = pathName + ch + className.substring(1, i);
+					char ch = Character.toLowerCase(simpleName.charAt(0));
+					name = pathName + ch + simpleName.substring(1, i);
 				} else if (i == 0) {
-					uri = pathName;
+					name = pathName;
 				} else {
 					continue;
 				}
-				controllers.put(uri, new Controller(c, beanFactory));
+				controllers.put(name, new Controller(name, c, beanFactory));
 			}
 		}
 	}
@@ -82,7 +87,17 @@ public class SothisFilter implements Filter {
 
 	private void doFilter(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		ActionContext context = this.initActionContext(request, response);
+		ActionInvocation invocation = prepareActionInvocation(request, response);
+		Object result = invocation.invoke();
+		ModelAndViewResolver resolver = this.beanFactory.getBean(config
+				.getViewResolverClass());
+		ResolvedModelAndView mav = resolver.resolve(result, invocation);
+		mav.getView().render(mav.getModel(), invocation);
+	}
+
+	private ActionInvocation prepareActionInvocation(
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		String uri = request.getRequestURI().substring(
 				servletContext.getContextPath().length());
 		if (!uri.startsWith("/")) {
@@ -97,35 +112,41 @@ public class SothisFilter implements Filter {
 			controllerName = "/";
 			actionName = uri.substring(1);
 		}
+		if ("".equals(actionName)) {
+			actionName = "index";
+		}
 		if (logger.isDebugEnabled()) {
 			logger.debug("controllerName:{}, actionName:{}", controllerName,
 					actionName);
 		}
-		Controller controller = controllers.get(controllerName);
-		if (null != controller) {
-			Action action = controller.getAction(actionName);
-			if (null != action) {
-				Object result = action
-						.invoke(controller.newInstance(), context);
-				if (result instanceof String) {
-					String path = controllerName + "/" + result + ".jsp";
-					if (logger.isDebugEnabled()) {
-						logger.debug("result path:{}", path);
-					}
-					request.getRequestDispatcher(path).forward(request,
-							response);
-				}
-			}
-		}
-	}
-
-	private ActionContext initActionContext(HttpServletRequest request,
-			HttpServletResponse response) {
 		ActionContext context = ActionContext.getContext();
 		context.put(ActionContext.HTTP_REQUEST, request);
 		context.put(ActionContext.HTTP_RESPONSE, response);
 		context.put(ActionContext.SERVLET_CONTEXT, servletContext);
-		return context;
+
+		Controller controller = controllers.get(controllerName);
+		if (null != controller) {
+			Action action = controller.getAction(actionName);
+			if (null != action) {
+				context.put(ActionContext.ACTION, action);
+			}
+		}
+		context.put(ActionContext.INTERCEPTORS,
+				getBeans(config.getDefaultInterceptorStackClasses()));
+		return new DefaultActionInvocation(context);
+	}
+
+	private <T> T getBean(Class<? extends T> beanClass) throws Exception {
+		return this.beanFactory.getBean(beanClass);
+	}
+
+	private <T> List<? extends T> getBeans(List<Class<? extends T>> beanClasses)
+			throws Exception {
+		List<T> beans = new ArrayList<T>(beanClasses.size());
+		for (Class<? extends T> beanClass : beanClasses) {
+			beans.add(getBean(beanClass));
+		}
+		return beans;
 	}
 
 	public void destroy() {

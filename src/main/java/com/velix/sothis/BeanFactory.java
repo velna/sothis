@@ -5,5 +5,5 @@ import javax.servlet.ServletContext;
 public interface BeanFactory {
 	void init(ServletContext servletContext);
 
-	Object getBean(Class<?> beanClass) throws Exception;
+	<T> T getBean(Class<T> beanClass) throws Exception;
 }
