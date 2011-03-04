@@ -19,18 +19,22 @@ public class SothisConfig {
 
 	private static SothisConfig config;
 
-	private Map<String, Class<? extends Interceptor>> interceptorMap;
-	private Map<String, List<Class<? extends Interceptor>>> interceptorStackMap;
-	private BeanFactory beanFactory;
-	private String[] controllerPackages;
-	private Class<? extends ModelAndViewResolver> viewResolverClass;
+	private final Map<String, Class<? extends Interceptor>> interceptorMap;
+	private final Map<String, List<Class<? extends Interceptor>>> interceptorStackMap;
+	private final BeanFactory beanFactory;
+	private final String[] controllerPackages;
+	private final Class<? extends ModelAndViewResolver> viewResolverClass;
 
-	private Properties properties = new Properties();
+	private final Properties properties = new Properties();
 
 	@SuppressWarnings("unchecked")
 	private SothisConfig() throws Exception {
 		InputStream input = SothisConfig.class.getClassLoader()
 				.getResourceAsStream("sothis.properties");
+		if (null == input) {
+			input = SothisConfig.class.getClassLoader().getResourceAsStream(
+					"sothis.default.properties");
+		}
 		if (null == input) {
 			throw new RuntimeException(
 					"file sothis.properties can not be found!");
@@ -165,4 +169,5 @@ public class SothisConfig {
 	public Class<? extends ModelAndViewResolver> getViewResolverClass() {
 		return viewResolverClass;
 	}
+
 }
