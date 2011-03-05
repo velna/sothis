@@ -3,8 +3,8 @@
 a rails like java mvc framework
 
 code example: ('/app' is your context path)
-1) in web.xml:
 
+1) in web.xml:
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -30,7 +30,6 @@ code example: ('/app' is your context path)
 
 
 2) spring.xml:
-
 	<bean class="com.velix.sothis.interceptor.ParametersInterceptor" />
 	<bean class="com.velix.sothis.interceptor.FileUploadInterceptor" />
 	<bean class="com.velix.sothis.view.DefaultModelAndViewResolver" />
@@ -41,8 +40,7 @@ code example: ('/app' is your context path)
 	<bean class="com.velix.thinkapp.controller.Controller" scope="prototype">
 
 
-3) add sothis.properties in classpath root:
-
+3) put sothis.properties at classpath root:
 	sothis.controller.packages=com.velix.thinkapp.controller
 
 	sothis.beanFactory.class=com.velix.sothis.spring.SpringBeanFactory
@@ -57,21 +55,17 @@ code example: ('/app' is your context path)
 	sothis.viewResolver.class=com.velix.sothis.view.DefaultModelAndViewResolver
 
 
-4) write your controllers:
-
-default controller:
-
+4) default controller:
 	package com.velix.thinkapp.controller;
 
 	public class Controller {
 		public void indexAction() {
 		}
 	}
-
 this controller does nothing, but now you can make request '/app/index' or just '/app/'
 
-5) index.jsp
 
+5) index.jsp
 	<%@ page contentType="text/html; charset=UTF-8"%>
 	<html>
 	<head>
@@ -89,8 +83,8 @@ this controller does nothing, but now you can make request '/app/index' or just 
 	</body>
 	</html>
 
-6) HelloController:
 
+6) HelloController:
 	package com.velix.thinkapp.controller;
 
 	import java.io.File;
@@ -124,8 +118,63 @@ this controller does nothing, but now you can make request '/app/index' or just 
 
 	}
 
-7) /hello/say.jsp:
 
+7) HomePageModel.java:
+	package com.velix.thinkapp.model;
+
+	import java.io.File;
+
+	public class HomePageModel {
+		private String message;
+		private int status;
+		private File myFile;
+		private String myFileFileName;
+		private String myFileContentType;
+
+		public String getMessage() {
+			return message;
+		}
+
+		public void setMessage(String message) {
+			this.message = message;
+		}
+
+		public int getStatus() {
+			return status;
+		}
+
+		public void setStatus(int status) {
+			this.status = status;
+		}
+
+		public File getMyFile() {
+			return myFile;
+		}
+
+		public void setMyFile(File myFile) {
+			this.myFile = myFile;
+		}
+
+		public String getMyFileFileName() {
+			return myFileFileName;
+		}
+
+		public void setMyFileFileName(String myFileFileName) {
+			this.myFileFileName = myFileFileName;
+		}
+
+		public String getMyFileContentType() {
+			return myFileContentType;
+		}
+
+		public void setMyFileContentType(String myFileContentType) {
+			this.myFileContentType = myFileContentType;
+		}
+	}
+
+
+8) /hello/say.jsp:
 	I said "hello" !
+
 
 That's all, now you can access http://localhost:8080/app/ , choose some file, and sumbit, you'll see the results from the console
