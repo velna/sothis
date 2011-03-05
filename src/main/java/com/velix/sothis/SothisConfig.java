@@ -24,6 +24,7 @@ public class SothisConfig {
 	private final BeanFactory beanFactory;
 	private final String[] controllerPackages;
 	private final Class<? extends ModelAndViewResolver> viewResolverClass;
+	private final String characterEncoding;
 
 	private final Properties properties = new Properties();
 
@@ -64,6 +65,7 @@ public class SothisConfig {
 			controllerPackages = new String[0];
 		}
 
+		// sothis.viewResolver.class
 		property = getProperty("sothis.viewResolver.class");
 		if (null != property) {
 			viewResolverClass = (Class<? extends ModelAndViewResolver>) Class
@@ -71,6 +73,10 @@ public class SothisConfig {
 		} else {
 			viewResolverClass = DefaultModelAndViewResolver.class;
 		}
+
+		// sothis.http.characterEncoding
+		characterEncoding = this.getProperty("sothis.http.characterEncoding",
+				"UTF-8");
 	}
 
 	private Map<String, Class<? extends Interceptor>> findInterceptors()
@@ -139,10 +145,10 @@ public class SothisConfig {
 		return properties.getProperty(name);
 	}
 
-	// private String getProperty(String name, String defaultValue) {
-	// String property = properties.getProperty(name);
-	// return null == property ? defaultValue : property;
-	// }
+	private String getProperty(String name, String defaultValue) {
+		String property = properties.getProperty(name);
+		return null == property ? defaultValue : property;
+	}
 
 	public BeanFactory getBeanFactory() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
@@ -168,6 +174,10 @@ public class SothisConfig {
 
 	public Class<? extends ModelAndViewResolver> getViewResolverClass() {
 		return viewResolverClass;
+	}
+
+	public String getCharacterEncoding() {
+		return characterEncoding;
 	}
 
 }

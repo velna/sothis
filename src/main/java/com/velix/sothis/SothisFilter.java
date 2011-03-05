@@ -87,12 +87,17 @@ public class SothisFilter implements Filter {
 
 	private void doFilter(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		if (null == request.getCharacterEncoding()) {
+			request.setCharacterEncoding(config.getCharacterEncoding());
+		}
 		ActionInvocation invocation = prepareActionInvocation(request, response);
-		Object result = invocation.invoke();
-		ModelAndViewResolver resolver = this.beanFactory.getBean(config
-				.getViewResolverClass());
-		ResolvedModelAndView mav = resolver.resolve(result, invocation);
-		mav.getView().render(mav.getModel(), invocation);
+		if (null != invocation) {
+			Object result = invocation.invoke();
+			ModelAndViewResolver resolver = this.beanFactory.getBean(config
+					.getViewResolverClass());
+			ResolvedModelAndView mav = resolver.resolve(result, invocation);
+			mav.getView().render(mav.getModel(), invocation);
+		}
 	}
 
 	private ActionInvocation prepareActionInvocation(
@@ -123,17 +128,19 @@ public class SothisFilter implements Filter {
 		context.put(ActionContext.HTTP_REQUEST, request);
 		context.put(ActionContext.HTTP_RESPONSE, response);
 		context.put(ActionContext.SERVLET_CONTEXT, servletContext);
+		context.put(ActionContext.INTERCEPTORS,
+				getBeans(config.getDefaultInterceptorStackClasses()));
 
 		Controller controller = controllers.get(controllerName);
 		if (null != controller) {
 			Action action = controller.getAction(actionName);
 			if (null != action) {
 				context.put(ActionContext.ACTION, action);
+				return new DefaultActionInvocation(context);
 			}
 		}
-		context.put(ActionContext.INTERCEPTORS,
-				getBeans(config.getDefaultInterceptorStackClasses()));
-		return new DefaultActionInvocation(context);
+		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		return null;
 	}
 
 	private <T> T getBean(Class<? extends T> beanClass) throws Exception {

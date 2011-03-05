@@ -1,5 +1,6 @@
 package com.velix.sothis;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,15 +37,7 @@ public class Controller {
 					}
 					continue;
 				}
-				Class<?>[] types = method.getParameterTypes();
-				if (types.length > 1) {
-					if (logger.isWarnEnabled()) {
-						logger.warn("invalid action:{} of controller: {}",
-								actionName, controllerClass);
-					}
-				} else {
-					actionMap.put(actionName, new Action(method, this));
-				}
+				actionMap.put(actionName, new Action(method, this));
 			}
 		}
 	}
@@ -55,6 +48,10 @@ public class Controller {
 
 	public Object newInstance() throws Exception {
 		return beanFactory.getBean(this.controllerClass);
+	}
+
+	public Annotation[] getAnnotations() {
+		return this.controllerClass.getAnnotations();
 	}
 
 	public Class<?> getControllerClass() {

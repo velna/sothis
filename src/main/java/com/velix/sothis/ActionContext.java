@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ActionContext {
 
 	public final static String HTTP_REQUEST = "com.velix.sothis.servlet.HttpServletRequest";
+	public final static String HTTP_REQUEST_PARAMETERS = "com.velix.sothis.servlet.HttpServletRequestParameters";
 	public final static String HTTP_RESPONSE = "com.velix.sothis.servlet.HttpServletResponse";
 	public final static String SERVLET_CONTEXT = "com.velix.sothis.servlet.ServeltContext";
 	public final static String ACTION = "com.velix.sothis.action.Action";
@@ -45,8 +46,16 @@ public class ActionContext {
 		return (HttpServletRequest) get(HTTP_REQUEST);
 	}
 
+	public HttpServletRequest setRequest(HttpServletRequest request) {
+		return (HttpServletRequest) context.put(HTTP_REQUEST, request);
+	}
+
 	public HttpServletResponse getResponse() {
 		return (HttpServletResponse) get(HTTP_RESPONSE);
+	}
+
+	public HttpServletResponse setResponse(HttpServletResponse response) {
+		return (HttpServletResponse) context.put(HTTP_RESPONSE, response);
 	}
 
 	public Locale getLocale() {
@@ -59,7 +68,14 @@ public class ActionContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> getParameters() {
-		return (Map<String, Object>) get(ACTION_PARAMS);
+	public Map<String, Object[]> getParameters() {
+		return (Map<String, Object[]>) get(HTTP_REQUEST_PARAMETERS);
 	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object[]> setParameters(Map<String, Object[]> parameters) {
+		return (Map<String, Object[]>) context.put(HTTP_REQUEST_PARAMETERS,
+				parameters);
+	}
+
 }

@@ -1,20 +1,10 @@
 package com.velix.sothis.view;
 
-public class ModelAndView {
+public interface ModelAndView {
 
-	private final Object model;
-	private final Object[] viewParams;
+	public Object getModel();
 
-	public ModelAndView(Object model, Object... viewParams) {
-		this.model = model;
-		this.viewParams = viewParams;
-	}
+	public String getViewType();
 
-	public Object getModel() {
-		return model;
-	}
-
-	public Object[] getViewParams() {
-		return viewParams;
-	}
+	public Object[] getViewParams();
 }

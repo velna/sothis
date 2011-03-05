@@ -1,5 +1,6 @@
 package com.velix.sothis;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 public class Action {
@@ -25,6 +26,14 @@ public class Action {
 
 	public Class<?>[] getParameterTypes() {
 		return this.method.getParameterTypes();
+	}
+
+	public Annotation[][] getParameterAnnotations() {
+		return this.method.getParameterAnnotations();
+	}
+
+	public Annotation[] getAnnotations() {
+		return this.method.getAnnotations();
 	}
 
 	public String getName() {
