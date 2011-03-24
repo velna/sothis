@@ -13,7 +13,6 @@ import org.sothis.web.mvc.interceptor.Interceptor;
 import org.sothis.web.mvc.view.DefaultModelAndViewResolver;
 import org.sothis.web.mvc.view.ModelAndViewResolver;
 
-
 public class SothisConfig {
 
 	public static final String DEFAULT_STACK_NAME = "default";
@@ -30,13 +29,7 @@ public class SothisConfig {
 	private final Properties properties = new Properties();
 
 	@SuppressWarnings("unchecked")
-	private SothisConfig() throws Exception {
-		InputStream input = SothisConfig.class.getClassLoader()
-				.getResourceAsStream("sothis.properties");
-		if (null == input) {
-			input = SothisConfig.class.getClassLoader().getResourceAsStream(
-					"sothis.default.properties");
-		}
+	private SothisConfig(InputStream input) throws Exception {
 		if (null == input) {
 			throw new RuntimeException(
 					"file sothis.properties can not be found!");
@@ -132,10 +125,20 @@ public class SothisConfig {
 	}
 
 	public static SothisConfig getConfig() throws Exception {
+		InputStream input = SothisConfig.class.getClassLoader()
+				.getResourceAsStream("sothis.properties");
+		if (null == input) {
+			input = SothisConfig.class.getClassLoader().getResourceAsStream(
+					"sothis.default.properties");
+		}
+		return getConfig(input);
+	}
+
+	public static SothisConfig getConfig(InputStream input) throws Exception {
 		if (null == config) {
 			synchronized (SothisConfig.class) {
 				if (null == config) {
-					config = new SothisConfig();
+					config = new SothisConfig(input);
 				}
 			}
 		}
