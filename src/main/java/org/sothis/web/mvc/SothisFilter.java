@@ -22,7 +22,6 @@ import org.sothis.util.ClassUtils;
 import org.sothis.web.mvc.view.ModelAndViewResolver;
 import org.sothis.web.mvc.view.ResolvedModelAndView;
 
-
 public class SothisFilter implements Filter {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -71,7 +70,8 @@ public class SothisFilter implements Filter {
 				} else {
 					continue;
 				}
-				controllers.put(name, new Controller(name, c, beanFactory));
+				controllers.put(name, new DefaultController(name, c,
+						beanFactory));
 			}
 		}
 	}
@@ -132,15 +132,11 @@ public class SothisFilter implements Filter {
 				getBeans(config.getDefaultInterceptorStackClasses()));
 
 		Controller controller = controllers.get(controllerName);
-		if (null != controller) {
-			Action action = controller.getAction(actionName);
-			if (null != action) {
-				context.put(ActionContext.ACTION, action);
-				return new DefaultActionInvocation(context);
-			}
+		if (null == controller) {
+			controller = new EmptyController(controllerName);
 		}
-		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		return null;
+		context.put(ActionContext.ACTION, controller.getAction(actionName));
+		return new DefaultActionInvocation(context);
 	}
 
 	private <T> T getBean(Class<? extends T> beanClass) throws Exception {

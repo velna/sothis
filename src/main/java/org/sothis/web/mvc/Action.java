@@ -1,42 +1,19 @@
 package org.sothis.web.mvc;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
-public class Action {
-	private final Method method;
-	private final Controller controller;
-	private final String name;
-
-	public Action(Method method, Controller controller) {
-		this.method = method;
-		this.controller = controller;
-		this.name = method.getName()
-				.substring(0, method.getName().length() - 6);
-	}
+public interface Action {
 
 	public Object invoke(ActionContext context, Object... params)
-			throws Exception {
-		return this.method.invoke(controller.newInstance(), params);
-	}
+			throws Exception;
 
-	public Controller getController() {
-		return controller;
-	}
+	public Controller getController();
 
-	public Class<?>[] getParameterTypes() {
-		return this.method.getParameterTypes();
-	}
+	public Class<?>[] getParameterTypes();
 
-	public Annotation[][] getParameterAnnotations() {
-		return this.method.getParameterAnnotations();
-	}
+	public Annotation[][] getParameterAnnotations();
 
-	public Annotation[] getAnnotations() {
-		return this.method.getAnnotations();
-	}
+	public Annotation[] getAnnotations();
 
-	public String getName() {
-		return this.name;
-	}
+	public String getName();
 }
