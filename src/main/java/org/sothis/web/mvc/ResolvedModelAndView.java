@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.view;
+package org.sothis.web.mvc;
 
 public class ResolvedModelAndView {
 	private final Object model;

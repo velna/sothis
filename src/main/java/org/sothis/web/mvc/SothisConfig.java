@@ -9,9 +9,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.sothis.web.mvc.interceptor.Interceptor;
-import org.sothis.web.mvc.view.DefaultModelAndViewResolver;
-import org.sothis.web.mvc.view.ModelAndViewResolver;
 
 public class SothisConfig {
 

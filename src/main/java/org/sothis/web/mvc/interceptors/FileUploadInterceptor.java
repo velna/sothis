@@ -1,10 +1,11 @@
-package org.sothis.web.mvc.interceptor;
+package org.sothis.web.mvc.interceptors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.sothis.web.mvc.ActionContext;
 import org.sothis.web.mvc.ActionInvocation;
+import org.sothis.web.mvc.Interceptor;
 
 
 public class FileUploadInterceptor implements Interceptor {

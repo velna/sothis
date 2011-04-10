@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.interceptor;
+package org.sothis.web.mvc.interceptors;
 
 import java.io.File;
 import java.lang.reflect.Array;

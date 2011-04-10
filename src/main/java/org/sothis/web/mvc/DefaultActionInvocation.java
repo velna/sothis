@@ -3,7 +3,6 @@ package org.sothis.web.mvc;
 import java.util.Iterator;
 import java.util.List;
 
-import org.sothis.web.mvc.interceptor.Interceptor;
 
 
 

@@ -1,15 +1,13 @@
-package org.sothis.web.mvc.view;
+package org.sothis.web.mvc;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.sothis.web.mvc.ActionInvocation;
 
 public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 
 	private final Map<String, Class<? extends View>> viewMap = new HashMap<String, Class<? extends View>>();
 	private static final String DEFAULT_VIEW_KEY = "org.sothis.web.mvc.view.DEFAULT_VIEW_KEY";
-	private Class<? extends View> defaultView;
 
 	@Override
 	public ResolvedModelAndView resolve(Object actionResult,
@@ -17,24 +15,24 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 		Object model = null;
 		View view = null;
 		if (actionResult == null) {
-			view = createDefaultView(invocation.getAction().getName());
+			view = createDefaultView();
 		} else if (actionResult instanceof ModelAndView) {
 			ModelAndView mav = (ModelAndView) actionResult;
 			view = createView(mav.getViewType(), mav.getViewParams());
 			model = mav.getModel();
 		} else {
-			view = createDefaultView(invocation.getAction().getName());
+			view = createDefaultView();
 			model = actionResult;
 		}
 
 		return new ResolvedModelAndView(model, view);
 	}
 
-	private View createDefaultView(Object... params) {
-		return createView(DEFAULT_VIEW_KEY, params);
+	private View createDefaultView() {
+		return createView(DEFAULT_VIEW_KEY, (Map<String, Object>) null);
 	}
 
-	private View createView(String typeName, Object... params) {
+	private View createView(String typeName, Map<String, Object> params) {
 		Class<? extends View> viewClass = this.viewMap.get(typeName);
 		if (null == viewClass) {
 			throw new ViewCreationException("no view type of:" + typeName);
@@ -45,7 +43,7 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 			return view;
 		} catch (Exception e) {
 			throw new ViewCreationException("error creation view of class "
-					+ defaultView, e);
+					+ viewClass, e);
 		}
 	}
 

@@ -1,6 +1,5 @@
-package org.sothis.web.mvc.interceptor;
+package org.sothis.web.mvc;
 
-import org.sothis.web.mvc.ActionInvocation;
 
 
 public interface Interceptor {

@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sothis.util.ClassUtils;
-import org.sothis.web.mvc.view.ModelAndViewResolver;
-import org.sothis.web.mvc.view.ResolvedModelAndView;
 
 public class SothisFilter implements Filter {
 

@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.interceptor;
+package org.sothis.web.mvc.interceptors;
 
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
@@ -25,8 +25,8 @@ import org.sothis.web.mvc.ActionContext;
 import org.sothis.web.mvc.ActionInvocation;
 import org.sothis.web.mvc.HttpServletRequestAware;
 import org.sothis.web.mvc.HttpServletResponseAware;
-import org.sothis.web.mvc.annotation.Parameter;
-
+import org.sothis.web.mvc.Interceptor;
+import org.sothis.web.mvc.annotation.Param;
 
 public class ParametersInterceptor implements Interceptor {
 
@@ -49,10 +49,10 @@ public class ParametersInterceptor implements Interceptor {
 				actionParams[i] = context.getResponse();
 			} else {
 				Annotation[] annotations = paramAnnotations[i];
-				Parameter parameter = null;
+				Param parameter = null;
 				for (Annotation a : annotations) {
-					if (a.annotationType() == Parameter.class) {
-						parameter = (Parameter) a;
+					if (a.annotationType() == Param.class) {
+						parameter = (Param) a;
 					}
 				}
 				actionParams[i] = getActionParamByAnnotation(parameter,
@@ -72,7 +72,7 @@ public class ParametersInterceptor implements Interceptor {
 		}
 	}
 
-	private Object getActionParamByAnnotation(Parameter parameter,
+	private Object getActionParamByAnnotation(Param parameter,
 			Map<String, Object[]> parameterMap, Class<?> type,
 			ActionContext context) throws Exception {
 		String name = null == parameter ? "" : parameter.name();
