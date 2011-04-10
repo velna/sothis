@@ -6,6 +6,7 @@ import java.util.List;
 import org.sothis.web.mvc.interceptor.Interceptor;
 
 
+
 public class DefaultActionInvocation implements ActionInvocation {
 
 	private final Iterator<Interceptor> interceptors;

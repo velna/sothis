@@ -14,7 +14,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.sothis.dal.Column;
+import org.sothis.dal.annotation.Column;
 
 public class ClassUtils {
 

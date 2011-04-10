@@ -1,17 +1,15 @@
 package org.sothis.web.mvc.view;
 
-import java.util.Map;
-
 public class ResolvedModelAndView {
-	private final Map<String, Object> model;
+	private final Object model;
 	private final View view;
 
-	public ResolvedModelAndView(Map<String, Object> model, View view) {
+	public ResolvedModelAndView(Object model, View view) {
 		this.model = model;
 		this.view = view;
 	}
 
-	public Map<String, Object> getModel() {
+	public Object getModel() {
 		return model;
 	}
 

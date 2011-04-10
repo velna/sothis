@@ -5,19 +5,22 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang.StringUtils;
 import org.sothis.web.mvc.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class SpringBeanFactory implements BeanFactory {
-
 	private WebApplicationContext appContext;
+	private BeanDefinitionRegistry beanDefinitionRegistry;
 
 	@Override
 	public void init(ServletContext servletContext) {
 		appContext = WebApplicationContextUtils
 				.getWebApplicationContext(servletContext);
-		org.springframework.beans.factory.BeanFactory factory = appContext.getAutowireCapableBeanFactory();
-		System.out.println(factory);
+		beanDefinitionRegistry = (BeanDefinitionRegistry) appContext
+				.getAutowireCapableBeanFactory();
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -37,4 +40,15 @@ public class SpringBeanFactory implements BeanFactory {
 		}
 	}
 
+	@Override
+	public <T> void registerBean(Class<T> beanClass,
+			org.sothis.web.mvc.BeanDefinition beanDefinition) {
+		if (!beanDefinitionRegistry.containsBeanDefinition(beanClass.getName())) {
+			GenericBeanDefinition definition = new GenericBeanDefinition();
+			definition.setBeanClass(beanClass);
+			definition.setSingleton(beanDefinition.isSingleton());
+			beanDefinitionRegistry.registerBeanDefinition(beanClass.getName(),
+					definition);
+		}
+	}
 }
