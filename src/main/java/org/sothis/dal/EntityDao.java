@@ -3,6 +3,9 @@ package org.sothis.dal;
 import java.io.Serializable;
 import java.util.List;
 
+import org.sothis.util.Cursor;
+import org.sothis.util.Pager;
+
 public interface EntityDao<E extends Serializable, K extends Serializable> {
 
 	/**
@@ -14,11 +17,18 @@ public interface EntityDao<E extends Serializable, K extends Serializable> {
 	E findById(K id);
 
 	/**
-	 * 查找所有对象
+	 * 指针方式查找所有对象
 	 * 
 	 * @return
 	 */
-	List<E> findAll();
+	Cursor<E> findAll();
+
+	/**
+	 * 分页方式查找所有对象
+	 * 
+	 * @return
+	 */
+	List<E> findAll(Pager pager);
 
 	/**
 	 * 根据id列表查找所有对象，返回的列表根据传入的idList排序

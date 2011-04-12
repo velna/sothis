@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sothis.util.ClassUtils;
+import org.sothis.web.mvc.views.JspView;
 
 public class SothisFilter implements Filter {
 
@@ -93,6 +94,7 @@ public class SothisFilter implements Filter {
 			Object result = invocation.invoke();
 			ModelAndViewResolver resolver = this.beanFactory.getBean(config
 					.getViewResolverClass());
+			resolver.setDefaultView(JspView.class);
 			ResolvedModelAndView mav = resolver.resolve(result, invocation);
 			mav.getView().render(mav.getModel(), invocation);
 		}
