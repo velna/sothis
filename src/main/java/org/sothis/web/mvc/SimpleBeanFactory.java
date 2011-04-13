@@ -14,10 +14,4 @@ public class SimpleBeanFactory implements BeanFactory {
 		return beanClass.newInstance();
 	}
 
-	@Override
-	public <T> void registerBean(Class<T> beanClass,
-			BeanDefinition beanDefinition) {
-		// empty
-	}
-
 }

@@ -93,6 +93,7 @@ public class ParametersInterceptor implements Interceptor {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Object populate(Map<String, Object[]> parameterMap,
 			Object paramBean, String p) throws Exception {
 		Pattern pattern = "".equals(p) ? null : Pattern.compile(p);
