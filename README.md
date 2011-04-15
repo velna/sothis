@@ -5,6 +5,7 @@ a rails like java mvc framework
 code example: ('/app' is your context path)
 
 1) in web.xml:
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -30,10 +31,12 @@ code example: ('/app' is your context path)
 
 
 2) spring.xml:
+
 	nothing is must :)
 
 
 3) put sothis.properties at classpath root:
+
 	sothis.controller.packages=com.myapp.controller
 
 	sothis.beanFactory.class=org.sothis.web.mvc.support.SpringBeanFactory
@@ -49,6 +52,7 @@ code example: ('/app' is your context path)
 
 
 4) default controller:
+
 	package com.myaqpp.controller;
 
 	public class Controller {
@@ -59,6 +63,7 @@ this controller does nothing, but now you can make request '/app/index' or just 
 
 
 5) index.jsp
+
 	<%@ page contentType="text/html; charset=UTF-8"%>
 	<html>
 	<head>
@@ -78,6 +83,7 @@ this controller does nothing, but now you can make request '/app/index' or just 
 
 
 6) HelloController:
+
 	package com.myapp.controller;
 
 	import java.io.File;
@@ -113,6 +119,7 @@ this controller does nothing, but now you can make request '/app/index' or just 
 
 
 7) HomePageModel.java:
+
 	package com.myapp.model;
 
 	import java.io.File;
@@ -167,6 +174,7 @@ this controller does nothing, but now you can make request '/app/index' or just 
 
 
 8) /hello/say.jsp:
+
 	I said "hello" !
 
 
