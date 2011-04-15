@@ -20,7 +20,7 @@ code example: ('/app' is your context path)
 
 	<filter>
 		<filter-name>sothis</filter-name>
-		<filter-class>com.velix.sothis.SothisFilter</filter-class>
+		<filter-class>org.sothis.web.mvc.SothisFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
@@ -30,33 +30,26 @@ code example: ('/app' is your context path)
 
 
 2) spring.xml:
-	<bean class="com.velix.sothis.interceptor.ParametersInterceptor" />
-	<bean class="com.velix.sothis.interceptor.FileUploadInterceptor" />
-	<bean class="com.velix.sothis.view.DefaultModelAndViewResolver" />
-
-	<bean class="com.velix.thinkapp.controller.HelloController" scope="prototype">
-		<property name="message" value="hello world~~" />
-	</bean>
-	<bean class="com.velix.thinkapp.controller.Controller" scope="prototype">
+	nothing is must :)
 
 
 3) put sothis.properties at classpath root:
-	sothis.controller.packages=com.velix.thinkapp.controller
+	sothis.controller.packages=com.myapp.controller
 
-	sothis.beanFactory.class=com.velix.sothis.spring.SpringBeanFactory
+	sothis.beanFactory.class=org.sothis.web.mvc.support.SpringBeanFactory
 
-	sothis.interceptor.params.class=com.velix.sothis.interceptor.ParametersInterceptor
-	sothis.interceptor.upload.class=com.velix.sothis.interceptor.FileUploadInterceptor
+	sothis.interceptor.params.class=org.sothis.web.mvc.interceptors.ParametersInterceptor
+	sothis.interceptor.upload.class=org.sothis.web.mvc.interceptors.FileUploadInterceptor
 
 	sothis.interceptor.stack.default=upload,params
 
-	sothis.view.default=com.velix.sothis.view.JspView
+	sothis.view.default=org.sothis.web.mvc.views.JspView
 
-	sothis.viewResolver.class=com.velix.sothis.view.DefaultModelAndViewResolver
+	sothis.viewResolver.class=org.sothis.web.mvc.DefaultModelAndViewResolver
 
 
 4) default controller:
-	package com.velix.thinkapp.controller;
+	package com.myaqpp.controller;
 
 	public class Controller {
 		public void indexAction() {
@@ -85,21 +78,21 @@ this controller does nothing, but now you can make request '/app/index' or just 
 
 
 6) HelloController:
-	package com.velix.thinkapp.controller;
+	package com.myapp.controller;
 
 	import java.io.File;
 	import java.util.Date;
 	import java.util.List;
 
-	import com.velix.sothis.annotation.Parameter;
-	import com.velix.thinkapp.model.HomePageModel;
+	import org.sothis.web.mvc.annotation.Param;
+	import com.myapp.model.HomePageModel;
 
 	public class HelloController {
 		private String message;
 
 		public void sayAction(HomePageModel model,
-				@Parameter(name = "myFile") List<File> someFiles,
-				@Parameter(name = "date", pattern = "yyyy-MM-dd") Date date) {
+				@Param(name = "myFile") List<File> someFiles,
+				@Param(name = "date", pattern = "yyyy-MM-dd") Date date) {
 			System.out.println(model.getMyFile());
 			System.out.println(model.getMyFileContentType());
 			System.out.println(model.getMyFileFileName());
@@ -120,7 +113,7 @@ this controller does nothing, but now you can make request '/app/index' or just 
 
 
 7) HomePageModel.java:
-	package com.velix.thinkapp.model;
+	package com.myapp.model;
 
 	import java.io.File;
 
