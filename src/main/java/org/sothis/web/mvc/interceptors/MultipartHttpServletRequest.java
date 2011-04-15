@@ -69,7 +69,7 @@ public class MultipartHttpServletRequest extends HttpServletRequestWrapper {
 		if (map.containsKey(key)) {
 			map.put(key, ArrayUtils.add(map.get(key), value));
 		} else {
-			Object array = Array.newInstance(value.getClass(), 1);
+			Object array = Array.newInstance(Object.class, 1);
 			Array.set(array, 0, value);
 			map.put(key, (Object[]) array);
 		}
