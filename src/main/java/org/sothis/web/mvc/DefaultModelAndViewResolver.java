@@ -3,11 +3,9 @@ package org.sothis.web.mvc;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 
 	private final Map<String, Class<? extends View>> viewMap = new HashMap<String, Class<? extends View>>();
-	private static final String DEFAULT_VIEW_KEY = "org.sothis.web.mvc.view.DEFAULT_VIEW_KEY";
 
 	@Override
 	public ResolvedModelAndView resolve(Object actionResult,

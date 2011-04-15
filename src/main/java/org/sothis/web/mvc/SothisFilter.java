@@ -19,7 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sothis.util.ClassUtils;
+import org.sothis.web.mvc.views.JsonView;
 import org.sothis.web.mvc.views.JspView;
+import org.sothis.web.mvc.views.RedirectView;
 
 public class SothisFilter implements Filter {
 
@@ -29,6 +31,7 @@ public class SothisFilter implements Filter {
 	private ServletContext servletContext;
 	private BeanFactory beanFactory;
 	private SothisConfig config;
+	private ModelAndViewResolver modelAndViewResolver;
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		try {
@@ -38,9 +41,18 @@ public class SothisFilter implements Filter {
 			beanFactory = config.getBeanFactory();
 			beanFactory.init(servletContext);
 			initControllers();
+			initViews();
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
+	}
+
+	private void initViews() throws Exception {
+		modelAndViewResolver = this.beanFactory.getBean(config
+				.getViewResolverClass());
+		modelAndViewResolver.setDefaultView(JspView.class);
+		modelAndViewResolver.register("json", JsonView.class);
+		modelAndViewResolver.register("redirect", RedirectView.class);
 	}
 
 	private void initControllers() throws Exception {
@@ -92,10 +104,8 @@ public class SothisFilter implements Filter {
 		ActionInvocation invocation = prepareActionInvocation(request, response);
 		if (null != invocation) {
 			Object result = invocation.invoke();
-			ModelAndViewResolver resolver = this.beanFactory.getBean(config
-					.getViewResolverClass());
-			resolver.setDefaultView(JspView.class);
-			ResolvedModelAndView mav = resolver.resolve(result, invocation);
+			ResolvedModelAndView mav = modelAndViewResolver.resolve(result,
+					invocation);
 			mav.getView().render(mav.getModel(), invocation);
 		}
 	}
