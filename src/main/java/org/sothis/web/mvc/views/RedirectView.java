@@ -14,7 +14,7 @@ public class RedirectView extends AbstractView {
 			throws Exception {
 		HttpServletResponse response = invocation.getInvocationContext()
 				.getResponse();
-		String location = String.valueOf(params.get("location"));
+		String location = getParam("location");
 		response.sendRedirect(UrlUtils
 				.appendParams(location, (Map<?, ?>) model));
 	}

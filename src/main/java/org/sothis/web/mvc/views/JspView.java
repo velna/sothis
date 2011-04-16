@@ -31,8 +31,8 @@ public class JspView extends AbstractView {
 
 	private String getPath(ActionInvocation invocation) {
 		StringBuilder ret = new StringBuilder();
-		if (params.containsKey("path")) {
-			String prefix = String.valueOf(params.get("path"));
+		if (containsParam("path")) {
+			String prefix = String.valueOf(getParam("path"));
 			if (prefix.charAt(0) == '/') {
 				ret.append(prefix).append(".jsp");
 			} else {

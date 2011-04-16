@@ -7,7 +7,7 @@ import org.sothis.web.mvc.View;
 
 public abstract class AbstractView implements View {
 
-	protected Map<String, Object> params = Collections.emptyMap();
+	private Map<String, Object> params = Collections.emptyMap();
 
 	@Override
 	public void setParams(Map<String, Object> params) {
@@ -16,4 +16,20 @@ public abstract class AbstractView implements View {
 		}
 	}
 
+	protected <T> T getParam(String paramName) {
+		return getParam(paramName, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T getParam(String paramName, T defaultValue) {
+		Object ret = params.get(paramName);
+		if (null == ret) {
+			ret = defaultValue;
+		}
+		return (T) ret;
+	}
+
+	protected boolean containsParam(String paramName) {
+		return params.containsKey(paramName);
+	}
 }
