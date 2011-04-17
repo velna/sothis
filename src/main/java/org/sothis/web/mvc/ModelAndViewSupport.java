@@ -9,17 +9,17 @@ public class ModelAndViewSupport implements ModelAndView {
 	private Map<String, Object> viewParams = new HashMap<String, Object>();
 
 	@Override
-	public Object getModel() {
+	public Object model() {
 		return this;
 	}
 
 	@Override
-	public String getViewType() {
+	public String viewType() {
 		return viewType;
 	}
 
 	@Override
-	public Map<String, Object> getViewParams() {
+	public Map<String, Object> viewParams() {
 		return viewParams;
 	}
 

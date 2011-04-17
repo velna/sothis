@@ -4,9 +4,9 @@ import java.util.Map;
 
 public interface ModelAndView {
 
-	public Object getModel();
+	public Object model();
 
-	public String getViewType();
+	public String viewType();
 
-	public Map<String, Object> getViewParams();
+	public Map<String, Object> viewParams();
 }

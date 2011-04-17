@@ -16,8 +16,8 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 			view = createDefaultView();
 		} else if (actionResult instanceof ModelAndView) {
 			ModelAndView mav = (ModelAndView) actionResult;
-			view = createView(mav.getViewType(), mav.getViewParams());
-			model = mav.getModel();
+			view = createView(mav.viewType(), mav.viewParams());
+			model = mav.model();
 		} else {
 			view = createDefaultView();
 			model = actionResult;
