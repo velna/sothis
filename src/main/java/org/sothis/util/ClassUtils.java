@@ -1,20 +1,13 @@
 package org.sothis.util;
 
-import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.sothis.dal.annotation.Column;
 
 public class ClassUtils {
 
@@ -110,19 +103,4 @@ public class ClassUtils {
 		return classes;
 	}
 
-	public static Map<String, Column> getColumns(Class<?> beanClass) {
-		Map<String, Column> columnMap = new HashMap<String, Column>();
-		PropertyDescriptor[] pds = PropertyUtils
-				.getPropertyDescriptors(beanClass);
-		for (PropertyDescriptor pd : pds) {
-			Method readMethod = pd.getReadMethod();
-			if (null != readMethod) {
-				Column a = readMethod.getAnnotation(Column.class);
-				if (null != a) {
-					columnMap.put(pd.getName(), a);
-				}
-			}
-		}
-		return columnMap;
-	}
 }

@@ -26,7 +26,7 @@ public class JsonView extends AbstractView {
 		} else {
 			json = JSONObject.fromObject(model, config);
 		}
-		HttpServletResponse response = invocation.getInvocationContext()
+		HttpServletResponse response = invocation.getActionContext()
 				.getResponse();
 		response.setContentType(getParam("contentType",
 				"text/json;charset=UTF-8"));

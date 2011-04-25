@@ -26,7 +26,7 @@ public class DefaultActionInvocation implements ActionInvocation {
 	}
 
 	@Override
-	public ActionContext getInvocationContext() {
+	public ActionContext getActionContext() {
 		return context;
 	}
 

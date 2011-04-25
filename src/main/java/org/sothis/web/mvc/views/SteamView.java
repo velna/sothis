@@ -20,7 +20,7 @@ public class SteamView extends AbstractView {
 		} else {
 			input = getParam("inputStream");
 		}
-		HttpServletResponse response = invocation.getInvocationContext()
+		HttpServletResponse response = invocation.getActionContext()
 				.getResponse();
 		response.setContentType((String) getParam("contentType"));
 		if (null != input) {

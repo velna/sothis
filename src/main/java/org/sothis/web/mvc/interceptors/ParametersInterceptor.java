@@ -32,7 +32,7 @@ public class ParametersInterceptor implements Interceptor {
 
 	@Override
 	public Object intercept(ActionInvocation invocation) throws Exception {
-		ActionContext context = invocation.getInvocationContext();
+		ActionContext context = invocation.getActionContext();
 		Map<String, Object[]> parameterMap = getParameterMap(context
 				.getRequest());
 

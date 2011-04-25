@@ -12,7 +12,7 @@ public class JspView extends AbstractView {
 	@Override
 	public void render(Object model, ActionInvocation invocation)
 			throws Exception {
-		HttpServletRequest request = invocation.getInvocationContext()
+		HttpServletRequest request = invocation.getActionContext()
 				.getRequest();
 		if (null != model) {
 			Map<?, ?> attrMap;
@@ -26,7 +26,7 @@ public class JspView extends AbstractView {
 			}
 		}
 		request.getRequestDispatcher(getPath(invocation)).forward(request,
-				invocation.getInvocationContext().getResponse());
+				invocation.getActionContext().getResponse());
 	}
 
 	private String getPath(ActionInvocation invocation) {

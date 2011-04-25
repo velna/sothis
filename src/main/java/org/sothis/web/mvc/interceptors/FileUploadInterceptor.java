@@ -12,7 +12,7 @@ public class FileUploadInterceptor implements Interceptor {
 
 	@Override
 	public Object intercept(ActionInvocation invocation) throws Exception {
-		ActionContext context = invocation.getInvocationContext();
+		ActionContext context = invocation.getActionContext();
 		HttpServletRequest request = context.getRequest();
 		if (ServletFileUpload.isMultipartContent(request)) {
 			context.setRequest(new MultipartHttpServletRequest(request,

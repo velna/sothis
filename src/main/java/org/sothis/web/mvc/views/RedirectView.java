@@ -12,7 +12,7 @@ public class RedirectView extends AbstractView {
 	@Override
 	public void render(Object model, ActionInvocation invocation)
 			throws Exception {
-		HttpServletResponse response = invocation.getInvocationContext()
+		HttpServletResponse response = invocation.getActionContext()
 				.getResponse();
 		String location = getParam("location");
 		response.sendRedirect(UrlUtils
