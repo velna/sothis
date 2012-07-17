@@ -1,0 +1,5 @@
+== Sothis MVC Framework ==
+
+a rails like java mvc framework
+
+see sothis-example project
