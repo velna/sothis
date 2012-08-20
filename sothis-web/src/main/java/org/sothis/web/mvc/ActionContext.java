@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.sothis.core.beans.BeanFactory;
+import org.sothis.core.beans.BeanInstantiationException;
 
 /**
  * Action的上下文，内部是在ThreadLocal里放入了本次Action执行过程中需要的各个对象
@@ -251,7 +252,11 @@ public final class ActionContext {
 		if (session != null) {
 			flash = (Flash) session.getAttribute(FLASH);
 			if (null == flash && create) {
-				flash = new DefaultFlash();
+				try {
+					flash = this.getBeanFactory().getBean(SothisConfig.getConfig().getFlash());
+				} catch (BeanInstantiationException e) {
+					throw new RuntimeException("error create flash bean", e);
+				}
 				session.setAttribute(FLASH, flash);
 			}
 		}

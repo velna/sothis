@@ -23,8 +23,6 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * Utility class for working with Strings that have placeholder values in them.
@@ -92,8 +90,6 @@ public class PropertyPlaceholderHelper {
 	public PropertyPlaceholderHelper(String placeholderPrefix, String placeholderSuffix, String valueSeparator,
 			boolean ignoreUnresolvablePlaceholders) {
 
-		Assert.notNull(placeholderPrefix, "placeholderPrefix must not be null");
-		Assert.notNull(placeholderSuffix, "placeholderSuffix must not be null");
 		this.placeholderPrefix = placeholderPrefix;
 		this.placeholderSuffix = placeholderSuffix;
 		String simplePrefixForSuffix = wellKnownSimplePrefixes.get(this.placeholderSuffix);
@@ -117,7 +113,6 @@ public class PropertyPlaceholderHelper {
 	 * @return the supplied value with placeholders replaced inline.
 	 */
 	public String replacePlaceholders(String value, final Properties properties) {
-		Assert.notNull(properties, "Argument 'properties' must not be null.");
 		return replacePlaceholders(value, new PlaceholderResolver() {
 			public String resolvePlaceholder(String placeholderName) {
 				return properties.getProperty(placeholderName);
@@ -136,7 +131,6 @@ public class PropertyPlaceholderHelper {
 	 * @return the supplied value with placeholders replaced inline.
 	 */
 	public String replacePlaceholders(String value, PlaceholderResolver placeholderResolver) {
-		Assert.notNull(value, "Argument 'value' must not be null.");
 		return parseStringValue(value, placeholderResolver, new HashSet<String>());
 	}
 
@@ -200,14 +194,14 @@ public class PropertyPlaceholderHelper {
 		int index = startIndex + this.placeholderPrefix.length();
 		int withinNestedPlaceholder = 0;
 		while (index < buf.length()) {
-			if (StringUtils.substringMatch(buf, index, this.placeholderSuffix)) {
+			if (substringMatch(buf, index, this.placeholderSuffix)) {
 				if (withinNestedPlaceholder > 0) {
 					withinNestedPlaceholder--;
 					index = index + this.placeholderSuffix.length();
 				} else {
 					return index;
 				}
-			} else if (StringUtils.substringMatch(buf, index, this.simplePrefix)) {
+			} else if (substringMatch(buf, index, this.simplePrefix)) {
 				withinNestedPlaceholder++;
 				index = index + this.simplePrefix.length();
 			} else {
@@ -215,6 +209,23 @@ public class PropertyPlaceholderHelper {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * Test whether the given string matches the given substring
+	 * at the given index.
+	 * @param str the original string (or StringBuilder)
+	 * @param index the index in the original string to start matching against
+	 * @param substring the substring to match at the given index
+	 */
+	public static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
+		for (int j = 0; j < substring.length(); j++) {
+			int i = index + j;
+			if (i >= str.length() || str.charAt(i) != substring.charAt(j)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

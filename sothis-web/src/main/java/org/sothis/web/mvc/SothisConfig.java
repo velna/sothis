@@ -25,6 +25,7 @@ public final class SothisConfig extends PropertiesConfiguration {
 	private final Class<? extends ActionMapper> actionMapper;
 	private final Class<? extends ModelAndViewResolver> modelAndViewResolver;
 	private final Class<? extends ExceptionHandler> exceptionHandler;
+	private final Class<? extends Flash> flash;
 
 	private final Map<String, Class<View>> views;
 	private final Class<View> defaultView;
@@ -41,6 +42,7 @@ public final class SothisConfig extends PropertiesConfiguration {
 			interceptors = (Map) this.getAsGroup(Pattern.compile("sothis\\.interceptors\\.(\\w+)\\.class"), Class.class);
 			modelAndViewResolver = this.getClass("sothis.viewResolver.class", DefaultModelAndViewResolver.class);
 			actionMapper = this.getClass("sothis.actionMapper.class", DefaultActionMapper.class);
+			flash = this.getClass("sothis.flash.class", DefaultFlash.class);
 			exceptionHandler = (Class<? extends ExceptionHandler>) this.getClass("sothis.exception.handler.class");
 
 			views = (Map) this.getAsGroup(Pattern.compile("sothis\\.views\\.(\\w+)\\.class"), Class.class);
@@ -152,6 +154,10 @@ public final class SothisConfig extends PropertiesConfiguration {
 
 	public Class<? extends ExceptionHandler> getExceptionHandler() {
 		return exceptionHandler;
+	}
+
+	public Class<? extends Flash> getFlash() {
+		return flash;
 	}
 
 }

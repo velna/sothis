@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.sothis.core.beans.Bean;
+import org.sothis.core.beans.Scope;
+
+@Bean(scope=Scope.PROTOTYPE)
 public class DefaultFlash implements Flash {
 	private static final long serialVersionUID = -5188599456800029672L;
 	private final Map<String, FlashValue> attributes = new HashMap<String, FlashValue>();
