@@ -103,7 +103,7 @@ public class SothisFilter implements Filter {
 					subPackageName = "";
 				}
 				final String simpleName = c.getSimpleName();
-				dotIndex = simpleName.indexOf("Controller");
+				dotIndex = simpleName.indexOf(Controller.CONTROLLER_SUFFIX);
 				String name;
 				if (dotIndex > 0) {
 					name = StringUtils.uncapitalize(simpleName.substring(0, dotIndex));

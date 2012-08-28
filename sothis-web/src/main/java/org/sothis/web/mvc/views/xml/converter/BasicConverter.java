@@ -5,6 +5,8 @@ import java.io.Writer;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.sothis.web.mvc.views.xml.Attribute;
+import org.sothis.web.mvc.views.xml.XmlNode;
 
 public class BasicConverter implements TypeConverter<Object> {
 

@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
  */
 public interface Action extends ActionBase {
 
+	public final static String ACTION_SUFFIX = "Action";
+
 	/**
 	 * 
 	 * @return

@@ -14,7 +14,6 @@ import org.sothis.web.mvc.ModelAndView;
 import org.sothis.web.mvc.SothisConfig;
 import org.sothis.web.mvc.View;
 import org.sothis.web.mvc.views.xml.converter.XmlConverterImpl;
-import org.sothis.web.mvc.views.xml.converter.XmlSerializable;
 
 @Bean(scope = Scope.SINGLETON)
 public class XmlView implements View {

@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.views.xml.converter;
+package org.sothis.web.mvc.views.xml;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -14,6 +14,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sothis.web.mvc.views.xml.Attribute;
+import org.sothis.web.mvc.views.xml.XmlAttribute;
 
 public class XmlConverterImpl extends XmlConverter {
 
@@ -32,7 +34,7 @@ public class XmlConverterImpl extends XmlConverter {
 		if (CollectionUtils.isNotEmpty(attrs)) {
 			StringBuilder builder = new StringBuilder();
 			for (Attribute attr : attrs) {
-				builder.append(" ").append(attr.name).append("=\"").append(attr.value).append("\"");
+				builder.append(" ").append(attr.getName()).append("=\"").append(attr.getValue()).append("\"");
 			}
 			out.write(builder.toString());
 		}

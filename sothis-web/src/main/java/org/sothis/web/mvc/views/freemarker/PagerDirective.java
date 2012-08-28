@@ -31,7 +31,7 @@ import freemarker.template.TemplateModel;
  */
 public class PagerDirective implements TemplateDirectiveModel {
 
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {
 		ActionContext actionContext = ActionContext.getContext();
@@ -72,27 +72,8 @@ public class PagerDirective implements TemplateDirectiveModel {
 			pagerCount = num.getAsNumber().intValue();
 		}
 
-		// parameters
-		// Map<String, String[]> requestParams =
-		// actionContext.getRequest().getParameterMap();
-		// Map<String, String[]> allParams = new HashMap<String, String[]>();
-
 		Map<String, Object[]> requestParams = actionContext.getParameters();
-		Map<String, Object[]> allParams = new HashMap<String, Object[]>();
-		allParams.putAll(requestParams);
-
-		Set<String> keySet = allParams.keySet();
-		for (Iterator it = keySet.iterator(); it.hasNext();) {
-			String s = (String) it.next();
-			if (s.startsWith("__")) {
-				it.remove();
-			}
-		}
-		// try {
-		// encodeParamMap(allParams);
-		// } catch (UnsupportedEncodingException e) {
-		// throw new TemplateException(e, env);
-		// }
+		Map<String, Object[]> allParams = filterPagerParams(new HashMap<String, Object[]>(requestParams));
 
 		Template template = env.getConfiguration().getTemplate("/ftl/pager.ftl");
 		Map<String, Object> templateContext = new HashMap<String, Object>();
@@ -115,14 +96,14 @@ public class PagerDirective implements TemplateDirectiveModel {
 		templateContext.put("currentPage", currentPage);
 		templateContext.put("totalPages", totalPages);
 		templateContext.put("firstPageUrl", this.buildPagerUrl(actionContext, name, controller, action, allParams, 1, anchor));
-		templateContext.put("prePageUrl", this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage - 1,
-				anchor));
-		templateContext.put("nextPageUrl", this.buildPagerUrl(actionContext, name, controller, action, allParams,
-				currentPage + 1, anchor));
-		templateContext.put("currentPageUrl", this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage,
-				anchor));
-		templateContext.put("lastPageUrl", this.buildPagerUrl(actionContext, name, controller, action, allParams, totalPages,
-				anchor));
+		templateContext.put("prePageUrl",
+				this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage - 1, anchor));
+		templateContext.put("nextPageUrl",
+				this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage + 1, anchor));
+		templateContext.put("currentPageUrl",
+				this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage, anchor));
+		templateContext.put("lastPageUrl",
+				this.buildPagerUrl(actionContext, name, controller, action, allParams, totalPages, anchor));
 		templateContext.put("pageUrls", pages);
 		templateContext.put("pageIndex", pageIndex);
 
@@ -146,6 +127,16 @@ public class PagerDirective implements TemplateDirectiveModel {
 			ret = ret + "#" + anchor;
 		}
 		return ret;
+	}
+
+	/**
+	 * 子类可以覆盖这个方法来对pager的参数进行过滤
+	 * 
+	 * @param params
+	 * @return
+	 */
+	protected Map<String, Object[]> filterPagerParams(Map<String, Object[]> params) {
+		return params;
 	}
 
 }

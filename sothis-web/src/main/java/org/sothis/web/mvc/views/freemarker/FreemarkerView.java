@@ -29,8 +29,10 @@ public class FreemarkerView implements View {
 	private Configuration configuration;
 
 	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ServletException {
-		if (null == mav.model()) {
-
+		if (invocation.getAction().getActionMethod().getReturnType() == Void.class) {
+			renderAsTemplate(null, null, invocation);
+		} else if (null == mav.model()) {
+			// empty
 		} else if (mav.model() instanceof String) {
 			renderAsText((String) mav.model(), invocation);
 		} else {
@@ -86,9 +88,9 @@ public class FreemarkerView implements View {
 			ClassNotFoundException {
 		if (null == configuration) {
 			Class<? extends ConfigurationFactory> configurationFactoryClass = SothisConfig.getConfig().getClass(
-					"sothis.freemarker.configurationFactory.class", DefaultConfigurationFactory.class);
-			ConfigurationFactory configurationFactory = ActionContext.getContext().getBeanFactory().getBean(
-					configurationFactoryClass);
+					"freemarker.configurationFactory.class", DefaultConfigurationFactory.class);
+			ConfigurationFactory configurationFactory = ActionContext.getContext().getBeanFactory()
+					.getBean(configurationFactoryClass);
 			configuration = configurationFactory.createConfiguration(ActionContext.getContext());
 		}
 	}

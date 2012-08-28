@@ -46,10 +46,10 @@ public class DefaultController extends AbstractActionBase implements Controller 
 		final Method[] methods = this.controllerClass.getMethods();
 		for (Method method : methods) {
 			final String methodName = method.getName();
-			if (!methodName.endsWith("Action") || method.isAnnotationPresent(Ignore.class)) {
+			if (!methodName.endsWith(Action.ACTION_SUFFIX) || method.isAnnotationPresent(Ignore.class)) {
 				continue;
 			}
-			final String actionName = methodName.substring(0, methodName.length() - 6);
+			final String actionName = methodName.substring(0, methodName.length() - Action.ACTION_SUFFIX.length());
 			if (actionMap.containsKey(actionName)) {
 				if (LOGGER.isWarnEnabled()) {
 					LOGGER.warn("action already exist:{} of controller: {}", actionName, controllerClass);

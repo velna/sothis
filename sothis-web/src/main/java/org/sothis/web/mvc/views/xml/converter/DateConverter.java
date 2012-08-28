@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.sothis.web.mvc.views.xml.Attribute;
+import org.sothis.web.mvc.views.xml.XmlNode;
 public class DateConverter implements TypeConverter<Date> {
 
 	public void convertor(XmlConverter converter, Date object, Writer out, String alias, List<Attribute> attributes) throws IOException {

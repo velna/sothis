@@ -25,8 +25,8 @@ public class DefaultAction extends AbstractActionBase implements Action {
 		this.method = method;
 		this.controller = controller;
 
-		if (method.getName().endsWith("Action")) {
-			this.name = method.getName().substring(0, method.getName().length() - 6);
+		if (method.getName().endsWith(ACTION_SUFFIX)) {
+			this.name = method.getName().substring(0, method.getName().length() - ACTION_SUFFIX.length());
 		} else {
 			throw new IllegalArgumentException("method's must last with 'Action' ");
 		}

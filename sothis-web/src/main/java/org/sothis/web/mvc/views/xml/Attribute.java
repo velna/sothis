@@ -1,8 +1,8 @@
-package org.sothis.web.mvc.views.xml.converter;
+package org.sothis.web.mvc.views.xml;
 
 public class Attribute {
-	String name;
-	String value;
+	private String name;
+	private String value;
 
 	public Attribute() {
 

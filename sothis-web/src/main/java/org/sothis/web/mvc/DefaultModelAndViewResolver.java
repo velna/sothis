@@ -63,7 +63,7 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 			typeName = DEFAULT_VIEW_TYPE;
 		}
 		SothisConfig config = (SothisConfig) context.get(ActionContext.SOTHIS_CONFIG);
-		Class<? extends View> viewClass = DEFAULT_VIEW_TYPE.equals(typeName) ? config.getDefaultView() : config.getViews().get(
+		Class<? extends View> viewClass = DEFAULT_VIEW_TYPE == typeName ? config.getDefaultView() : config.getViews().get(
 				typeName);
 		if (null == viewClass) {
 			throw new ViewCreationException("no view type of:" + typeName);

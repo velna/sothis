@@ -44,8 +44,8 @@ public class ActionDirective implements TemplateDirectiveModel {
 		String[] attrs = env.getCustomAttributeNames();
 		if (attrs != null) {
 			for (int i = 0; i < attrs.length; i++) {
-				myParams.put(attrs[i], new String[] { URLDecoder
-						.decode(String.valueOf(env.getCustomAttribute(attrs[i])), "UTF-8") });
+				myParams.put(attrs[i],
+						new String[] { URLDecoder.decode(String.valueOf(env.getCustomAttribute(attrs[i])), "UTF-8") });
 				env.removeCustomAttribute(attrs[i]);
 			}
 		}
@@ -53,7 +53,6 @@ public class ActionDirective implements TemplateDirectiveModel {
 		String orgActionUri = (String) actionContext.getRequest().getAttribute(ActionContext.ACTION_URI);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		actionContext.setResponse(response);
-		myParams.put("__from", new String[] { "d_action" });
 		WrappedHttpServletRequest myRequest = new WrappedHttpServletRequest(actionContext.getRequest(), myParams);
 		myRequest.setAttribute(ActionContext.ACTION_URI, controller + "/" + action);
 		actionContext.setRequest(myRequest);
@@ -61,8 +60,8 @@ public class ActionDirective implements TemplateDirectiveModel {
 			ActionInvocationHelper.invoke(actionContext);
 			env.getOut().write(response.getContentAsString());
 		} catch (ServletException e) {
-			throw new TemplateException("error invoke action directive:" + controller + "/" + action, (Exception) e
-					.getRootCause(), env);
+			throw new TemplateException("error invoke action directive:" + controller + "/" + action,
+					(Exception) e.getRootCause(), env);
 		} finally {
 			actionContext.setContextMap(orgContext);
 			actionContext.getRequest().setAttribute(ActionContext.ACTION_URI, orgActionUri);

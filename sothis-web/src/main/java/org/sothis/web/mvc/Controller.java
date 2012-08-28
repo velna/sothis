@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public interface Controller extends ActionBase {
 
+	public final static String CONTROLLER_SUFFIX = "Controller";
+
 	/**
 	 * 得到这个controller中name为actionName的Action
 	 * 

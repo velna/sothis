@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.sothis.web.mvc.views.xml.Attribute;
 
 @SuppressWarnings("unchecked")
 public class ListConverter implements TypeConverter<List> {
