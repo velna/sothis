@@ -4,7 +4,7 @@
 	<groupId>org.sothis</groupId>
 	<artifactId>sothis-core</artifactId>
 	<packaging>jar</packaging>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>sothis-core</name>
 	<properties>
 		<project.build.sourceEncoding>GBK</project.build.sourceEncoding>

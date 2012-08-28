@@ -4,7 +4,7 @@
 	<groupId>org.sothis</groupId>
 	<artifactId>sothis-example</artifactId>
 	<packaging>war</packaging>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>sothis-example</name>
 	<properties>
 		<project.build.sourceEncoding>GBK</project.build.sourceEncoding>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>org.sothis</groupId>
 			<artifactId>sothis-web</artifactId>
-			<version>0.2.0-SNAPSHOT</version>
+			<version>0.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
