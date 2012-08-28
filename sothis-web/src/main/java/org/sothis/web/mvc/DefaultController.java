@@ -28,9 +28,6 @@ public class DefaultController extends AbstractActionBase implements Controller 
 
 	public DefaultController(final String packageName, final String name, final Class<?> controllerClass) {
 		super(controllerClass, controllerClass.getPackage());
-		if (null == controllerClass) {
-			throw new IllegalArgumentException("controllerClass is null");
-		}
 		this.packageName = packageName;
 		this.name = name;
 
