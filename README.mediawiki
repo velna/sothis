@@ -3,3 +3,5 @@
 a rails like java mvc framework
 
 see sothis-example project
+
+more on [https://github.com/velna/sothis/wiki/MVC%E6%89%8B%E5%86%8C Wiki] pages
