@@ -23,7 +23,7 @@ public class ActionContextTest {
 
 	@BeforeMethod
 	public void beforeMethod() throws ConfigurationException, IOException {
-		context = ActionContext.getContext();
+		context = SothisFactory.getActionContext();
 		SothisConfig.initConfig("sothis.default.properties");
 		context.set(ActionContext.SOTHIS_CONFIG, SothisConfig.getConfig());
 	}
