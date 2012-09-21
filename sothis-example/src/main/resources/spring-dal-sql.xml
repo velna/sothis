@@ -67,7 +67,7 @@
 		</property>
 	</bean>
 
-	<bean class="org.sothis.dal.support.BeanPackageAutoProxyCreator">
+	<bean class="org.sothis.core.beans.BeanPackageAutoProxyCreator">
 		<property name="beanPackages">
 			<list>
 				<value>org.sothis.web.example.dao.sql</value>
@@ -84,5 +84,12 @@
 		class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
+
+	<context:component-scan base-package="org.sothis.web.example.dao.sql"
+		name-generator="org.sothis.core.beans.SothisBeanNameGenerator"
+		annotation-config="false" use-default-filters="true">
+		<context:include-filter type="assignable"
+			expression="org.sothis.web.example.dao.BaseExampleDao" />
+	</context:component-scan>
 
 </beans>

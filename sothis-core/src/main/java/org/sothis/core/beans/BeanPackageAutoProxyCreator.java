@@ -1,4 +1,4 @@
-package org.sothis.dal.support;
+package org.sothis.core.beans;
 
 import java.util.ArrayList;
 import java.util.List;
