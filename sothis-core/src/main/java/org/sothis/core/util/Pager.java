@@ -22,6 +22,12 @@ public class Pager {
 	public Pager() {
 	}
 
+	public static Pager make(int startRow, int pageSize) {
+		Pager pager = new Pager(pageSize);
+		pager.setStartRow(startRow);
+		return pager;
+	}
+
 	public final int getTotalRows() {
 		return totalRows;
 	}

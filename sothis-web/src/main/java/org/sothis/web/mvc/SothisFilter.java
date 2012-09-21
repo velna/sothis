@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -28,7 +30,7 @@ public class SothisFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SothisFilter.class);
 
-	private final Map<String, Action> actions = new HashMap<String, Action>();
+	private Map<String, Action> actions;
 	private ServletContext servletContext;
 	private BeanFactory beanFactory;
 	private SothisConfig config;
@@ -39,7 +41,11 @@ public class SothisFilter implements Filter {
 			LOGGER.info("Sothis: initialization started");
 		}
 		try {
+			ActionContext context = ActionContext.getContext();
+
 			servletContext = filterConfig.getServletContext();
+			context.setServletContext(servletContext);
+
 			String beanFactoryClass = filterConfig.getInitParameter("beanFactoryClass");
 			if (null != beanFactoryClass) {
 				beanFactory = createBeanFactory((Class<BeanFactory>) Class.forName(beanFactoryClass));
@@ -64,7 +70,13 @@ public class SothisFilter implements Filter {
 				}
 				beanFactory = createBeanFactory(config.getBeanFactoryClass());
 			}
-			initActions();
+			context.set(ActionContext.SOTHIS_CONFIG, this.config);
+			context.setBeanFactory(beanFactory);
+
+			this.actions = Collections.unmodifiableMap(initActions());
+			context.set(ActionContext.ACTIONS, actions);
+
+			initSothisBeans();
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("Sothis: initialization completed");
 			}
@@ -73,8 +85,18 @@ public class SothisFilter implements Filter {
 		}
 	}
 
-	private BeanFactory createBeanFactory(Class<BeanFactory> beanFactoryClass) throws InstantiationException,
-			IllegalAccessException {
+	private void initSothisBeans() throws BeanInstantiationException {
+		ActionContext context = ActionContext.getContext();
+		context.set(ActionContext.ACTION_MAPPER, beanFactory.getBean(config.getActionMapper()));
+		context.set(ActionContext.MODEL_AND_VIEW_RESOLVER, beanFactory.getBean(config.getModelAndViewResolver()));
+
+		Set<Entry<String, Class<View>>> views = config.getViews().entrySet();
+		for (Entry<String, Class<View>> entry : views) {
+			this.beanFactory.getBean(entry.getValue());
+		}
+	}
+
+	private BeanFactory createBeanFactory(Class<BeanFactory> beanFactoryClass) throws InstantiationException, IllegalAccessException {
 		BeanFactory beanFactory = beanFactoryClass.newInstance();
 		if (beanFactory instanceof ServletBeanFactory) {
 			((ServletBeanFactory) beanFactory).init(servletContext);
@@ -82,7 +104,8 @@ public class SothisFilter implements Filter {
 		return beanFactory;
 	}
 
-	private void initActions() throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
+	private Map<String, Action> initActions() throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
+		Map<String, Action> actions = new HashMap<String, Action>();
 		final String[] packageNames = config.getControllerPackages();
 		for (String packageName : packageNames) {
 			if (StringUtils.isEmpty(packageName)) {
@@ -90,8 +113,7 @@ public class SothisFilter implements Filter {
 			}
 			final Class<?>[] classes = ClassUtils.getClasses(packageName);
 			for (Class<?> c : classes) {
-				if (c.isLocalClass() || c.isMemberClass() || c.isAnonymousClass() || c.isAnnotationPresent(Ignore.class)
-						|| c.getPackage().isAnnotationPresent(Ignore.class)) {
+				if (c.isLocalClass() || c.isMemberClass() || c.isAnonymousClass() || c.isAnnotationPresent(Ignore.class) || c.getPackage().isAnnotationPresent(Ignore.class)) {
 					continue;
 				}
 				final String className = c.getName().substring(packageName.length() + 1);
@@ -119,13 +141,16 @@ public class SothisFilter implements Filter {
 					ActionMapper actionMapper = beanFactory.getBean(config.getActionMapper());
 					String actionKey = actionMapper.map(packageName, c, actionName);
 					if (actions.containsKey(actionKey)) {
-						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as "
-								+ actions.get(actionKey));
+						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as " + actions.get(actionKey));
 					}
 					actions.put(actionKey, action);
 				}
+				if (config.isInitializeControllerOnStartup()) {
+					this.beanFactory.getBean(c);
+				}
 			}
 		}
+		return actions;
 	}
 
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -134,7 +159,7 @@ public class SothisFilter implements Filter {
 			context.set(ActionContext.ACTION_MAPPER, beanFactory.getBean(config.getActionMapper()));
 			context.set(ActionContext.MODEL_AND_VIEW_RESOLVER, beanFactory.getBean(config.getModelAndViewResolver()));
 			context.set(ActionContext.SOTHIS_CONFIG, this.config);
-			context.set(ActionContext.ACTIONS, Collections.unmodifiableMap(actions));
+			context.set(ActionContext.ACTIONS, actions);
 			if (null != config.getExceptionHandler()) {
 				context.set(ActionContext.EXCEPTION_HANDLER, this.beanFactory.getBean(config.getExceptionHandler()));
 			}

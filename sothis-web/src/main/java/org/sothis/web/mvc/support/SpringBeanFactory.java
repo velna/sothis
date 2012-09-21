@@ -15,7 +15,6 @@ public class SpringBeanFactory extends AbstractSpringBeanFactory implements Serv
 	public void init(ServletContext servletContext) {
 		appContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 		beanDefinitionRegistry = (BeanDefinitionRegistry) appContext.getAutowireCapableBeanFactory();
-
 	}
 
 	@Override

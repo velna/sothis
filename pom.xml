@@ -9,6 +9,7 @@
 	</build>
 	<modules>
 		<module>sothis-core</module>
+		<module>sothis-dal</module>
 		<module>sothis-web</module>
 		<module>sothis-example</module>
 	</modules>

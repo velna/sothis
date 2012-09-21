@@ -27,4 +27,11 @@ public @interface Bean {
 	 * @return
 	 */
 	Autowire autowire() default Autowire.BY_NAME;
+
+	/**
+	 * bean实例化后的初始化方法的名称
+	 * 
+	 * @return
+	 */
+	String initMethod() default "";
 }

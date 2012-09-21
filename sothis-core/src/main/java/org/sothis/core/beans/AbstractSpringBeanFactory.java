@@ -1,6 +1,6 @@
 package org.sothis.core.beans;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 
 public abstract class AbstractSpringBeanFactory implements BeanFactory {
 
-	private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+	private final ReentrantLock beanRegisterLock = new ReentrantLock();
 
 	protected abstract ApplicationContext getApplicationContext();
 
@@ -25,20 +25,20 @@ public abstract class AbstractSpringBeanFactory implements BeanFactory {
 			String simpleName = StringUtils.uncapitalize(beanClass.getSimpleName());
 			Object bean = null;
 			if (appContext.containsBean(simpleName)) {
-				bean = lockGetBean(simpleName);
+				bean = doGetBean(simpleName);
 			} else if (appContext.containsBean(beanClass.getName())) {
-				bean = lockGetBean(beanClass.getName());
+				bean = doGetBean(beanClass.getName());
 			}
 			if (null == bean) {
 				if (!beanDefinitionRegistry.containsBeanDefinition(beanClass.getName())) {
 					BeanDefinition definition = createBeanDefinition(beanClass);
-					rwLock.writeLock().lock();
+					beanRegisterLock.lock();
 					try {
 						beanDefinitionRegistry.registerBeanDefinition(beanClass.getName(), definition);
 					} finally {
-						rwLock.writeLock().unlock();
+						beanRegisterLock.unlock();
 					}
-					bean = lockGetBean(beanClass.getName());
+					bean = doGetBean(beanClass.getName());
 				}
 			}
 			return (T) bean;
@@ -47,19 +47,14 @@ public abstract class AbstractSpringBeanFactory implements BeanFactory {
 		}
 	}
 
-	private Object lockGetBean(String beanName) {
-		rwLock.readLock().lock();
-		try {
-			return this.getApplicationContext().getBean(beanName);
-		} finally {
-			rwLock.readLock().unlock();
-		}
+	private Object doGetBean(String beanName) {
+		return this.getApplicationContext().getBean(beanName);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T getBean(String beanName) throws BeanInstantiationException {
 		try {
-			return (T) lockGetBean(beanName);
+			return (T) doGetBean(beanName);
 		} catch (Exception e) {
 			throw new BeanInstantiationException(e);
 		}
@@ -85,6 +80,9 @@ public abstract class AbstractSpringBeanFactory implements BeanFactory {
 				definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			} else if (aBean.autowire() == Autowire.NO) {
 				definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_NO);
+			}
+			if (StringUtils.isNotEmpty(aBean.initMethod())) {
+				definition.setInitMethodName(aBean.initMethod());
 			}
 		} else {
 			definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME);

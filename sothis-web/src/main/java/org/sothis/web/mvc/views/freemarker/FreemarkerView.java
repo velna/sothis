@@ -23,10 +23,17 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-@Bean(scope = Scope.SINGLETON)
+@Bean(scope = Scope.SINGLETON, initMethod = "init")
 public class FreemarkerView implements View {
 
 	private Configuration configuration;
+
+	public void init() throws ClassNotFoundException, BeanInstantiationException, ConfigurationException {
+		Class<? extends ConfigurationFactory> configurationFactoryClass = SothisConfig.getConfig().getClass("freemarker.configurationFactory.class",
+				DefaultConfigurationFactory.class);
+		ConfigurationFactory configurationFactory = ActionContext.getContext().getBeanFactory().getBean(configurationFactoryClass);
+		configuration = configurationFactory.createConfiguration(ActionContext.getContext());
+	}
 
 	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ServletException {
 		if (invocation.getAction().getActionMethod().getReturnType() == Void.class) {
@@ -40,12 +47,10 @@ public class FreemarkerView implements View {
 		}
 	}
 
-	private void renderAsTemplate(Object model, Map<String, Object> params, ActionInvocation invocation) throws IOException,
-			ServletException {
+	private void renderAsTemplate(Object model, Map<String, Object> params, ActionInvocation invocation) throws IOException, ServletException {
 		String path = MvcUtils.resolvePath(MapUtils.getString(params, "path"), invocation) + ".ftl";
 		ActionContext context = invocation.getActionContext();
 		HttpServletResponse response = context.getResponse();
-		Configuration configuration = getConfiguration();
 		try {
 			Template template = configuration.getTemplate(path);
 			Object contentType = template.getCustomAttribute("content_type");
@@ -73,25 +78,4 @@ public class FreemarkerView implements View {
 		response.getWriter().append(text);
 	}
 
-	private Configuration getConfiguration() throws ServletException {
-		if (null == this.configuration) {
-			try {
-				initConfiguration();
-			} catch (Exception e) {
-				throw new ServletException("error init freemarker configuration: ", e);
-			}
-		}
-		return configuration;
-	}
-
-	private synchronized void initConfiguration() throws BeanInstantiationException, ConfigurationException,
-			ClassNotFoundException {
-		if (null == configuration) {
-			Class<? extends ConfigurationFactory> configurationFactoryClass = SothisConfig.getConfig().getClass(
-					"freemarker.configurationFactory.class", DefaultConfigurationFactory.class);
-			ConfigurationFactory configurationFactory = ActionContext.getContext().getBeanFactory()
-					.getBean(configurationFactoryClass);
-			configuration = configurationFactory.createConfiguration(ActionContext.getContext());
-		}
-	}
 }

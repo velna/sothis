@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +35,9 @@ public final class SothisConfig extends PropertiesConfiguration {
 	private final Class<BeanFactory> beanFactoryClass;
 	private final String[] controllerPackages;
 	private final String characterEncoding;
-	private final boolean isSchemaOptional;
+	private final boolean initializeControllerOnStartup;
 
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	private SothisConfig(final Properties properties) throws ConfigurationException {
 		super(properties);
 		try {
@@ -61,14 +63,13 @@ public final class SothisConfig extends PropertiesConfiguration {
 			}
 
 			characterEncoding = this.get("sothis.http.characterEncoding", "UTF-8");
-			isSchemaOptional = Boolean.parseBoolean(this.get("sothis.constants.d_url.isSchemaOptional", "true"));
+			initializeControllerOnStartup = this.getBoolean("sothis.controller.initializeOnStartup", true);
 		} catch (ClassNotFoundException e) {
 			throw new ConfigurationException(e);
 		}
 	}
 
-	private Map<String, InterceptorStack> findInterceptorStacks(Map<String, Class<Interceptor>> interceptorMap)
-			throws ClassNotFoundException {
+	private Map<String, InterceptorStack> findInterceptorStacks(Map<String, Class<Interceptor>> interceptorMap) throws ClassNotFoundException {
 		Map<String, InterceptorStack> map = new HashMap<String, InterceptorStack>();
 		Map<String, String> stackMap = getAsGroup(Pattern.compile("sothis\\.interceptors\\.stack\\.(\\w+)"), String.class);
 		for (String key : stackMap.keySet()) {
@@ -113,7 +114,7 @@ public final class SothisConfig extends PropertiesConfiguration {
 	}
 
 	public String[] getControllerPackages() {
-		return controllerPackages;
+		return Arrays.copyOf(controllerPackages, controllerPackages.length);
 	}
 
 	public InterceptorStack getInterceptorStack(String stackName) {
@@ -132,12 +133,12 @@ public final class SothisConfig extends PropertiesConfiguration {
 		return characterEncoding;
 	}
 
-	public boolean isSchemaOptional() {
-		return isSchemaOptional;
+	public boolean isInitializeControllerOnStartup() {
+		return initializeControllerOnStartup;
 	}
 
 	public Map<String, Class<View>> getViews() {
-		return views;
+		return Collections.unmodifiableMap(views);
 	}
 
 	public Class<View> getDefaultView() {
