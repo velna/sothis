@@ -31,26 +31,6 @@ public class RestView implements View {
 		} catch (ViewCreationException e) {
 			throw new ServletException(e);
 		}
-		// Class<?> c = model.getClass();
-		// Field[] fields = c.getDeclaredFields();
-		// List<String> needColumns =
-		// exportColumns((String)viewParams.get("columns"));
-		// if (model instanceof List) {
-		// List<Object> l = (List<Object>) model;
-		// if (CollectionUtils.isNotEmpty(l)) {
-		// c = l.get(0).getClass();
-		// fields = c.getDeclaredFields();
-		// }
-		// if (CollectionUtils.isNotEmpty(needColumns)) {
-		// for (Object o : l) {
-		// doWithoutFieldEmpty(c, fields, needColumns, o);
-		// }
-		// }
-		// }else{
-		// if (CollectionUtils.isNotEmpty(needColumns)){
-		// doWithoutFieldEmpty(c, fields, needColumns, model);
-		// }
-		// }
 	}
 
 	private String getRestForamt(ActionContext context) {
@@ -66,36 +46,4 @@ public class RestView implements View {
 		return format;
 	}
 
-	// private void doWithoutFieldEmpty(Class<?> c, Field[] fields, List<String>
-	// neideColumns, Object o)
-	// throws IllegalAccessException, InvocationTargetException {
-	// for (Field field : fields) {
-	// if ("serialVersionUID".equals(field.getName()))
-	// continue;
-	// if (!neideColumns.contains(field.getName())) {
-	// Method setMethod = BeanUtils.findMethod(c, "set" +
-	// StringUtils.capitalize(field.getName()),
-	// new Class[] { field.getType() });
-	// setMethod.invoke(o, new Object[] { null });
-	// }
-	// }
-	// }
-	//
-	// @SuppressWarnings("unchecked")
-	// private List<String> exportColumns(String columns) {
-	// if (StringUtils.isNotBlank(columns)) {
-	// List<String> exportColumns = Arrays.asList(StringUtils.split(columns,
-	// ","));
-	// exportColumns = (List<String>) CollectionUtils.collect(exportColumns, new
-	// Transformer() {
-	// public Object transform(Object input) {
-	// return String.valueOf(input).trim();
-	// }
-	// });
-	// return exportColumns;
-	// } else {
-	// return Collections.EMPTY_LIST;
-	// }
-	//
-	// }
 }
