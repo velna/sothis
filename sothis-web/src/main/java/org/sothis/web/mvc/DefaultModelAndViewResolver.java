@@ -3,6 +3,7 @@ package org.sothis.web.mvc;
 import java.util.Collections;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
 import org.sothis.web.mvc.annotation.Sothis;
@@ -20,13 +21,12 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 		return createView(typeName, invocation.getActionContext());
 	}
 
-	public ResolvedModelAndView resolve(final Object actionResult, final ActionInvocation invocation)
-			throws ViewCreationException {
+	public ResolvedModelAndView resolve(final Object actionResult, final ActionInvocation invocation) throws ViewCreationException {
 		ModelAndView model = null;
 		View view = null;
 		Sothis sothis = invocation.getAction().getAnnotation(Sothis.class);
 		String viewType = DEFAULT_VIEW_TYPE;
-		if (null != sothis && null != sothis.defaultView()) {
+		if (null != sothis && StringUtils.isNotEmpty(sothis.defaultView())) {
 			viewType = sothis.defaultView();
 		}
 		if (actionResult instanceof ModelAndView) {
@@ -63,8 +63,7 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 			typeName = DEFAULT_VIEW_TYPE;
 		}
 		SothisConfig config = (SothisConfig) context.get(ActionContext.SOTHIS_CONFIG);
-		Class<? extends View> viewClass = DEFAULT_VIEW_TYPE == typeName ? config.getDefaultView() : config.getViews().get(
-				typeName);
+		Class<? extends View> viewClass = DEFAULT_VIEW_TYPE == typeName ? config.getDefaultView() : config.getViews().get(typeName);
 		if (null == viewClass) {
 			throw new ViewCreationException("no view type of:" + typeName);
 		}
