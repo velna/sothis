@@ -26,12 +26,9 @@ public class RedirectView implements View {
 		if (isPathUrl(location)) {
 			String contextPath = ActionContext.getContext().getServletContext().getContextPath();
 			if (!location.startsWith(contextPath)) {
-				location = invocation.getActionContext().getServletContext().getContextPath()
-						+ MvcUtils.resolvePath(location, invocation);
+				location = contextPath + MvcUtils.resolvePath(location, invocation);
 			}
 		}
-		// response.sendRedirect(UrlUtils.appendParams(location, (Map<?, ?>)
-		// model));
 		String statusCode = MapUtils.getString(params, "statusCode");
 		if (NumberUtils.isNumber(statusCode)) {
 			response.setStatus(Integer.parseInt(statusCode));

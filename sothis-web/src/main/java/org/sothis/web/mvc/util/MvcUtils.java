@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.sothis.web.mvc.Action;
 import org.sothis.web.mvc.ActionContext;
 import org.sothis.web.mvc.ActionInvocation;
 import org.sothis.web.mvc.Flash;
@@ -41,24 +40,13 @@ public class MvcUtils {
 	 * @return
 	 */
 	public static String resolvePath(String path, ActionInvocation invocation) {
-		Action action = invocation.getAction();
-		String packageName = action.getController().getPackageName();
-		if (StringUtils.isNotEmpty(packageName)) {
-			packageName = "/" + packageName;
-		}
 		if (StringUtils.isEmpty(path)) {
-			if (StringUtils.isEmpty(action.getController().getName())) {
-				return new StringBuilder().append(packageName).append('/').append(action.getName()).toString();
-			} else {
-				return new StringBuilder().append(packageName).append('/').append(action.getController().getName()).append('/')
-						.append(action.getName()).toString();
-			}
+			return invocation.getAction().getFullName();
 		} else {
 			if (path.charAt(0) == '/') {
 				return path;
 			} else {
-				return new StringBuilder().append(packageName).append('/').append(action.getController().getName()).append('/')
-						.append(path).toString();
+				return new StringBuilder().append(invocation.getAction().getController().getFullName()).append(path).toString();
 			}
 		}
 	}

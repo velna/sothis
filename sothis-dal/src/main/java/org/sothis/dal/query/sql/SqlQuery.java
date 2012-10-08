@@ -165,7 +165,7 @@ public class SqlQuery {
 				if (param.getOperator().isInOperator()) {
 					Collection<Object> values = (Collection<Object>) param.getValue();
 					for (Iterator<Object> iterator = values.iterator(); iterator.hasNext();) {
-						query.setParameter(index++, iterator.next());
+						query.setParameter(WHERE_PARAM_PREFIX + (index++), iterator.next());
 					}
 				} else if (param.getOperator().isIsOperator() || param.getOperator().isEmpty()) {
 					// empty

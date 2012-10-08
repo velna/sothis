@@ -24,7 +24,6 @@ public class Users implements Entity<Integer> {
 		return id;
 	}
 
-	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
