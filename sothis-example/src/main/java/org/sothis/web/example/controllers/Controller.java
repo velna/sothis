@@ -14,7 +14,7 @@ public class Controller {
 	private UsersDao usersDao;
 
 	public Object indexAction(HelloWorldModel model, @Param(name = "message") String message) {
-		List<Users> users = usersDao.find(Cnd.where("name", "huang"));
+		List<Users> users = usersDao.find(Cnd.make("name", "velna__"));
 		for (Users user : users) {
 			System.out.println(user.getName());
 			usersDao.updateById(user.getId(), Chain.make("name", user.getName() + "_"));

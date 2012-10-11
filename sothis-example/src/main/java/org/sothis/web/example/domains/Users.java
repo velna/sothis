@@ -6,11 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.sothis.dal.Entity;
+import org.sothis.dal.sql.SqlEntity;
 
 @Table(name = "users")
 @javax.persistence.Entity
-public class Users implements Entity<Integer> {
+public class Users implements SqlEntity {
 
 	private static final long serialVersionUID = -7013732700961112303L;
 	private int id;
@@ -28,7 +28,7 @@ public class Users implements Entity<Integer> {
 		this.id = id;
 	}
 
-	@Column(name = "name")
+	@Column(name = "username")
 	public String getName() {
 		return name;
 	}

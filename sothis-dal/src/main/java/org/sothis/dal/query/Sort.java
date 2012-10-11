@@ -1,8 +1,8 @@
 package org.sothis.dal.query;
 
-public class Sort implements Param {
-	private String field;
-	private boolean asc;
+public class Sort {
+	private final String field;
+	private final boolean asc;
 
 	public Sort(String field, boolean asc) {
 		this.field = field;

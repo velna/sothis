@@ -7,7 +7,7 @@ import org.sothis.core.util.Pager;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
 
-public interface Dao<E extends Entity<K>, K extends Serializable> {
+public interface Dao<E extends Entity, K extends Serializable> {
 	public final static String EXECUTE_COUNTER_KEY = "org.sothis.dal.EntityDao.EXECUTE_COUNTER_KEY";
 
 	Class<E> getEntityClass();

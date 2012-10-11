@@ -5,10 +5,10 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.sothis.dal.Entity;
-import org.sothis.dal.query.sql.SqlDao;
+import org.sothis.dal.sql.AbstractSqlDao;
+import org.sothis.dal.sql.SqlEntity;
 
-public class BaseExampleDao<E extends Entity<K>, K extends Serializable> extends SqlDao<E, K> {
+public class BaseExampleDao<E extends SqlEntity, K extends Serializable> extends AbstractSqlDao<E, K> {
 
 	private EntityManager entityManager;
 

@@ -6,8 +6,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.slf4j.Logger;
 import org.sothis.core.util.ExecuteCounter;
 import org.sothis.core.util.LoggerFactory;
@@ -15,7 +13,7 @@ import org.sothis.core.util.Pager;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
 
-public abstract class AbstractDao<E extends Entity<K>, K extends Serializable> implements Dao<E, K> {
+public abstract class AbstractDao<E extends Entity, K extends Serializable> implements Dao<E, K> {
 
 	private final Logger PERFORMANCE_LOGGER = LoggerFactory.getPerformanceLogger(this.getClass());
 	private final long MAX_EXECUTE_TIME = 100;
@@ -82,8 +80,6 @@ public abstract class AbstractDao<E extends Entity<K>, K extends Serializable> i
 			}
 		}
 	}
-
-	protected abstract EntityManager getEntityManager();
 
 	@Override
 	public List<E> find(Cnd cnd, Pager pager) {

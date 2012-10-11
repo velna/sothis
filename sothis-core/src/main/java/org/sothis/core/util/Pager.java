@@ -1,6 +1,8 @@
 package org.sothis.core.util;
 
-public class Pager {
+import java.io.Serializable;
+
+public class Pager implements Serializable {
 
 	private int startRow = 0;
 

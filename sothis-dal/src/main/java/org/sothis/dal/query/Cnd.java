@@ -1,186 +1,136 @@
 package org.sothis.dal.query;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+public class Cnd implements OrderBy {
+	private final Object left;
+	private final Object op;
+	private final Object right;
+	private boolean not;
+	private final List<Sort> sorts = new LinkedList<Sort>();
 
-public class Cnd {
-
-	private List<Param> params;
-	private int leftBraceCount = 0;
-	private List<Sort> sorts;
-
-	protected Cnd() {
+	private Cnd() {
+		this.left = null;
+		this.op = null;
+		this.right = null;
 	}
 
-	public static Cnd where(String field, Op op, Object value) {
-		Cnd cnd = new Cnd();
-		return cnd.append(Logic.And).append(field, op, value);
+	private Cnd(Object left, Object op, Object right) {
+		if (null == op) {
+			throw new IllegalArgumentException("op can not be null");
+		}
+		this.left = left;
+		this.op = op;
+		this.right = right;
 	}
 
-	public static Cnd where(String field, Object value) {
-		Cnd cnd = new Cnd();
-		return cnd.append(Logic.And).append(field, Op.EQ, value);
+	public static Cnd make(String field, Object op, Object value) {
+		return new Cnd(field, op, value);
 	}
 
-	public Cnd and(String field, Op op, Object value) {
-		return this.append(Logic.And).append(field, op, value);
+	public static Cnd make(String field, Object value) {
+		return new Cnd(field, Op.EQ, value);
+	}
+
+	public Cnd and(String field, Object op, Object value) {
+		Cnd cnd = new Cnd(field, op, value);
+		return and(this, cnd);
 	}
 
 	public Cnd and(String field, Object value) {
-		return this.append(Logic.And).append(field, Op.EQ, value);
+		Cnd cnd = new Cnd(field, Op.EQ, value);
+		return and(this, cnd);
 	}
 
-	public Cnd or(String field, Op op, Object value) {
-		return this.append(Logic.Or).append(field, op, value);
+	public Cnd and(Cnd cnd) {
+		return and(this, cnd);
+	}
+
+	public Cnd or(Cnd cnd) {
+		return or(this, cnd);
+	}
+
+	public Cnd or(String field, Object op, Object value) {
+		Cnd cnd = new Cnd(field, op, value);
+		return or(this, cnd);
 	}
 
 	public Cnd or(String field, Object value) {
-		return this.append(Logic.Or).append(field, Op.EQ, value);
+		Cnd cnd = new Cnd(field, Op.EQ, value);
+		return or(this, cnd);
 	}
 
-	public Cnd andBrace(String field, Op op, Object value, int braceCount) {
-		return this.append(Logic.And).startBrace(field, op, value, braceCount);
+	public static Cnd and(Cnd left, Cnd right) {
+		return new Cnd(left, Logic.AND, right);
 	}
 
-	public Cnd andBrace(String field, Object value, int braceCount) {
-		return this.append(Logic.And).startBrace(field, Op.EQ, value, braceCount);
+	public static Cnd or(Cnd left, Cnd right) {
+		return new Cnd(left, Logic.OR, right);
 	}
 
-	public Cnd andBrace(String field, Op op, Object value) {
-		return this.append(Logic.And).startBrace(field, op, value, 1);
-	}
-
-	public Cnd andBrace(String field, Object value) {
-		return this.append(Logic.And).startBrace(field, Op.EQ, value, 1);
-	}
-
-	public Cnd orBrace(String field, Op op, Object value, int braceCount) {
-		return this.append(Logic.Or).startBrace(field, op, value, braceCount);
-	}
-
-	public Cnd orBrace(String field, Object value, int braceCount) {
-		return this.append(Logic.Or).startBrace(field, Op.EQ, value, braceCount);
-	}
-
-	public Cnd orBrace(String field, Op op, Object value) {
-		return this.append(Logic.Or).startBrace(field, op, value, 1);
-	}
-
-	public Cnd orBrace(String field, Object value) {
-		return this.append(Logic.Or).startBrace(field, Op.EQ, value, 1);
-	}
-
-	public Cnd endBrace(int braceCount) {
-		if (braceCount < 0) {
-			throw new IllegalArgumentException("braceCount: " + braceCount);
-		}
-		if (isParamListEmpty()) {
-			throw new IllegalStateException("can not end brace when param list is empty");
-		}
-		if (braceCount > leftBraceCount) {
-			throw new IllegalArgumentException("there is only " + leftBraceCount + " left braces");
-		}
-		leftBraceCount -= braceCount;
-		for (int i = 0; i < braceCount; i++) {
-			this.append(Logic.RightBrace);
-		}
+	public Cnd not() {
+		this.not = true;
 		return this;
 	}
 
-	public Cnd endBrace() {
-		return endBrace(1);
-	}
-
-	public Cnd endAllBraces() {
-		if (!isParamListEmpty()) {
-			return endBrace(leftBraceCount);
+	public static OrderBy orderBy(String field, boolean asc) {
+		if (asc) {
+			return new Cnd().asc(field);
 		} else {
-			return this;
+			return new Cnd().desc(field);
 		}
 	}
 
-	public Cnd orderBy(String field, boolean asc) {
-		if (StringUtils.isBlank(field)) {
-			throw new IllegalArgumentException("field: " + field);
-		}
-		if (null == this.sorts) {
-			this.sorts = new ArrayList<Sort>();
-		}
-		this.sorts.add(new Sort(field, asc));
+	public OrderBy asc(String field) {
+		this.sorts.add(new Sort(field, true));
 		return this;
 	}
 
-	public Cnd asc(String field) {
-		return orderBy(field, true);
+	public OrderBy desc(String field) {
+		this.sorts.add(new Sort(field, false));
+		return this;
 	}
 
-	public Cnd desc(String field) {
-		return orderBy(field, false);
+	@Override
+	public String toString() {
+		StringBuilder ret = new StringBuilder();
+		if (not) {
+			ret.append('!');
+		}
+		if (not || op instanceof Logic) {
+			ret.append("(");
+		}
+		ret.append(left).append(' ').append(op).append(' ').append(right);
+		if (not || op instanceof Logic) {
+			ret.append(")");
+		}
+		return ret.toString();
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Param> getParams() {
-		return null == params ? Collections.EMPTY_LIST : Collections.unmodifiableList(params);
+	public Object getLeft() {
+		return left;
 	}
 
-	@SuppressWarnings("unchecked")
+	public Object getOp() {
+		return op;
+	}
+
+	public Object getRight() {
+		return right;
+	}
+
+	public boolean isNot() {
+		return not;
+	}
+
+	public boolean isOrderByOnly() {
+		return op == null;
+	}
+
 	public List<Sort> getSorts() {
-		return null == sorts ? Collections.EMPTY_LIST : Collections.unmodifiableList(sorts);
-	}
-
-	protected boolean isParamListEmpty() {
-		return null == this.params || this.params.isEmpty();
-	}
-
-	private Cnd append(Logic logicParam) {
-		newParamListIfNeeded();
-		if (logicParam.isBrace()) {
-			params.add(logicParam);
-		} else if (!this.params.isEmpty() && !(this.params.get(this.params.size() - 1) instanceof Logic)) {
-			params.add(logicParam);
-		}
-		return this;
-	}
-
-	private Cnd append(String field, Op operator, Object value) {
-		if (StringUtils.isBlank(field)) {
-			throw new IllegalArgumentException("field: " + field);
-		}
-		if (null == operator) {
-			throw new IllegalArgumentException("operator: " + operator);
-		}
-		if (operator.isInOperator()) {
-			if (null == value) {
-				throw new IllegalArgumentException("value can't be null of in operator");
-			}
-			if (!(value instanceof Collection)) {
-				throw new IllegalArgumentException("value must be type of Collection");
-			}
-		}
-		newParamListIfNeeded();
-		params.add(new Expression(field, operator, value));
-		return this;
-	}
-
-	private Cnd startBrace(String field, Op op, Object value, int braceCount) {
-		if (braceCount < 0) {
-			throw new IllegalArgumentException("braceCount: " + braceCount);
-		}
-		leftBraceCount += braceCount;
-		for (int i = 0; i < braceCount; i++) {
-			this.append(Logic.LeftBrace);
-		}
-		return this.and(field, op, value);
-	}
-
-	private void newParamListIfNeeded() {
-		if (null == this.params) {
-			this.params = new ArrayList<Param>();
-		}
+		return Collections.unmodifiableList(sorts);
 	}
 
 }

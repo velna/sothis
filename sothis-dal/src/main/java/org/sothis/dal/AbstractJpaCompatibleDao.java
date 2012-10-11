@@ -29,7 +29,7 @@ import org.sothis.dal.query.Op;
  * @param <E>
  * @param <K>
  */
-public abstract class AbstractJpaCompatibleDao<E extends Entity<K>, K extends Serializable> extends AbstractDao<E, K> {
+public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Serializable> extends AbstractDao<E, K> {
 
 	private final String tableName;
 	private final Map<String, PropertyInfo> fieldMap;
@@ -220,31 +220,31 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity<K>, K extends Se
 	@Override
 	public E findById(K id) {
 		assertIdColumnNameNotNull();
-		return findOne(Cnd.where(this.getIdColumnName(), id), null);
+		return findOne(Cnd.make(this.getIdColumnName(), id), null);
 	}
 
 	@Override
 	public List<E> findByIds(List<K> idList) {
 		assertIdColumnNameNotNull();
-		return find(Cnd.where(this.getIdColumnName(), Op.In, idList), null, null);
+		return find(Cnd.make(this.getIdColumnName(), Op.IN, idList), null, null);
 	}
 
 	@Override
 	public int updateById(K id, Chain chain) {
 		assertIdColumnNameNotNull();
-		return update(Cnd.where(this.getIdColumnName(), id), chain);
+		return update(Cnd.make(this.getIdColumnName(), id), chain);
 	}
 
 	@Override
 	public int deleteById(K id) {
 		assertIdColumnNameNotNull();
-		return delete(Cnd.where(this.getIdColumnName(), id));
+		return delete(Cnd.make(this.getIdColumnName(), id));
 	}
 
 	@Override
 	public int deleteByIds(List<K> idList) {
 		assertIdColumnNameNotNull();
-		return delete(Cnd.where(this.getIdColumnName(), Op.In, idList));
+		return delete(Cnd.make(this.getIdColumnName(), Op.IN, idList));
 	}
 
 	/**
