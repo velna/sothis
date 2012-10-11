@@ -14,6 +14,8 @@ public class BeanPackageAutoProxyCreator extends AbstractAutoProxyCreator {
 
 	private List<String> beanPackages;
 
+	private Class<?> assignableClass;
+
 	public void setBeanPackages(String[] beanPackages) {
 		Assert.notEmpty(beanPackages, "'beanNames' must not be empty");
 		this.beanPackages = new ArrayList<String>(beanPackages.length);
@@ -35,11 +37,18 @@ public class BeanPackageAutoProxyCreator extends AbstractAutoProxyCreator {
 	}
 
 	protected boolean isMatch(Class<?> beanClass, String mappedPackage) {
+		if (null != assignableClass && !assignableClass.isAssignableFrom(beanClass)) {
+			return false;
+		}
 		Package pkg = beanClass.getPackage();
 		if (null != pkg) {
 			return mappedPackage.equals(pkg.getName());
 		}
 		return false;
+	}
+
+	public void setAssignableClass(Class<?> assignableClass) {
+		this.assignableClass = assignableClass;
 	}
 
 }
