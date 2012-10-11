@@ -15,6 +15,12 @@ import org.sothis.dal.query.Op;
 import org.sothis.dal.query.OrderBy;
 import org.sothis.dal.query.Sort;
 
+/**
+ * sql的查询生成器，基本JPA
+ * 
+ * @author velna
+ * 
+ */
 public class SqlQueryBuilder {
 	public final static String WHERE_PARAM_PREFIX = "w_";
 	public final static String SET_PARAM_PREFIX = "s_";

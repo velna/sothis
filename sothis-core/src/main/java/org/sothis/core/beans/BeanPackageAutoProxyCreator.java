@@ -8,6 +8,12 @@ import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+/**
+ * 根据package名称来创建自动代理。同时也可以通过额外的类型来限制自动代理的创建。
+ * 
+ * @author velna
+ * 
+ */
 public class BeanPackageAutoProxyCreator extends AbstractAutoProxyCreator {
 
 	private static final long serialVersionUID = -3344529761123559113L;
@@ -16,12 +22,26 @@ public class BeanPackageAutoProxyCreator extends AbstractAutoProxyCreator {
 
 	private Class<?> assignableClass;
 
+	/**
+	 * 设置用来自动创建代理的包名。包名必须完全匹配。
+	 * 
+	 * @param beanPackages
+	 */
 	public void setBeanPackages(String[] beanPackages) {
 		Assert.notEmpty(beanPackages, "'beanNames' must not be empty");
 		this.beanPackages = new ArrayList<String>(beanPackages.length);
 		for (String mappedName : beanPackages) {
 			this.beanPackages.add(StringUtils.trimWhitespace(mappedName));
 		}
+	}
+
+	/**
+	 * 设置用来限制代理创建的类型。只有{@code assignableClass}所指定的类及其子类才自动创建代理。
+	 * 
+	 * @param assignableClass
+	 */
+	public void setAssignableClass(Class<?> assignableClass) {
+		this.assignableClass = assignableClass;
 	}
 
 	@Override
@@ -45,10 +65,6 @@ public class BeanPackageAutoProxyCreator extends AbstractAutoProxyCreator {
 			return mappedPackage.equals(pkg.getName());
 		}
 		return false;
-	}
-
-	public void setAssignableClass(Class<?> assignableClass) {
-		this.assignableClass = assignableClass;
 	}
 
 }

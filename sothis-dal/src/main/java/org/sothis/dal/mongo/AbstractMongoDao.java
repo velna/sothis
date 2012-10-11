@@ -20,6 +20,13 @@ import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
+/**
+ * mongo db DaoµÄÐé»ùÀà
+ * 
+ * @author velna
+ * 
+ * @param <E>
+ */
 public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJpaCompatibleDao<E, String> implements MongoDao<E> {
 	public static final String ID = "_id";
 

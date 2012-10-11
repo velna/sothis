@@ -13,8 +13,22 @@ import org.sothis.core.util.Pager;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
 
+/**
+ * Dao的虚基类，已经通过反射得到了实际的实体类。并提供了一些常用方法。
+ * 
+ * @author velna
+ * 
+ * @param <E>
+ * @param <K>
+ */
 public abstract class AbstractDao<E extends Entity, K extends Serializable> implements Dao<E, K> {
 
+	/**
+	 * 用来记录性能日志数据的ThreadLocal key。
+	 * 
+	 * @see {@link ExecuteCounter}
+	 */
+	public final static String EXECUTE_COUNTER_KEY = "org.sothis.dal.EntityDao.EXECUTE_COUNTER_KEY";
 	private final Logger PERFORMANCE_LOGGER = LoggerFactory.getPerformanceLogger(this.getClass());
 	private final long MAX_EXECUTE_TIME = 100;
 

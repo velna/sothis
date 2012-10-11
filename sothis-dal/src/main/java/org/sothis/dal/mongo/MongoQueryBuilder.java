@@ -13,6 +13,12 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+/**
+ * mongo db 的查询生成器
+ * 
+ * @author velna
+ * 
+ */
 public class MongoQueryBuilder {
 	private final static String[] OP_MAP;
 	private final static String[] LOGIC_MAP;
@@ -33,6 +39,12 @@ public class MongoQueryBuilder {
 		LOGIC_MAP[Logic.OR.ordinal()] = "$or";
 	}
 
+	/**
+	 * 将{@code cnd}转化为mongo db可用的查询对象
+	 * 
+	 * @param cnd
+	 * @return
+	 */
 	public static DBObject cndToQuery(Cnd cnd) {
 		if (null == cnd) {
 			return null;
@@ -61,6 +73,12 @@ public class MongoQueryBuilder {
 		return query;
 	}
 
+	/**
+	 * 将{@code chain}转化为mongo db可用的字段信息
+	 * 
+	 * @param chain
+	 * @return
+	 */
 	public static DBObject chainToFields(Chain chain) {
 		if (null == chain) {
 			return null;
@@ -72,6 +90,12 @@ public class MongoQueryBuilder {
 		return fields;
 	}
 
+	/**
+	 * 将{@code chain}转化为mongo db可用的update语句
+	 * 
+	 * @param chain
+	 * @return
+	 */
 	public static DBObject chainToUpdate(Chain chain) {
 		if (null == chain) {
 			return null;
@@ -87,6 +111,12 @@ public class MongoQueryBuilder {
 		return update;
 	}
 
+	/**
+	 * 将{@code orderBy}转化为mongo db可用的排序对象
+	 * 
+	 * @param orderBy
+	 * @return
+	 */
 	public static DBObject orderByToSorts(OrderBy orderBy) {
 		if (null == orderBy) {
 			return null;

@@ -2,6 +2,12 @@ package org.sothis.dal.query;
 
 import java.util.Iterator;
 
+/**
+ * 提供简便的方法来生成{@code name}或{@code name value}的链表
+ * 
+ * @author velna
+ * 
+ */
 public class Chain implements Iterable<Chain> {
 
 	private String name;
@@ -17,6 +23,13 @@ public class Chain implements Iterable<Chain> {
 	protected Chain() {
 	}
 
+	/**
+	 * 创建一个名值对链表
+	 * 
+	 * @param name
+	 * @param value
+	 * @return
+	 */
 	public static Chain make(String name, Object value) {
 		if (null == name) {
 			throw new IllegalArgumentException("name can not be null");
@@ -28,14 +41,32 @@ public class Chain implements Iterable<Chain> {
 		return chain;
 	}
 
+	/**
+	 * 创建一个只有名的链表
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public static Chain make(String name) {
 		return make(name, null);
 	}
 
+	/**
+	 * 创建一个空的链表
+	 * 
+	 * @return
+	 */
 	public static Chain make() {
 		return new Chain();
 	}
 
+	/**
+	 * 添加一个名值对
+	 * 
+	 * @param name
+	 * @param value
+	 * @return
+	 */
 	public synchronized Chain add(String name, Object value) {
 		if (this.name == null) {
 			this.name = name;
@@ -52,22 +83,48 @@ public class Chain implements Iterable<Chain> {
 		}
 	}
 
+	/**
+	 * 添加一个名
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public synchronized Chain add(String name) {
 		return add(name, null);
 	}
 
+	/**
+	 * 得到链表的下一个节点
+	 * 
+	 * @return
+	 */
 	public Chain next() {
 		return this.next;
 	}
 
+	/**
+	 * 得到链表的所有节点数量
+	 * 
+	 * @return
+	 */
 	public int size() {
 		return this.parent.size;
 	}
 
+	/**
+	 * 得到本节点的名
+	 * 
+	 * @return
+	 */
 	public String name() {
 		return name;
 	}
 
+	/**
+	 * 得到本节点的值
+	 * 
+	 * @return
+	 */
 	public Object value() {
 		return value;
 	}
