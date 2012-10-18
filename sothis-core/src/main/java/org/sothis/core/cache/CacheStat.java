@@ -22,7 +22,7 @@ public class CacheStat {
 
 	private long lStartTime = System.currentTimeMillis();
 	private final AtomicLong lHits = new AtomicLong(0);
-	private final AtomicLong lSets = new AtomicLong(0);
+	private final AtomicLong lPuts = new AtomicLong(0);
 	private final AtomicLong lMisses = new AtomicLong(0);
 	private final AtomicLong lRequests = new AtomicLong(0);
 
@@ -65,7 +65,7 @@ public class CacheStat {
 		this.requests.incrementAndGet();
 		this.lRequests.incrementAndGet();
 		this.puts.incrementAndGet();
-		this.lSets.incrementAndGet();
+		this.lPuts.incrementAndGet();
 	}
 
 	private void checkPeriod() {
@@ -75,7 +75,7 @@ public class CacheStat {
 			lStartTime = now;
 			this.lHits.set(0);
 			this.lMisses.set(0);
-			this.lSets.set(0);
+			this.lPuts.set(0);
 			this.lRequests.set(0);
 		}
 	}
@@ -167,7 +167,7 @@ public class CacheStat {
 	 * @return
 	 */
 	public long getLPuts() {
-		return lSets.get();
+		return lPuts.get();
 	}
 
 	/**
@@ -230,7 +230,7 @@ public class CacheStat {
 	 * @return
 	 */
 	public double getLPutRate() {
-		return this.lSets.get() * 1000.0 / (System.currentTimeMillis() - this.lStartTime);
+		return this.lPuts.get() * 1000.0 / (System.currentTimeMillis() - this.lStartTime);
 	}
 
 	/**
