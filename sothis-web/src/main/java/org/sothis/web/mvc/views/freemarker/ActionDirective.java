@@ -30,7 +30,8 @@ public class ActionDirective implements TemplateDirectiveModel {
 		if (StringUtils.isBlank(actionContext.getAction().getName())) {
 			throw new IllegalArgumentException("d_action actionName is null!");
 		}
-		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController().getName());
+		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController()
+				.getName());
 		if (StringUtils.isNotBlank(controller)) {
 			controller = "/" + controller;
 		}

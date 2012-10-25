@@ -15,8 +15,6 @@ import freemarker.template.WrappingTemplateModel;
 
 public class AllHttpScopesHashModel extends WrappingTemplateModel implements TemplateHashModel {
 
-	private static final long serialVersionUID = 1003273414482150521L;
-
 	private final HttpServletRequest request;
 	private final TemplateModel actionResult;
 

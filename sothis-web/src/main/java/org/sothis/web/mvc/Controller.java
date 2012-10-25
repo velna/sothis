@@ -44,9 +44,10 @@ public interface Controller extends ActionBase {
 
 	/**
 	 * 得到controller所在的包，这个包是相对于sothis.controller.packages配置的包名<br>
-	 * 比如sothis.controller.packages=com.my.app.controller，那么对于com.my.app.
-	 * controller.MyController，返回空字符串
-	 * 对于com.my.app.controller.user.LoginController返回user
+	 * 比如sothis.controller.packages=com.my.app.controller，那么：<br>
+	 * com.my.app.controller.MyController，返回空字符串<br>
+	 * com.my.app.controller.user.LoginController，返回user<br>
+	 * com.my.app.controller.user.task.TaskController，返回user/task
 	 * 
 	 * @return 相对的package名称
 	 */
@@ -54,28 +55,37 @@ public interface Controller extends ActionBase {
 
 	/**
 	 * 得到controller的完整名称，包括package路径
+	 * 比如sothis.controller.packages=com.my.app.controller，那么：<br>
+	 * com.my.app.controller.MyController，返回/my/<br>
+	 * com.my.app.controller.user.LoginController，返回/user/my/<br>
+	 * com.my.app.controller.user.Controller，返回/user/<br>
+	 * com.my.app.controller.user.task.TaskController，返回/user/task/my/
 	 * 
 	 * @return
 	 */
 	String getFullName();
 
 	/**
-	 * 指定的注解是否在controller class或controller package中出现<br> {@inheritDoc}
+	 * 指定的注解是否在controller class或controller package中出现<br>
+	 * {@inheritDoc}
 	 */
 	boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
 
 	/**
-	 * 得到在controller class或controller package中出现的注解<br> {@inheritDoc}
+	 * 得到在controller class或controller package中出现的注解<br>
+	 * {@inheritDoc}
 	 */
 	<T extends Annotation> T getAnnotation(Class<T> annotationClass);
 
 	/**
-	 * 得到所有在controller class和controller package中声明的注解<br> {@inheritDoc}
+	 * 得到所有在controller class和controller package中声明的注解<br>
+	 * {@inheritDoc}
 	 */
 	Annotation[] getAnnotations();
 
 	/**
-	 * 同 {@link Action#getAnnotations()}<br> {@inheritDoc}
+	 * 同 {@link Action#getAnnotations()}<br>
+	 * {@inheritDoc}
 	 */
 	Annotation[] getDeclaredAnnotations();
 }

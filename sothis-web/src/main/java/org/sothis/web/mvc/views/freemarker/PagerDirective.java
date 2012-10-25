@@ -6,10 +6,8 @@ package org.sothis.web.mvc.views.freemarker;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,7 +29,6 @@ import freemarker.template.TemplateModel;
  */
 public class PagerDirective implements TemplateDirectiveModel {
 
-	@SuppressWarnings({ "unchecked" })
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {
 		ActionContext actionContext = ActionContext.getContext();
@@ -42,7 +39,8 @@ public class PagerDirective implements TemplateDirectiveModel {
 		String anchor = MapUtils.getString(params, "anchor");
 
 		// controller
-		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController().getName());
+		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController()
+				.getName());
 
 		// action
 		String action = MapUtils.getString(params, "action", actionContext.getAction().getName());
@@ -95,7 +93,8 @@ public class PagerDirective implements TemplateDirectiveModel {
 		templateContext.put("theme", theme);
 		templateContext.put("currentPage", currentPage);
 		templateContext.put("totalPages", totalPages);
-		templateContext.put("firstPageUrl", this.buildPagerUrl(actionContext, name, controller, action, allParams, 1, anchor));
+		templateContext.put("firstPageUrl",
+				this.buildPagerUrl(actionContext, name, controller, action, allParams, 1, anchor));
 		templateContext.put("prePageUrl",
 				this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage - 1, anchor));
 		templateContext.put("nextPageUrl",
