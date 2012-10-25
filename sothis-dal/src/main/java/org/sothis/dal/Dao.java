@@ -42,6 +42,27 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	List<E> find(Cnd cnd, Pager pager, Chain chain);
 
 	/**
+	 * 相当于{@code find(cnd, pager, chain)}<br>
+	 * {@code pager.setTotalRows(count(cnd))}
+	 * 
+	 * @param cnd
+	 * @param pager
+	 * @param chain
+	 * @return
+	 */
+	List<E> findAndCount(Cnd cnd, Pager pager, Chain chain);
+
+	/**
+	 * 相当于{@code find(cnd, pager, null)}<br>
+	 * {@code pager.setTotalRows(count(cnd))}
+	 * 
+	 * @param cnd
+	 * @param pager
+	 * @return
+	 */
+	List<E> findAndCount(Cnd cnd, Pager pager);
+
+	/**
 	 * 相当于{@code find(cnd, pager, null)}
 	 * 
 	 * @param cnd

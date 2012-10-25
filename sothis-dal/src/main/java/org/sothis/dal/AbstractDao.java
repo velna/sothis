@@ -126,4 +126,18 @@ public abstract class AbstractDao<E extends Entity, K extends Serializable> impl
 		return entityClass;
 	}
 
+	@Override
+	public List<E> findAndCount(Cnd cnd, Pager pager, Chain chain) {
+		List<E> list = this.find(cnd, pager, chain);
+		pager.setTotalRows(this.count(cnd));
+		return list;
+	}
+
+	@Override
+	public List<E> findAndCount(Cnd cnd, Pager pager) {
+		List<E> list = this.find(cnd, pager, null);
+		pager.setTotalRows(this.count(cnd));
+		return list;
+	}
+
 }
