@@ -13,6 +13,14 @@ public interface Field {
 	boolean matches(Calendar calendar);
 
 	/**
+	 * 将calendar的当前字段设置为下一个匹配的时间
+	 * 
+	 * @param calendar
+	 * @return 返回更新的量
+	 */
+	int next(Calendar calendar);
+
+	/**
 	 * 本字段是否未设置
 	 * 
 	 * @return
@@ -25,4 +33,25 @@ public interface Field {
 	 * @return
 	 */
 	String getExpression();
+
+	/**
+	 * 本字段最小值
+	 * 
+	 * @return
+	 */
+	int getMin();
+
+	/**
+	 * 本字段最大值
+	 * 
+	 * @return
+	 */
+	int getMax();
+
+	/**
+	 * 得到Calendar的field值
+	 * 
+	 * @return
+	 */
+	int getField();
 }

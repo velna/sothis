@@ -14,8 +14,9 @@ public class CronTest {
 
 	private final static SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	@Test(dataProvider = "crons")
-	public void test(String cronExpression, String dateString, boolean match, boolean error) throws ParseException {
+	@Test(dataProvider = "matches")
+	public void testMatches(String cronExpression, String dateString, boolean match, boolean error)
+			throws ParseException {
 		CronSyntaxException exception = null;
 		try {
 			Cron cron = Cron.compile(cronExpression);
@@ -28,8 +29,8 @@ public class CronTest {
 		}
 	}
 
-	@DataProvider(name = "crons")
-	public Object[][] crons() throws ParseException {
+	@DataProvider(name = "matches")
+	public Object[][] matches() {
 		List<Object[]> paramList = new ArrayList<Object[]>();
 
 		String now = DF.format(new Date());
@@ -107,4 +108,23 @@ public class CronTest {
 		return paramList.toArray(new Object[paramList.size()][3]);
 	}
 
+	@Test(dataProvider = "nexts")
+	public void testNext(String cronExpression, String dateString, String nextDateString) throws ParseException {
+		Cron cron = Cron.compile(cronExpression);
+		Date nextDate = cron.next(DF.parse(dateString));
+		Assert.assertEquals(DF.format(nextDate), nextDateString);
+	}
+
+	@DataProvider(name = "nexts")
+	public Object[][] nexts() {
+		List<Object[]> paramList = new ArrayList<Object[]>();
+
+		paramList.add(new Object[] { "* * * * * *", "2012-03-20 09:34:12", "2012-03-20 09:34:13" });
+		paramList.add(new Object[] { "* 35 * * * *", "2012-03-20 09:34:12", "2012-03-20 09:35:00" });
+		paramList.add(new Object[] { "12 35 * * * *", "2012-03-20 09:34:12", "2012-03-20 09:35:12" });
+		paramList.add(new Object[] { "* * */4 * * *", "2012-03-20 09:34:12", "2012-03-20 12:00:00" });
+		paramList.add(new Object[] { "0 0 */3 * * *", "2012-03-20 09:34:12", "2012-03-20 12:00:00" });
+
+		return paramList.toArray(new Object[paramList.size()][3]);
+	}
 }

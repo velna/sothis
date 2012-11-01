@@ -34,6 +34,16 @@ public abstract class AbstractField implements Field {
 		return false;
 	}
 
+	@Override
+	public int next(Calendar calendar) {
+		int adds = 0;
+		while (!this.matches(calendar)) {
+			adds++;
+			calendar.add(field, 1);
+		}
+		return adds;
+	}
+
 	protected List<Matcher> parse() {
 		String[] exprs = expression.split(",");
 		List<Matcher> matchers = new ArrayList<Matcher>(exprs.length);
@@ -84,6 +94,18 @@ public abstract class AbstractField implements Field {
 
 	public String getExpression() {
 		return expression;
+	}
+
+	public int getMin() {
+		return min;
+	}
+
+	public int getMax() {
+		return max;
+	}
+
+	public int getField() {
+		return field;
 	}
 
 }

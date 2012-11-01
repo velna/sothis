@@ -1,7 +1,12 @@
 package org.sothis.core.util.cron;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * cron表达式
@@ -94,6 +99,38 @@ public class Cron {
 	}
 
 	/**
+	 * 得到下一个匹配的时间，返回的时间总是在提供的date之后
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public Date next(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.add(Calendar.SECOND, 1);
+		calendar.set(Calendar.MILLISECOND, 0);
+		next0(calendar);
+		return calendar.getTime();
+	}
+
+	private void next0(Calendar calendar) {
+		List<Field> resets = new ArrayList<Field>();
+		for (Field field : fields) {
+			if (null != field && !field.isBlank()) {
+				int amount = field.next(calendar);
+				if (amount == 0) {
+					resets.add(field);
+				} else {
+					for (Field rf : resets) {
+						calendar.set(rf.getField(), rf.getMin());
+					}
+					next0(calendar);
+				}
+			}
+		}
+	}
+
+	/**
 	 * 原始的表达式
 	 * 
 	 * @return
@@ -109,6 +146,21 @@ public class Cron {
 	 */
 	public Field[] getFields() {
 		return fields;
+	}
+
+	@Override
+	public int hashCode() {
+		HashCodeBuilder hashBuilder = new HashCodeBuilder().append(super.hashCode()).append(this.expression);
+		return hashBuilder.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Cron)) {
+			return false;
+		}
+		Cron cron = (Cron) obj;
+		return cron.expression.equals(this.expression);
 	}
 
 }
