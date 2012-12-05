@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.sothis.core.util.MapUtils;
 import org.sothis.core.util.UrlUtils;
 import org.sothis.web.mvc.ActionContext;
@@ -38,12 +39,26 @@ public class PagerDirective implements TemplateDirectiveModel {
 		// name
 		String anchor = MapUtils.getString(params, "anchor");
 
+		// package
+		String packageName = MapUtils.getString(params, "package", actionContext.getAction().getController()
+				.getPackageName());
+
 		// controller
 		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController()
 				.getName());
 
 		// action
 		String action = MapUtils.getString(params, "action", actionContext.getAction().getName());
+
+		StringBuilder uriBuilder = new StringBuilder();
+		if (StringUtils.isNotEmpty(packageName)) {
+			uriBuilder.append('/').append(packageName);
+		}
+		if (StringUtils.isNotEmpty(controller)) {
+			uriBuilder.append('/').append(controller);
+		}
+		uriBuilder.append('/').append(action);
+		String uri = uriBuilder.toString();
 
 		// action
 		String theme = MapUtils.getString(params, "theme", "all");
@@ -87,35 +102,33 @@ public class PagerDirective implements TemplateDirectiveModel {
 			if (currentPage == i) {
 				pages.add("currentPage");
 			} else {
-				pages.add(this.buildPagerUrl(actionContext, name, controller, action, allParams, i, anchor));
+				pages.add(this.buildPagerUrl(actionContext, name, uri, allParams, i, anchor));
 			}
 		}
 		templateContext.put("theme", theme);
 		templateContext.put("currentPage", currentPage);
 		templateContext.put("totalPages", totalPages);
-		templateContext.put("firstPageUrl",
-				this.buildPagerUrl(actionContext, name, controller, action, allParams, 1, anchor));
+		templateContext.put("firstPageUrl", this.buildPagerUrl(actionContext, name, uri, allParams, 1, anchor));
 		templateContext.put("prePageUrl",
-				this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage - 1, anchor));
+				this.buildPagerUrl(actionContext, name, uri, allParams, currentPage - 1, anchor));
 		templateContext.put("nextPageUrl",
-				this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage + 1, anchor));
+				this.buildPagerUrl(actionContext, name, uri, allParams, currentPage + 1, anchor));
 		templateContext.put("currentPageUrl",
-				this.buildPagerUrl(actionContext, name, controller, action, allParams, currentPage, anchor));
-		templateContext.put("lastPageUrl",
-				this.buildPagerUrl(actionContext, name, controller, action, allParams, totalPages, anchor));
+				this.buildPagerUrl(actionContext, name, uri, allParams, currentPage, anchor));
+		templateContext.put("lastPageUrl", this.buildPagerUrl(actionContext, name, uri, allParams, totalPages, anchor));
 		templateContext.put("pageUrls", pages);
 		templateContext.put("pageIndex", pageIndex);
 
 		template.process(templateContext, env.getOut());
 	}
 
-	private String buildPagerUrl(ActionContext actionContext, String name, String controller, String action,
-			Map<String, Object[]> allParams, int pageIndex, String anchor) throws IOException {
+	private String buildPagerUrl(ActionContext actionContext, String name, String uri, Map<String, Object[]> allParams,
+			int pageIndex, String anchor) throws IOException {
 		allParams.put(name + ".currentPage", new String[] { String.valueOf(pageIndex) });
 		String params = UrlUtils.appendParams("", allParams);
 		HttpServletResponse httpResponse = actionContext.getResponse();
 		StringBuilder url = new StringBuilder();
-		url.append('/').append(controller).append('/').append(action).append(params);
+		url.append(uri).append(params);
 
 		String ret = httpResponse.encodeURL(url.toString());
 		String contextPath = actionContext.getServletContext().getContextPath();

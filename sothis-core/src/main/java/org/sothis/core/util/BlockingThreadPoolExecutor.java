@@ -19,9 +19,10 @@ public class BlockingThreadPoolExecutor implements Executor {
 	private final String threadNamePrefix;
 	private final AtomicInteger poolSize = new AtomicInteger(0);
 	private final boolean[] poolIds;
+	private final ThreadGroup threadGroup = new ThreadGroup("BlockingThreadPoolExecutor");
 
-	public BlockingThreadPoolExecutor(String threadNamePrefix, int minThreadCount, int maxThreadCount, int taskQueueSize,
-			long idleTime) {
+	public BlockingThreadPoolExecutor(String threadNamePrefix, int minThreadCount, int maxThreadCount,
+			int taskQueueSize, long idleTime) {
 		this.threadNamePrefix = threadNamePrefix;
 		this.minThreadCount = minThreadCount;
 		this.maxThreadCount = maxThreadCount;
@@ -77,7 +78,7 @@ public class BlockingThreadPoolExecutor implements Executor {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("create new [" + threadNamePrefix + "] thread: " + threadName);
 		}
-		Thread thread = new Thread(new ExecutorRunnable(), threadName);
+		Thread thread = new Thread(threadGroup, new ExecutorRunnable(), threadName);
 		thread.setDaemon(true);
 		thread.start();
 		poolSize.incrementAndGet();
@@ -96,6 +97,8 @@ public class BlockingThreadPoolExecutor implements Executor {
 							poolSize.decrementAndGet();
 							break;
 						}
+					} catch (InterruptedException e) {
+						break;
 					} catch (Exception e) {
 						if (LOGGER.isErrorEnabled()) {
 							LOGGER.error("", e);
@@ -111,5 +114,11 @@ public class BlockingThreadPoolExecutor implements Executor {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		threadGroup.interrupt();
 	}
 }
