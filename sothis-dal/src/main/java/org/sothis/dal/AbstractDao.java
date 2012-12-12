@@ -57,7 +57,8 @@ public abstract class AbstractDao<E extends Entity, K extends Serializable> impl
 	 *            花费时间，单位：毫秒
 	 */
 	protected final void increaseExecuteCounter(String operation, long time, Object... queryParams) {
-		ExecuteCounter.getThreadLocalInstance(EXECUTE_COUNTER_KEY).increase(entityClass.getSimpleName(), operation, time);
+		ExecuteCounter.getThreadLocalInstance(EXECUTE_COUNTER_KEY).increase(entityClass.getSimpleName(), operation,
+				time);
 		if (time > MAX_EXECUTE_TIME) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("\ttype:performance\ttime:").append(time);
@@ -135,9 +136,7 @@ public abstract class AbstractDao<E extends Entity, K extends Serializable> impl
 
 	@Override
 	public List<E> findAndCount(Cnd cnd, Pager pager) {
-		List<E> list = this.find(cnd, pager, null);
-		pager.setTotalRows(this.count(cnd));
-		return list;
+		return findAndCount(cnd, pager, null);
 	}
 
 }

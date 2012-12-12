@@ -1,7 +1,9 @@
 package org.sothis.dal.mongo;
 
 import java.util.List;
+import java.util.Map;
 
+import org.sothis.dal.AbstractJpaCompatibleDao.PropertyInfo;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
 import org.sothis.dal.query.Logic;
@@ -38,6 +40,19 @@ public class MongoQueryBuilder {
 		LOGIC_MAP[Logic.AND.ordinal()] = "$and";
 		LOGIC_MAP[Logic.OR.ordinal()] = "$or";
 	}
+	private final Map<String, PropertyInfo> propertyMap;
+
+	public MongoQueryBuilder(Map<String, PropertyInfo> propertyMap) {
+		this.propertyMap = propertyMap;
+	}
+
+	private String mapField(String property) {
+		PropertyInfo pi = propertyMap.get(property);
+		if (null == pi) {
+			throw new IllegalArgumentException("no property named [" + property + "] found.");
+		}
+		return pi.getColumn().name();
+	}
 
 	/**
 	 * 将{@code cnd}转化为mongo db可用的查询对象
@@ -45,7 +60,7 @@ public class MongoQueryBuilder {
 	 * @param cnd
 	 * @return
 	 */
-	public static DBObject cndToQuery(Cnd cnd) {
+	public DBObject cndToQuery(Cnd cnd) {
 		if (null == cnd) {
 			return null;
 		}
@@ -53,9 +68,10 @@ public class MongoQueryBuilder {
 		Object op = cnd.getOp();
 		if (op instanceof Op) {
 			if (op == Op.EQ) {
-				query.put((String) cnd.getLeft(), cnd.getRight());
+				query.put(mapField((String) cnd.getLeft()), cnd.getRight());
 			} else {
-				query.put((String) cnd.getLeft(), new BasicDBObject(OP_MAP[((Op) op).ordinal()], cnd.getRight()));
+				query.put(mapField((String) cnd.getLeft()),
+						new BasicDBObject(OP_MAP[((Op) op).ordinal()], cnd.getRight()));
 			}
 		} else if (op instanceof Logic) {
 			BasicDBList logicQuery = new BasicDBList();
@@ -65,12 +81,20 @@ public class MongoQueryBuilder {
 		} else if (op instanceof String) {
 			String _op = (String) op;
 			if (_op.length() > 1 && _op.charAt(0) == '$') {
-				query.put((String) cnd.getLeft(), new BasicDBObject(_op, cnd.getRight()));
+				query.put(mapField((String) cnd.getLeft()), new BasicDBObject(_op, cnd.getRight()));
+			} else {
+				throw new RuntimeException("unknown op: " + op);
 			}
 		} else {
 			throw new RuntimeException("unknown op: " + op);
 		}
-		return query;
+		if (cnd.isNot()) {
+			BasicDBList nors = new BasicDBList();
+			nors.add(query);
+			return new BasicDBObject("$nor", nors);
+		} else {
+			return query;
+		}
 	}
 
 	/**
@@ -79,13 +103,13 @@ public class MongoQueryBuilder {
 	 * @param chain
 	 * @return
 	 */
-	public static DBObject chainToFields(Chain chain) {
+	public DBObject chainToFields(Chain chain) {
 		if (null == chain) {
 			return null;
 		}
 		DBObject fields = new BasicDBObject();
 		for (Chain c : chain) {
-			fields.put(c.name(), 1);
+			fields.put(mapField(c.name()), 1);
 		}
 		return fields;
 	}
@@ -96,16 +120,16 @@ public class MongoQueryBuilder {
 	 * @param chain
 	 * @return
 	 */
-	public static DBObject chainToUpdate(Chain chain) {
+	public DBObject chainToUpdate(Chain chain) {
 		if (null == chain) {
 			return null;
 		}
 		DBObject update = new BasicDBObject();
 		for (Chain c : chain) {
 			if (c.value() instanceof Chain) {
-				update.put(c.name(), chainToUpdate((Chain) c.value()));
+				update.put(mapField(c.name()), chainToUpdate((Chain) c.value()));
 			} else {
-				update.put(c.name(), c.value());
+				update.put(mapField(c.name()), c.value());
 			}
 		}
 		return update;
@@ -117,7 +141,7 @@ public class MongoQueryBuilder {
 	 * @param orderBy
 	 * @return
 	 */
-	public static DBObject orderByToSorts(OrderBy orderBy) {
+	public DBObject orderByToSorts(OrderBy orderBy) {
 		if (null == orderBy) {
 			return null;
 		}
@@ -127,7 +151,7 @@ public class MongoQueryBuilder {
 		}
 		DBObject sort = new BasicDBObject();
 		for (Sort s : sorts) {
-			sort.put(s.getField(), s.isAsc() ? 1 : -1);
+			sort.put(mapField(s.getField()), s.isAsc() ? 1 : -1);
 		}
 		return sort;
 	}
