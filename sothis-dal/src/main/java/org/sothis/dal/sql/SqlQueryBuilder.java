@@ -81,7 +81,7 @@ public class SqlQueryBuilder {
 		int index = 0;
 		for (Iterator<Chain> i = chain.iterator(); i.hasNext();) {
 			Chain c = i.next();
-			sql.append("o.").append(c.name()).append("=:").append(SET_PARAM_PREFIX).append(index);
+			sql.append("o.").append(c.name()).append("=:").append(SET_PARAM_PREFIX).append(index++);
 			if (i.hasNext()) {
 				sql.append(", ");
 			}
@@ -92,7 +92,7 @@ public class SqlQueryBuilder {
 		index = 0;
 		for (Iterator<Chain> i = chain.iterator(); i.hasNext();) {
 			Chain c = i.next();
-			query.setParameter(SET_PARAM_PREFIX + index, c.value());
+			query.setParameter(SET_PARAM_PREFIX + index++, c.value());
 		}
 		setParamValues(query, cnd, new IntegerHolder(0));
 		return query;
@@ -199,7 +199,8 @@ public class SqlQueryBuilder {
 					}
 				} else if (cnd.getRight().getClass().isArray()) {
 					for (int i = 0; i < Array.getLength(cnd.getRight()); i++) {
-						query.setParameter(WHERE_PARAM_PREFIX + paramIndex.getAndIncrease(), Array.get(cnd.getRight(), i));
+						query.setParameter(WHERE_PARAM_PREFIX + paramIndex.getAndIncrease(),
+								Array.get(cnd.getRight(), i));
 					}
 				}
 			} else {

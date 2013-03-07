@@ -21,6 +21,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	protected Chain() {
+		this.parent = new ChainParent(this);
 	}
 
 	/**
