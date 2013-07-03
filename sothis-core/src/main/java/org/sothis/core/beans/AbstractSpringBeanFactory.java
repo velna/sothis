@@ -84,6 +84,9 @@ public abstract class AbstractSpringBeanFactory implements BeanFactory {
 			if (StringUtils.isNotEmpty(aBean.initMethod())) {
 				definition.setInitMethodName(aBean.initMethod());
 			}
+			if (StringUtils.isNotEmpty(aBean.destroyMethod())) {
+				definition.setDestroyMethodName(aBean.destroyMethod());
+			}
 		} else {
 			definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME);
 			definition.setScope(AbstractBeanDefinition.SCOPE_SINGLETON);

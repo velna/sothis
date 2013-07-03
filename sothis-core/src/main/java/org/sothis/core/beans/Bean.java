@@ -34,4 +34,11 @@ public @interface Bean {
 	 * @return
 	 */
 	String initMethod() default "";
+
+	/**
+	 * bean销毁方法的名称
+	 * 
+	 * @return
+	 */
+	String destroyMethod() default "";
 }

@@ -29,7 +29,8 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 */
-	protected static Properties mergeProperties(String overridePropertiesLocation) throws IOException, URISyntaxException {
+	protected static Properties mergeProperties(String overridePropertiesLocation) throws IOException,
+			URISyntaxException {
 		Properties allProperties = getClasspathProperties();
 		Properties overrideProperties = getOverrideProperties(overridePropertiesLocation);
 		CollectionUtils.mergePropertiesIntoMap(overrideProperties, allProperties);
@@ -68,7 +69,11 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 	}
 
 	protected static Properties getClasspathProperties() throws IOException, URISyntaxException {
+		Properties allProperties = new Properties();
 		URL url = ConfigurationSupport.class.getClassLoader().getResource("");
+		if (null == url) {
+			return allProperties;
+		}
 		File rootFolder = new File(url.toURI());
 		File[] propertiesFiles = rootFolder.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
@@ -81,7 +86,6 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 				return pathname.getName().endsWith(".properties");
 			}
 		});
-		Properties allProperties = new Properties();
 		for (File pFile : propertiesFiles) {
 			Properties properties = new Properties();
 			properties.load(new InputStreamReader(new FileInputStream(pFile), "UTF-8"));
