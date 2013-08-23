@@ -41,9 +41,14 @@ public class MongoQueryBuilder {
 		LOGIC_MAP[Logic.OR.ordinal()] = "$or";
 	}
 	private final Map<String, PropertyInfo> propertyMap;
+	private final DBObject defaultFields;
 
 	public MongoQueryBuilder(Map<String, PropertyInfo> propertyMap) {
 		this.propertyMap = propertyMap;
+		defaultFields = new BasicDBObject();
+		for (PropertyInfo p : propertyMap.values()) {
+			defaultFields.put(p.getColumn().name(), 1);
+		}
 	}
 
 	private String mapField(String property) {
@@ -104,8 +109,8 @@ public class MongoQueryBuilder {
 	 * @return
 	 */
 	public DBObject chainToFields(Chain chain) {
-		if (null == chain) {
-			return null;
+		if (null == chain || chain.size() == 0) {
+			return defaultFields;
 		}
 		DBObject fields = new BasicDBObject();
 		for (Chain c : chain) {

@@ -74,7 +74,11 @@ public class BlockingThreadPoolExecutor implements Executor {
 	}
 
 	private void createNewThread() {
-		String threadName = threadNamePrefix + "-" + getPoolId();
+		int poolid = getPoolId();
+		if (poolid == 0) {
+			return;
+		}
+		String threadName = threadNamePrefix + "-" + poolid;
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("create new [" + threadNamePrefix + "] thread: " + threadName);
 		}
