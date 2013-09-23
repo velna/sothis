@@ -3,6 +3,7 @@ package org.sothis.dal;
 import java.io.Serializable;
 import java.util.List;
 
+import org.sothis.core.util.Cursor;
 import org.sothis.core.util.Pager;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
@@ -35,22 +36,22 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	 *            查询条件
 	 * @param pager
 	 *            分页，如果为null则返回所有数据记录
-	 * @param chain
+	 * @param fields
 	 *            需要返回的字段集，如果为null则查询所有字段
 	 * @return
 	 */
-	List<E> find(Cnd cnd, Pager pager, Chain chain);
+	List<E> find(Cnd cnd, Pager pager, Chain fields);
 
 	/**
-	 * 相当于{@code find(cnd, pager, chain)}<br>
+	 * 相当于{@code find(cnd, pager, fields)}<br>
 	 * {@code pager.setTotalRows(count(cnd))}
 	 * 
 	 * @param cnd
 	 * @param pager
-	 * @param chain
+	 * @param fields
 	 * @return
 	 */
-	List<E> findAndCount(Cnd cnd, Pager pager, Chain chain);
+	List<E> findAndCount(Cnd cnd, Pager pager, Chain fields);
 
 	/**
 	 * 相当于{@code find(cnd, pager, null)}<br>
@@ -80,13 +81,22 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	List<E> find(Cnd cnd);
 
 	/**
-	 * 相当于{@code find(cnd, Pager.make(0,1), chain)}
+	 * 以迭代方式查询。
 	 * 
 	 * @param cnd
-	 * @param chain
+	 * @param fields
 	 * @return
 	 */
-	E findOne(Cnd cnd, Chain chain);
+	Cursor<E> cursor(Cnd cnd, Chain fields);
+
+	/**
+	 * 相当于{@code find(cnd, Pager.make(0,1), fields)}
+	 * 
+	 * @param cnd
+	 * @param fields
+	 * @return
+	 */
+	E findOne(Cnd cnd, Chain fields);
 
 	/**
 	 * 相当于{@code find(cnd, Pager.make(0,1), null)}
@@ -118,19 +128,19 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	 * 相当于：update mytable set age=23 where age=24
 	 * 
 	 * @param cnd
-	 * @param chain
+	 * @param update
 	 * @return 受影响的记录数
 	 */
-	int update(Cnd cnd, Chain chain);
+	int update(Cnd cnd, Chain update);
 
 	/**
 	 * 根据id更新数据<br>
 	 * 
 	 * @param id
-	 * @param chain
+	 * @param update
 	 * @return
 	 */
-	int updateById(K id, Chain chain);
+	int updateById(K id, Chain update);
 
 	/**
 	 * 根据主键将实体类中的所有字段更新入数据库中。

@@ -7,11 +7,13 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.slf4j.Logger;
+import org.sothis.core.util.Cursor;
 import org.sothis.core.util.ExecuteCounter;
 import org.sothis.core.util.LoggerFactory;
 import org.sothis.core.util.Pager;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
+import org.sothis.dal.query.DaoCursor;
 
 /**
  * Dao的虚基类，已经通过反射得到了实际的实体类。并提供了一些常用方法。
@@ -57,8 +59,7 @@ public abstract class AbstractDao<E extends Entity, K extends Serializable> impl
 	 *            花费时间，单位：毫秒
 	 */
 	protected final void increaseExecuteCounter(String operation, long time, Object... queryParams) {
-		ExecuteCounter.getThreadLocalInstance(EXECUTE_COUNTER_KEY).increase(entityClass.getSimpleName(), operation,
-				time);
+		ExecuteCounter.getThreadLocalInstance(EXECUTE_COUNTER_KEY).increase(entityClass.getSimpleName(), operation, time);
 		if (time > MAX_EXECUTE_TIME) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("\ttype:performance\ttime:").append(time);
@@ -137,6 +138,11 @@ public abstract class AbstractDao<E extends Entity, K extends Serializable> impl
 	@Override
 	public List<E> findAndCount(Cnd cnd, Pager pager) {
 		return findAndCount(cnd, pager, null);
+	}
+
+	@Override
+	public Cursor<E> cursor(Cnd cnd, Chain chain) {
+		return new DaoCursor<E, K>(this, cnd, chain);
 	}
 
 }

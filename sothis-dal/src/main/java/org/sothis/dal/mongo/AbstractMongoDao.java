@@ -3,11 +3,13 @@ package org.sothis.dal.mongo;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
+import org.sothis.core.util.Cursor;
 import org.sothis.core.util.Pager;
 import org.sothis.dal.AbstractJpaCompatibleDao;
 import org.sothis.dal.query.Chain;
@@ -15,6 +17,7 @@ import org.sothis.dal.query.Cnd;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
@@ -27,8 +30,7 @@ import com.mongodb.WriteResult;
  * 
  * @param <E>
  */
-public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJpaCompatibleDao<E, String> implements
-		MongoDao<E> {
+public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJpaCompatibleDao<E, String> implements MongoDao<E> {
 	public static final String ID = "_id";
 
 	private final String dbName;
@@ -41,8 +43,7 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 		String tableName = this.getTableName();
 		int i = tableName.indexOf('.');
 		if (i <= 0 || i == tableName.length() - 1) {
-			throw new RuntimeException("invalid table name: " + tableName + " of entity class: "
-					+ this.getEntityClass());
+			throw new RuntimeException("invalid table name: " + tableName + " of entity class: " + this.getEntityClass());
 		}
 		dbName = tableName.substring(0, i);
 		this.collectionName = tableName.substring(i + 1);
@@ -70,13 +71,23 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 		DBObject fields = queryBuilder.chainToFields(chain);
 		DBObject sorts = queryBuilder.orderByToSorts(cnd);
 
-		List<DBObject> dbObjects = this.getDbCollection().find(query, fields).sort(sorts).limit(pager.getPageSize())
-				.skip(pager.getStartRow()).batchSize(pager.getPageSize()).toArray();
+		List<DBObject> dbObjects = this.getDbCollection().find(query, fields).sort(sorts).limit(pager.getPageSize()).skip(pager.getStartRow())
+				.batchSize(pager.getPageSize()).toArray();
 		List<E> ret = new ArrayList<E>(dbObjects.size());
 		for (DBObject object : dbObjects) {
 			ret.add(this.dbObjectToEntity(object));
 		}
 		return ret;
+	}
+
+	@Override
+	public Cursor<E> cursor(Cnd cnd, Chain chain) {
+		DBObject query = queryBuilder.cndToQuery(cnd);
+		DBObject fields = queryBuilder.chainToFields(chain);
+		DBObject sorts = queryBuilder.orderByToSorts(cnd);
+
+		DBCursor cursor = this.getDbCollection().find(query, fields).sort(sorts);
+		return new MongoCursor(cursor);
 	}
 
 	@Override
@@ -134,8 +145,8 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 				try {
 					writeMethod.invoke(entity, value);
 				} catch (IllegalArgumentException e) {
-					throw new RuntimeException("Error set value to " + value + "[" + value.getClass() + "] of field "
-							+ descriptor.getName() + "[" + descriptor.getPropertyType() + "]", e);
+					throw new RuntimeException("Error set value to " + value + "[" + value.getClass() + "] of field " + descriptor.getName() + "["
+							+ descriptor.getPropertyType() + "]", e);
 				}
 			}
 			return entity;
@@ -195,14 +206,77 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 			return idObjectList;
 		}
 		if (!(id instanceof String)) {
-			throw new IllegalArgumentException("id must be instanceof " + String.class.getName() + ", but was "
-					+ id.getClass().getName() + " of class " + this.getEntityClass().getName());
+			throw new IllegalArgumentException("id must be instanceof " + String.class.getName() + ", but was " + id.getClass().getName() + " of class "
+					+ this.getEntityClass().getName());
 		}
 		if (this.isIdGeneratedValue()) {
 			return new ObjectId((String) id);
 		} else {
 			return id;
 		}
+	}
+
+	private class MongoCursor implements Cursor<E> {
+
+		private final DBCursor cursor;
+
+		public MongoCursor(DBCursor cursor) {
+			this.cursor = cursor;
+		}
+
+		@Override
+		public Iterator<E> iterator() {
+			return new EntityMapIterator(cursor.iterator());
+		}
+
+		@Override
+		public int count() {
+			return cursor.count();
+		}
+
+		@Override
+		public Cursor<E> batchSize(int batchSize) {
+			cursor.batchSize(batchSize);
+			return this;
+		}
+
+		@Override
+		public Cursor<E> limit(int limit) {
+			cursor.limit(limit);
+			return this;
+		}
+
+		@Override
+		public Cursor<E> skip(int skip) {
+			cursor.skip(skip);
+			return this;
+		}
+
+	}
+
+	private class EntityMapIterator implements Iterator<E> {
+		private final Iterator<DBObject> i;
+
+		public EntityMapIterator(Iterator<DBObject> i) {
+			this.i = i;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return i.hasNext();
+		}
+
+		@Override
+		public E next() {
+			DBObject next = i.next();
+			return dbObjectToEntity(next);
+		}
+
+		@Override
+		public void remove() {
+			i.remove();
+		}
+
 	}
 
 }
