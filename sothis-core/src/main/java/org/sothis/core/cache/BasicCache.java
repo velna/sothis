@@ -180,4 +180,9 @@ public class BasicCache implements Cache {
 		return storage;
 	}
 
+	@Override
+	public long size() {
+		return storage.size();
+	}
+
 }

@@ -18,7 +18,11 @@ public class LocalStorage implements Storage {
 	private final com.google.common.cache.Cache<String, CacheValue> cache;
 
 	public LocalStorage(int concurrencyLevel, long duration) {
-		cache = CacheBuilder.newBuilder().concurrencyLevel(concurrencyLevel).softValues().expireAfterWrite(duration, TimeUnit.SECONDS).build();
+		CacheBuilder<Object, Object> cb = CacheBuilder.newBuilder().concurrencyLevel(concurrencyLevel);
+		if (duration >= 0) {
+			cb.softValues().expireAfterWrite(duration, TimeUnit.SECONDS);
+		}
+		cache = cb.build();
 	}
 
 	public LocalStorage(com.google.common.cache.Cache<String, CacheValue> cache) {
@@ -45,6 +49,11 @@ public class LocalStorage implements Storage {
 	public boolean remove(String key) {
 		cache.invalidate(key);
 		return true;
+	}
+
+	@Override
+	public long size() {
+		return cache.size();
 	}
 
 }

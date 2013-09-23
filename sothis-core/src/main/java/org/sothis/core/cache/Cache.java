@@ -100,6 +100,13 @@ public interface Cache {
 	boolean remove(String extraKey, String key);
 
 	/**
+	 * 得到缓存中的记录数。
+	 * 
+	 * @return
+	 */
+	long size();
+
+	/**
 	 * 得到缓存的统计情况
 	 * 
 	 * @return

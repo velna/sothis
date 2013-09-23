@@ -44,4 +44,10 @@ public interface Storage {
 	 */
 	boolean remove(String key);
 
+	/**
+	 * 得到缓存中的记录条数。
+	 * 
+	 * @return
+	 */
+	long size();
 }

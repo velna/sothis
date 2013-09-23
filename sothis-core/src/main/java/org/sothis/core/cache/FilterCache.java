@@ -63,4 +63,9 @@ public class FilterCache implements Cache {
 		return cache.getStorage();
 	}
 
+	@Override
+	public long size() {
+		return cache.size();
+	}
+
 }

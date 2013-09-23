@@ -87,4 +87,9 @@ public class LocalCachedStorage implements Storage {
 		return storage.remove(key);
 	}
 
+	@Override
+	public long size() {
+		return storage.size();
+	}
+
 }
