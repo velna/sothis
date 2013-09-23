@@ -12,10 +12,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.config.PropertiesConfiguration;
 
 public final class SothisConfig extends PropertiesConfiguration {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SothisConfig.class);
 
 	public static final String DEFAULT_STACK_NAME = "default";
 
@@ -89,6 +93,9 @@ public final class SothisConfig extends PropertiesConfiguration {
 		if (null == config) {
 			InputStream input = SothisConfig.class.getClassLoader().getResourceAsStream(configLocation);
 			if (null == input) {
+				if (LOGGER.isWarnEnabled()) {
+					LOGGER.warn("can not find sothi config file : {}, using sothis.default.properties as default.", configLocation);
+				}
 				input = SothisConfig.class.getClassLoader().getResourceAsStream("sothis.default.properties");
 			}
 			Properties properties = new Properties();
