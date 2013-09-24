@@ -43,9 +43,6 @@ public class SothisFilter implements Filter {
 		try {
 			ActionContext context = ActionContext.getContext();
 
-			servletContext = filterConfig.getServletContext();
-			context.setServletContext(servletContext);
-
 			String beanFactoryClass = filterConfig.getInitParameter("beanFactoryClass");
 			if (null != beanFactoryClass) {
 				beanFactory = createBeanFactory((Class<BeanFactory>) Class.forName(beanFactoryClass));
@@ -72,6 +69,9 @@ public class SothisFilter implements Filter {
 			}
 			context.set(ActionContext.SOTHIS_CONFIG, this.config);
 			context.setBeanFactory(beanFactory);
+
+			servletContext = new SothisServletContext(filterConfig.getServletContext());
+			context.setServletContext(servletContext);
 
 			this.actions = Collections.unmodifiableMap(initActions());
 			context.set(ActionContext.ACTIONS, actions);
@@ -113,7 +113,8 @@ public class SothisFilter implements Filter {
 			}
 			final Class<?>[] classes = ClassUtils.getClasses(packageName);
 			for (Class<?> c : classes) {
-				if (c.isLocalClass() || c.isMemberClass() || c.isAnonymousClass() || c.isAnnotationPresent(Ignore.class) || c.getPackage().isAnnotationPresent(Ignore.class)) {
+				if (c.isLocalClass() || c.isMemberClass() || c.isAnonymousClass() || c.isAnnotationPresent(Ignore.class)
+						|| c.getPackage().isAnnotationPresent(Ignore.class)) {
 					continue;
 				}
 				final String className = c.getName().substring(packageName.length() + 1);
@@ -164,7 +165,7 @@ public class SothisFilter implements Filter {
 				context.set(ActionContext.EXCEPTION_HANDLER, this.beanFactory.getBean(config.getExceptionHandler()));
 			}
 			context.setBeanFactory(beanFactory);
-			context.setRequest((HttpServletRequest) req);
+			context.setRequest(new SothisHttpServletRequest((HttpServletRequest) req));
 			context.setResponse((HttpServletResponse) resp);
 			context.setServletContext(servletContext);
 			Flash flash = context.getFlash(false);

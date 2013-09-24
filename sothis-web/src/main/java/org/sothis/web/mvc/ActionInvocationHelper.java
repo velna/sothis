@@ -32,8 +32,7 @@ public class ActionInvocationHelper {
 		}
 	}
 
-	private static void doInvoke(ActionContext context) throws ServletException, IOException, BeanInstantiationException,
-			ViewCreationException {
+	private static void doInvoke(ActionContext context) throws ServletException, IOException, BeanInstantiationException, ViewCreationException {
 		actionContextCheck(context);
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
@@ -47,6 +46,10 @@ public class ActionInvocationHelper {
 			Object result = invocation.invoke();
 			ResolvedModelAndView mav = mavResolver.resolve(result, invocation);
 			mav.getView().render(mav.getModelAndView(), invocation);
+		} else {
+			if (!response.isCommitted()) {
+				request.getRequestDispatcher(request.getRequestURI().substring(request.getContextPath().length())).forward(request, response);
+			}
 		}
 		response.flushBuffer();
 	}
@@ -70,8 +73,8 @@ public class ActionInvocationHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static ActionInvocation prepareActionInvocation(ActionContext context, HttpServletRequest request,
-			HttpServletResponse response, SothisConfig config) throws IOException, BeanInstantiationException, ServletException {
+	private static ActionInvocation prepareActionInvocation(ActionContext context, HttpServletRequest request, HttpServletResponse response, SothisConfig config)
+			throws IOException, BeanInstantiationException, ServletException {
 		ActionMapper actionMapper = (ActionMapper) context.get(ActionContext.ACTION_MAPPER);
 		Map<String, Action> actions = (Map<String, Action>) context.get(ActionContext.ACTIONS);
 
@@ -80,10 +83,6 @@ public class ActionInvocationHelper {
 		String actionKey = actionMapper.resolve(request, response);
 		Action action = actions.get(actionKey);
 		if (null == action) {
-			if (!response.isCommitted()) {
-				request.getRequestDispatcher(request.getRequestURI().substring(request.getContextPath().length())).forward(
-						request, response);
-			}
 			return null;
 		}
 

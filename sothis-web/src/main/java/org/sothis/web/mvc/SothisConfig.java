@@ -40,6 +40,7 @@ public final class SothisConfig extends PropertiesConfiguration {
 	private final String[] controllerPackages;
 	private final String characterEncoding;
 	private final boolean initializeControllerOnStartup;
+	private final String contextSuffix;
 
 	@SuppressWarnings({ "unchecked" })
 	private SothisConfig(final Properties properties) throws ConfigurationException {
@@ -67,6 +68,20 @@ public final class SothisConfig extends PropertiesConfiguration {
 			}
 
 			characterEncoding = this.get("sothis.http.characterEncoding", "UTF-8");
+
+			property = this.get("sothis.contextSuffix");
+			if (null != property && property.length() > 0) {
+				if (property.charAt(0) != '/') {
+					property = "/" + property;
+				}
+				if (property.charAt(property.length() - 1) == '/') {
+					property = property.substring(0, property.length() - 1);
+				}
+			} else {
+				property = null;
+			}
+			contextSuffix = property;
+
 			initializeControllerOnStartup = this.getBoolean("sothis.controller.initializeOnStartup", true);
 		} catch (ClassNotFoundException e) {
 			throw new ConfigurationException(e);
@@ -166,6 +181,10 @@ public final class SothisConfig extends PropertiesConfiguration {
 
 	public Class<? extends Flash> getFlash() {
 		return flash;
+	}
+
+	public String getContextSuffix() {
+		return contextSuffix;
 	}
 
 }
