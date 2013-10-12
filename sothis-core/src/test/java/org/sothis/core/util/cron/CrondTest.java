@@ -12,27 +12,26 @@ public class CrondTest {
 	public void test() throws InterruptedException {
 		Crond crond = new Crond();
 		crond.start();
-		crond.set(1, Cron.compile("*/5 * * * * *"), new Runnable() {
+		crond.set(1, Cron.compile("*/20 * * * * *"), new Runnable() {
 			@Override
 			public void run() {
 				LOGGER.info("running 1");
 			}
 		});
-		Thread.sleep(10000);
 		crond.set(2, Cron.compile("*/10 * * * * *"), new Runnable() {
 			@Override
 			public void run() {
 				LOGGER.info("running 2");
 			}
 		});
-		Thread.sleep(10000);
-		crond.set(3, Cron.compile("*/20 * * * * *"), new Runnable() {
+		crond.set(3, Cron.compile("*/5 * * * * *"), new Runnable() {
 			@Override
 			public void run() {
 				LOGGER.info("running 3");
 			}
 		});
+		Thread.sleep(25000);
 		crond.stop();
-		Thread.sleep(30000);
+		Thread.sleep(10000);
 	}
 }

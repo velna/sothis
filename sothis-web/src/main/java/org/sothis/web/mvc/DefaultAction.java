@@ -15,13 +15,7 @@ public class DefaultAction extends AbstractActionBase implements Action {
 	private final String fullName;
 
 	public DefaultAction(final Method method, final Controller controller) {
-		super(controller, method);
-		if (null == method) {
-			throw new IllegalArgumentException("method is null");
-		}
-		if (null == controller) {
-			throw new IllegalArgumentException("controller is null");
-		}
+		super(method, controller.getControllerClass(), controller.getControllerClass().getPackage());
 		this.method = method;
 		this.controller = controller;
 

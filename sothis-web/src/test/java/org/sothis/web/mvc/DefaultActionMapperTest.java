@@ -12,34 +12,34 @@ import org.testng.annotations.Test;
 public class DefaultActionMapperTest {
 
 	@Test(dataProvider = "mapErr", expectedExceptions = { IllegalArgumentException.class })
-	public void mapErr(String controllerPackageName, Class<?> controllerClass, String actionName, String expected) {
+	public void mapErr(Action action, Object expected) {
 
 		DefaultActionMapper dam = new DefaultActionMapper();
-		Assert.assertEquals(dam.map(controllerPackageName, controllerClass, actionName), expected);
+		Assert.assertEquals(dam.map(action), expected);
 
 	}
 
 	@Test(dataProvider = "mapOk")
-	public void mapOk(String controllerPackageName, Class<?> controllerClass, String actionName, String expected) {
+	public void mapOk(Action action, Object expected) {
 
 		DefaultActionMapper dam = new DefaultActionMapper();
-		Assert.assertEquals(dam.map(controllerPackageName, controllerClass, actionName), expected);
+		Assert.assertEquals(dam.map(action), expected);
 
 	}
 
 	@Test(dataProvider = "resolveErr", expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = "null request or response.")
-	public void resolveErr(MockHttpServletRequest request, MockHttpServletResponse response, String expected) {
+	public void resolveErr(MockHttpServletRequest request, MockHttpServletResponse response, ActionStore store, Action expected) {
 
 		DefaultActionMapper dam = new DefaultActionMapper();
-		Assert.assertEquals(dam.resolve(request, response), expected);
+		Assert.assertEquals(dam.resolve(request, response, store), expected);
 
 	}
 
 	@Test(dataProvider = "resolveOk")
-	public void resolveOk(MockHttpServletRequest request, MockHttpServletResponse response, String expected) {
+	public void resolveOk(MockHttpServletRequest request, MockHttpServletResponse response, ActionStore store, Action expected) {
 
 		DefaultActionMapper dam = new DefaultActionMapper();
-		Assert.assertEquals(dam.resolve(request, response), expected);
+		Assert.assertEquals(dam.resolve(request, response, store), expected);
 
 	}
 
@@ -161,7 +161,7 @@ public class DefaultActionMapperTest {
 		request.setContextPath("/fangjia-coresite");
 		request.setRequestURI("/fangjia-coresite/ershoufang/list");
 		dataList.add(new Object[] { request, response, "/ershoufang/list" });
-		
+
 		request = new MockHttpServletRequest();
 		request.setContextPath("/fangjia-coresite");
 		request.setRequestURI("/fangjia-coresite/ershoufang/list?a=1");

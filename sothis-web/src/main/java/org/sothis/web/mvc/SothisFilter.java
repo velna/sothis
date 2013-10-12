@@ -1,8 +1,6 @@
 package org.sothis.web.mvc;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -30,7 +28,7 @@ public class SothisFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SothisFilter.class);
 
-	private Map<String, Action> actions;
+	private ActionStore actionStore;
 	private ServletContext servletContext;
 	private BeanFactory beanFactory;
 	private SothisConfig config;
@@ -42,6 +40,7 @@ public class SothisFilter implements Filter {
 		}
 		try {
 			ActionContext context = ActionContext.getContext();
+			servletContext = filterConfig.getServletContext();
 
 			String beanFactoryClass = filterConfig.getInitParameter("beanFactoryClass");
 			if (null != beanFactoryClass) {
@@ -69,12 +68,11 @@ public class SothisFilter implements Filter {
 			}
 			context.set(ActionContext.SOTHIS_CONFIG, this.config);
 			context.setBeanFactory(beanFactory);
-
-			servletContext = new SothisServletContext(filterConfig.getServletContext());
+			servletContext = new SothisServletContext(servletContext);
 			context.setServletContext(servletContext);
 
-			this.actions = Collections.unmodifiableMap(initActions());
-			context.set(ActionContext.ACTIONS, actions);
+			this.actionStore = initActions();
+			context.set(ActionContext.ACTION_STORE, actionStore);
 
 			initSothisBeans();
 			if (LOGGER.isInfoEnabled()) {
@@ -104,8 +102,8 @@ public class SothisFilter implements Filter {
 		return beanFactory;
 	}
 
-	private Map<String, Action> initActions() throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
-		Map<String, Action> actions = new HashMap<String, Action>();
+	private ActionStore initActions() throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
+		DefaultActionStore actions = new DefaultActionStore();
 		final String[] packageNames = config.getControllerPackages();
 		for (String packageName : packageNames) {
 			if (StringUtils.isEmpty(packageName)) {
@@ -140,11 +138,11 @@ public class SothisFilter implements Filter {
 				for (String actionName : controllerActions.keySet()) {
 					Action action = controllerActions.get(actionName);
 					ActionMapper actionMapper = beanFactory.getBean(config.getActionMapper());
-					String actionKey = actionMapper.map(packageName, c, actionName);
-					if (actions.containsKey(actionKey)) {
-						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as " + actions.get(actionKey));
+					Object actionKey = actionMapper.map(action);
+					if (actions.containsAction(actionKey)) {
+						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as " + actions.getAction(actionKey));
 					}
-					actions.put(actionKey, action);
+					actions.setAction(actionKey, action);
 				}
 				if (config.isInitializeControllerOnStartup()) {
 					this.beanFactory.getBean(c);
@@ -160,7 +158,7 @@ public class SothisFilter implements Filter {
 			context.set(ActionContext.ACTION_MAPPER, beanFactory.getBean(config.getActionMapper()));
 			context.set(ActionContext.MODEL_AND_VIEW_RESOLVER, beanFactory.getBean(config.getModelAndViewResolver()));
 			context.set(ActionContext.SOTHIS_CONFIG, this.config);
-			context.set(ActionContext.ACTIONS, actions);
+			context.set(ActionContext.ACTION_STORE, actionStore);
 			if (null != config.getExceptionHandler()) {
 				context.set(ActionContext.EXCEPTION_HANDLER, this.beanFactory.getBean(config.getExceptionHandler()));
 			}

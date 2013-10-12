@@ -75,7 +75,7 @@ public interface Controller extends ActionBase {
 	 * 得到在controller class或controller package中出现的注解<br>
 	 * {@inheritDoc}
 	 */
-	<T extends Annotation> T getAnnotation(Class<T> annotationClass);
+	<T extends Annotation> T[] getAnnotation(Class<T> annotationClass);
 
 	/**
 	 * 得到所有在controller class和controller package中声明的注解<br>

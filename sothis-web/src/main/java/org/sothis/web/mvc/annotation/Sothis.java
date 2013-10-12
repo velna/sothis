@@ -5,10 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.PACKAGE })
+@Target({ ElementType.METHOD, ElementType.TYPE, ElementType.PACKAGE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Sothis {
 	String defaultView() default "";
 
 	String stack() default "";
+
+	String method() default "";
 }

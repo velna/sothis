@@ -78,7 +78,7 @@ public class Crond {
 	 *            »ŒŒÒRunnable
 	 */
 	public void set(Object key, Cron cron, Runnable runnable) {
-		Date next = cron.next(this.nextDate);
+		Date next = cron.next(new Date());
 		lock.lock();
 		try {
 			jobs.put(key, new CronJob(cron, runnable));
@@ -106,7 +106,7 @@ public class Crond {
 			nextKeys.clear();
 			Date next = null;
 			for (Map.Entry<Object, CronJob> entry : jobs.entrySet()) {
-				Date jobNext = entry.getValue().getCron().next(this.nextDate);
+				Date jobNext = entry.getValue().getCron().next(nextDate);
 				if (null == next || jobNext.equals(next)) {
 					nextKeys.add(entry.getKey());
 					next = jobNext;

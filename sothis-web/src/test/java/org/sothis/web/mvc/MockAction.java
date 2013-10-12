@@ -43,7 +43,7 @@ public class MockAction extends AbstractActionBase implements Action {
 	}
 
 	@Override
-	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+	public <T extends Annotation> T[] getAnnotation(Class<T> annotationClass) {
 		return null;
 	}
 

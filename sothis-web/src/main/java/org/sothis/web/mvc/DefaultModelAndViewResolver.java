@@ -24,10 +24,13 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 	public ResolvedModelAndView resolve(final Object actionResult, final ActionInvocation invocation) throws ViewCreationException {
 		ModelAndView model = null;
 		View view = null;
-		Sothis sothis = invocation.getAction().getAnnotation(Sothis.class);
+		Sothis[] ss = invocation.getAction().getAnnotation(Sothis.class);
 		String viewType = DEFAULT_VIEW_TYPE;
-		if (null != sothis && StringUtils.isNotEmpty(sothis.defaultView())) {
-			viewType = sothis.defaultView();
+		for (Sothis sothis : ss) {
+			if (null != sothis && StringUtils.isNotEmpty(sothis.defaultView())) {
+				viewType = sothis.defaultView();
+				break;
+			}
 		}
 		if (actionResult instanceof ModelAndView) {
 			model = (ModelAndView) actionResult;

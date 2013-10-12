@@ -14,12 +14,9 @@ class EmptyAction extends AbstractActionBase implements Action {
 	private final String fullName;
 
 	public EmptyAction(final String name, final Controller controller) {
-		super(controller);
+		super(controller.getControllerClass(), controller.getControllerClass().getPackage());
 		if (null == name) {
 			throw new IllegalArgumentException("method is null");
-		}
-		if (null == controller) {
-			throw new IllegalArgumentException("controller is null");
 		}
 
 		this.controller = controller;

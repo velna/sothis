@@ -31,7 +31,7 @@ public final class ActionContext {
 	public final static String SOTHIS_CONFIG = "org.sothis.web.mvc.SOTHIS_CONFIG";
 	public final static String MODEL_AND_VIEW_RESOLVER = "org.sothis.web.mvc.MODEL_AND_VIEW_RESOLVER";
 	public final static String ACTION_MAPPER = "org.sothis.web.mvc.ACTION_MAPPER";
-	public final static String ACTIONS = "org.sothis.web.mvc.ACTIONS";
+	public final static String ACTION_STORE = "org.sothis.web.mvc.ACTION_STORE";
 	public final static String ACTION_URI = "org.sothis.web.mvc.ActionUri";
 	public final static String EXCEPTION_HANDLER = "org.sothis.web.mvc.ExceptionHandler";
 	public final static String FLASH = "org.sothis.web.mvc.FLAH";

@@ -2,8 +2,10 @@ package org.sothis.web.mvc;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.util.Collections;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,32 +14,38 @@ import org.sothis.web.mvc.annotation.Sothis;
 public abstract class AbstractActionBase implements ActionBase {
 
 	private final InterceptorStack interceptorStack;
-	private final Map<Class<?>, Annotation> annotations;
+	private final Map<Class<?>, List<Annotation>> annotations;
 
-	public AbstractActionBase(AnnotatedElement... elements) {
-		if (null != elements) {
-			this.annotations = new HashMap<Class<?>, Annotation>(4);
-			for (AnnotatedElement ae : elements) {
+	public AbstractActionBase(AnnotatedElement... parents) {
+		this.annotations = new HashMap<Class<?>, List<Annotation>>(4);
+		if (null != parents) {
+			for (AnnotatedElement ae : parents) {
 				if (null != ae) {
 					for (Annotation a : ae.getAnnotations()) {
-						this.annotations.put(a.annotationType(), a);
+						List<Annotation> as = this.annotations.get(a.annotationType());
+						if (null == as) {
+							as = new ArrayList<Annotation>();
+							this.annotations.put(a.annotationType(), as);
+						}
+						as.add(a);
 					}
 				}
 			}
-		} else {
-			this.annotations = Collections.emptyMap();
 		}
 
-		Sothis sothis = getAnnotation(Sothis.class);
+		Sothis[] ss = getAnnotation(Sothis.class);
 		SothisConfig config = SothisConfig.getConfig();
 		if (null == config) {
 			throw new NullPointerException("sothis config not initialized !");
 		}
-		if (null != sothis && StringUtils.isNotBlank(sothis.stack())) {
-			this.interceptorStack = config.getInterceptorStack(sothis.stack());
-		} else {
-			this.interceptorStack = config.getDefaultInterceptorStack();
+		InterceptorStack stack = null;
+		for (Sothis s : ss) {
+			if (null != s && StringUtils.isNotBlank(s.stack())) {
+				stack = config.getInterceptorStack(s.stack());
+				break;
+			}
 		}
+		this.interceptorStack = stack == null ? config.getDefaultInterceptorStack() : stack;
 	}
 
 	@Override
@@ -47,8 +55,14 @@ public abstract class AbstractActionBase implements ActionBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
-		return (T) annotations.get(annotationClass);
+	public <T extends Annotation> T[] getAnnotation(Class<T> annotationClass) {
+		List<Annotation> as = this.annotations.get(annotationClass);
+		if (null == as) {
+			return (T[]) Array.newInstance(annotationClass, 0);
+		}
+		Annotation[] ret = new Annotation[as.size()];
+		this.annotations.values().toArray(ret);
+		return (T[]) ret;
 	}
 
 	@Override

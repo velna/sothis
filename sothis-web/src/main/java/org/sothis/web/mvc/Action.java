@@ -47,9 +47,10 @@ public interface Action extends ActionBase {
 	boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
 
 	/**
-	 * 得到在action method或controller class或controller package中出现的注解<br> {@inheritDoc}
+	 * 得到在action method或controller class或controller package中出现的注解<br>
+	 * {@inheritDoc}
 	 */
-	<T extends Annotation> T getAnnotation(Class<T> annotationClass);
+	<T extends Annotation> T[] getAnnotation(Class<T> annotationClass);
 
 	/**
 	 * 得到所有在action method、controller class和controller package中声明的注解<br>
@@ -58,7 +59,8 @@ public interface Action extends ActionBase {
 	Annotation[] getAnnotations();
 
 	/**
-	 * 同 {@link Action#getAnnotations()}<br> {@inheritDoc}
+	 * 同 {@link Action#getAnnotations()}<br>
+	 * {@inheritDoc}
 	 */
 	Annotation[] getDeclaredAnnotations();
 }

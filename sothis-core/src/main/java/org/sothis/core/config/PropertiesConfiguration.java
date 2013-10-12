@@ -192,7 +192,7 @@ public class PropertiesConfiguration implements PropertiesBean {
 		return (Class<T>) Class.forName(value);
 	}
 
-	public Class<?> getClass(String key) throws ClassNotFoundException {
+	public <T> Class<? extends T> getClass(String key) throws ClassNotFoundException {
 		return getClass(key, null);
 	}
 

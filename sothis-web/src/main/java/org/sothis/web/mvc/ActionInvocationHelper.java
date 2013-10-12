@@ -63,7 +63,7 @@ public class ActionInvocationHelper {
 		checkContextKeyValue(context, ActionContext.SOTHIS_CONFIG, SothisConfig.class);
 		checkContextKeyValue(context, ActionContext.MODEL_AND_VIEW_RESOLVER, ModelAndViewResolver.class);
 		checkContextKeyValue(context, ActionContext.ACTION_MAPPER, ActionMapper.class);
-		checkContextKeyValue(context, ActionContext.ACTIONS, Map.class);
+		checkContextKeyValue(context, ActionContext.ACTION_STORE, ActionStore.class);
 	}
 
 	private static void checkContextKeyValue(ActionContext context, String key, Class<?> valueClass) {
@@ -76,12 +76,11 @@ public class ActionInvocationHelper {
 	private static ActionInvocation prepareActionInvocation(ActionContext context, HttpServletRequest request, HttpServletResponse response, SothisConfig config)
 			throws IOException, BeanInstantiationException, ServletException {
 		ActionMapper actionMapper = (ActionMapper) context.get(ActionContext.ACTION_MAPPER);
-		Map<String, Action> actions = (Map<String, Action>) context.get(ActionContext.ACTIONS);
+		ActionStore actions = (ActionStore) context.get(ActionContext.ACTION_STORE);
 
 		context.setParameters(new HashMap<String, Object[]>(request.getParameterMap()));
 
-		String actionKey = actionMapper.resolve(request, response);
-		Action action = actions.get(actionKey);
+		Action action = actionMapper.resolve(request, response, actions);
 		if (null == action) {
 			return null;
 		}
