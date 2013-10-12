@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.annotation;
+package org.sothis.web.mvc.interceptors.param;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

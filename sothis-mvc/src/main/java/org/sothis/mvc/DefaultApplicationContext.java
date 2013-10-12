@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.util.ClassUtils;
-import org.sothis.mvc.annotation.Ignore;
 
 public class DefaultApplicationContext implements ApplicationContext {
 	private final Map<Object, Action> actions = new HashMap<Object, Action>();

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
-import org.sothis.mvc.annotation.Sothis;
 
 /**
  * ModelAndViewResolver接口的默认实现

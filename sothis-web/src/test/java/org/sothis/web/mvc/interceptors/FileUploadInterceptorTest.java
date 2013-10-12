@@ -13,6 +13,8 @@ import org.sothis.web.mvc.MockActionInvocation;
 import org.sothis.web.mvc.MockBeanFactory;
 import org.sothis.web.mvc.SothisFactory;
 import org.sothis.web.mvc.WebActionContext;
+import org.sothis.web.mvc.interceptors.upload.FileUploadInterceptor;
+import org.sothis.web.mvc.interceptors.upload.MultipartHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.testng.annotations.AfterMethod;

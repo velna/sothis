@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.interceptors;
+package org.sothis.web.mvc.interceptors.prepare;
 
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ActionInvocationException;

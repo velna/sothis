@@ -24,6 +24,17 @@ import org.sothis.mvc.ApplicationContext;
 import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.DefaultApplicationContext;
 
+/**
+ * @param beanFactoryClass
+ *            如果配置了configBeanName，则必须同时配置beanFactoryClass
+ * @param configBeanName
+ *            在beanFactory中定义的config bean名称
+ * @param configLocation
+ *            如果没有配置configBeanName，则使用configLocation指身的classpath路径查找配置文件，如果没有配置，
+ *            则默认使用sothis.properties
+ * @author velna
+ * 
+ */
 public class SothisFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SothisFilter.class);
@@ -119,6 +130,7 @@ public class SothisFilter implements Filter {
 		} finally {
 			context.clear();
 		}
+		chain.doFilter(req, resp);
 	}
 
 	public void destroy() {

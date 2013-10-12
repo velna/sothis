@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sothis.mvc.annotation.Ignore;
 
 /**
  * Controller接口的默认实现

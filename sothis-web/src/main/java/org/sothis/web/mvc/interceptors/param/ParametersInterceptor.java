@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.interceptors;
+package org.sothis.web.mvc.interceptors.param;
 
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
@@ -31,12 +31,9 @@ import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ActionInvocationException;
+import org.sothis.mvc.Ignore;
 import org.sothis.mvc.Interceptor;
-import org.sothis.mvc.annotation.Ignore;
-import org.sothis.web.mvc.HttpServletRequestAware;
-import org.sothis.web.mvc.HttpServletResponseAware;
 import org.sothis.web.mvc.WebActionContext;
-import org.sothis.web.mvc.annotation.Param;
 
 /**
  * ²ÎÊý×¢ÈëÀ¹½ØÆ÷

@@ -14,6 +14,8 @@ import org.sothis.web.mvc.MockActionInvocation;
 import org.sothis.web.mvc.MockBeanFactory;
 import org.sothis.web.mvc.SothisFactory;
 import org.sothis.web.mvc.WebActionContext;
+import org.sothis.web.mvc.interceptors.prepare.Preparable;
+import org.sothis.web.mvc.interceptors.prepare.PrepareInterceptor;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;

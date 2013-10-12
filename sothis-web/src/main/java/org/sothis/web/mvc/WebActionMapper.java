@@ -9,7 +9,6 @@ import org.sothis.core.beans.Scope;
 import org.sothis.mvc.Action;
 import org.sothis.mvc.ActionMapper;
 import org.sothis.mvc.ApplicationContext;
-import org.sothis.web.mvc.annotation.Method;
 
 /**
  * ActionMapper接口的默认实现

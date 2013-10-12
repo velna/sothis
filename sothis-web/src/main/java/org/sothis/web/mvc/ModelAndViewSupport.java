@@ -10,9 +10,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sothis.core.util.Pager;
+import org.sothis.mvc.Ignore;
 import org.sothis.mvc.ModelAndView;
 import org.sothis.mvc.ModelAndViewResolver;
-import org.sothis.mvc.annotation.Ignore;
 
 public class ModelAndViewSupport implements ModelAndView, Serializable {
 

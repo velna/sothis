@@ -1,4 +1,4 @@
-package org.sothis.web.mvc.interceptors;
+package org.sothis.web.mvc.interceptors.upload;
 
 import javax.servlet.http.HttpServletRequest;
 

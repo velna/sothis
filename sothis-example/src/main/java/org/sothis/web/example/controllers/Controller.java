@@ -7,7 +7,7 @@ import org.sothis.dal.query.Cnd;
 import org.sothis.web.example.dao.sql.UsersDao;
 import org.sothis.web.example.domains.Users;
 import org.sothis.web.example.models.HelloWorldModel;
-import org.sothis.web.mvc.annotation.Param;
+import org.sothis.web.mvc.interceptors.param.Param;
 
 public class Controller {
 
