@@ -8,9 +8,9 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.sothis.core.util.MapUtils;
 import org.sothis.core.util.UrlUtils;
-import org.sothis.web.mvc.Action;
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.SothisConfig;
+import org.sothis.mvc.Action;
+import org.sothis.web.mvc.WebActionContext;
+import org.sothis.web.mvc.WebConfiguration;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -40,12 +40,11 @@ import freemarker.template.utility.DeepUnwrap;
 public class LinkDirective implements TemplateDirectiveModel {
 
 	@Override
-	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
-			throws TemplateException, IOException {
+	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
 		Map<String, Object> directiveParams = new HashMap<String, Object>(params);
-		ActionContext context = ActionContext.getContext();
+		WebActionContext context = WebActionContext.getContext();
 		Action action = context.getAction();
-		SothisConfig config = SothisConfig.getConfig();
+		WebConfiguration config = context.getConfiguration();
 
 		String actionName = MapUtils.getString(directiveParams, "action", action.getName());
 
@@ -55,8 +54,7 @@ public class LinkDirective implements TemplateDirectiveModel {
 		String anchor = MapUtils.getString(directiveParams, "anchor");
 		boolean absolute = MapUtils.getBoolean(directiveParams, "absolute", false);
 		String base = MapUtils.getString(directiveParams, "base");
-		boolean noTag = Boolean
-				.valueOf(String.valueOf(DeepUnwrap.unwrap((TemplateModel) directiveParams.get("notag"))));
+		boolean noTag = Boolean.valueOf(String.valueOf(DeepUnwrap.unwrap((TemplateModel) directiveParams.get("notag"))));
 
 		StringBuilder url = new StringBuilder();
 		if (base == null && absolute) {

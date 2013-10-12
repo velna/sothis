@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.sothis.core.util.MapUtils;
 import org.sothis.core.util.UrlUtils;
-import org.sothis.web.mvc.ActionContext;
+import org.sothis.web.mvc.WebActionContext;
 
 import freemarker.core.Environment;
 import freemarker.template.SimpleNumber;
@@ -30,9 +30,8 @@ import freemarker.template.TemplateModel;
  */
 public class PagerDirective implements TemplateDirectiveModel {
 
-	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
-			throws TemplateException, IOException {
-		ActionContext actionContext = ActionContext.getContext();
+	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
+		WebActionContext actionContext = WebActionContext.getContext();
 		// name
 		String name = MapUtils.getString(params, "name", "pager");
 
@@ -40,12 +39,10 @@ public class PagerDirective implements TemplateDirectiveModel {
 		String anchor = MapUtils.getString(params, "anchor");
 
 		// package
-		String packageName = MapUtils.getString(params, "package", actionContext.getAction().getController()
-				.getPackageName());
+		String packageName = MapUtils.getString(params, "package", actionContext.getAction().getController().getPackageName());
 
 		// controller
-		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController()
-				.getName());
+		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController().getName());
 
 		// action
 		String action = MapUtils.getString(params, "action", actionContext.getAction().getName());
@@ -109,12 +106,9 @@ public class PagerDirective implements TemplateDirectiveModel {
 		templateContext.put("currentPage", currentPage);
 		templateContext.put("totalPages", totalPages);
 		templateContext.put("firstPageUrl", this.buildPagerUrl(actionContext, name, uri, allParams, 1, anchor));
-		templateContext.put("prePageUrl",
-				this.buildPagerUrl(actionContext, name, uri, allParams, currentPage - 1, anchor));
-		templateContext.put("nextPageUrl",
-				this.buildPagerUrl(actionContext, name, uri, allParams, currentPage + 1, anchor));
-		templateContext.put("currentPageUrl",
-				this.buildPagerUrl(actionContext, name, uri, allParams, currentPage, anchor));
+		templateContext.put("prePageUrl", this.buildPagerUrl(actionContext, name, uri, allParams, currentPage - 1, anchor));
+		templateContext.put("nextPageUrl", this.buildPagerUrl(actionContext, name, uri, allParams, currentPage + 1, anchor));
+		templateContext.put("currentPageUrl", this.buildPagerUrl(actionContext, name, uri, allParams, currentPage, anchor));
 		templateContext.put("lastPageUrl", this.buildPagerUrl(actionContext, name, uri, allParams, totalPages, anchor));
 		templateContext.put("pageUrls", pages);
 		templateContext.put("pageIndex", pageIndex);
@@ -122,8 +116,8 @@ public class PagerDirective implements TemplateDirectiveModel {
 		template.process(templateContext, env.getOut());
 	}
 
-	private String buildPagerUrl(ActionContext actionContext, String name, String uri, Map<String, Object[]> allParams,
-			int pageIndex, String anchor) throws IOException {
+	private String buildPagerUrl(WebActionContext actionContext, String name, String uri, Map<String, Object[]> allParams, int pageIndex, String anchor)
+			throws IOException {
 		allParams.put(name + ".currentPage", new String[] { String.valueOf(pageIndex) });
 		String params = UrlUtils.appendParams("", allParams);
 		HttpServletResponse httpResponse = actionContext.getResponse();

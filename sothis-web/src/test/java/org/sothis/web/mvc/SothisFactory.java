@@ -4,13 +4,14 @@ import java.io.IOException;
 
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.beans.BeanInstantiationException;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.DefaultApplicationContext;
 
 public class SothisFactory {
-	public static ActionContext getActionContext() throws ConfigurationException, IOException {
-		ActionContext context = ActionContext.getContext();
-		SothisConfig.initConfig("sothis.default.properties");
-		context.set(ActionContext.SOTHIS_CONFIG, SothisConfig.getConfig());
-		context.setBeanFactory(getBeanFactory());
+	public static WebActionContext initActionContext() throws ConfigurationException, IOException, BeanInstantiationException, ClassNotFoundException {
+		WebActionContext context = WebActionContext.getContext();
+		WebConfiguration config = WebConfiguration.create("sothis.default.properties");
+		context.put(WebActionContext.APPLICATION_CONTEXT, new DefaultApplicationContext(getBeanFactory(), config));
 		return context;
 	}
 

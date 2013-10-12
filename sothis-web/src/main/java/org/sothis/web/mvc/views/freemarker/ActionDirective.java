@@ -6,12 +6,10 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
 import org.apache.commons.lang.StringUtils;
 import org.sothis.core.util.MapUtils;
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ActionInvocationHelper;
+import org.sothis.mvc.ActionInvocationHelper;
+import org.sothis.web.mvc.WebActionContext;
 import org.sothis.web.mvc.util.WrappedHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -23,15 +21,13 @@ import freemarker.template.TemplateModel;
 
 public class ActionDirective implements TemplateDirectiveModel {
 
-	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
-			throws TemplateException, IOException {
+	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
 
-		ActionContext actionContext = ActionContext.getContext();
+		WebActionContext actionContext = WebActionContext.getContext();
 		if (StringUtils.isBlank(actionContext.getAction().getName())) {
 			throw new IllegalArgumentException("d_action actionName is null!");
 		}
-		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController()
-				.getName());
+		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController().getName());
 		if (StringUtils.isNotBlank(controller)) {
 			controller = "/" + controller;
 		}
@@ -45,27 +41,25 @@ public class ActionDirective implements TemplateDirectiveModel {
 		String[] attrs = env.getCustomAttributeNames();
 		if (attrs != null) {
 			for (int i = 0; i < attrs.length; i++) {
-				myParams.put(attrs[i],
-						new String[] { URLDecoder.decode(String.valueOf(env.getCustomAttribute(attrs[i])), "UTF-8") });
+				myParams.put(attrs[i], new String[] { URLDecoder.decode(String.valueOf(env.getCustomAttribute(attrs[i])), "UTF-8") });
 				env.removeCustomAttribute(attrs[i]);
 			}
 		}
 		Map<String, Object> orgContext = actionContext.getContextMap();
-		String orgActionUri = (String) actionContext.getRequest().getAttribute(ActionContext.ACTION_URI);
+		String orgActionUri = (String) actionContext.getRequest().getAttribute(WebActionContext.ACTION_URI);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		actionContext.setResponse(response);
 		WrappedHttpServletRequest myRequest = new WrappedHttpServletRequest(actionContext.getRequest(), myParams);
-		myRequest.setAttribute(ActionContext.ACTION_URI, controller + "/" + action);
+		myRequest.setAttribute(WebActionContext.ACTION_URI, controller + "/" + action);
 		actionContext.setRequest(myRequest);
 		try {
 			ActionInvocationHelper.invoke(actionContext);
 			env.getOut().write(response.getContentAsString());
-		} catch (ServletException e) {
-			throw new TemplateException("error invoke action directive:" + controller + "/" + action,
-					(Exception) e.getRootCause(), env);
+		} catch (Exception e) {
+			throw new TemplateException("error invoke action directive:" + controller + "/" + action, e, env);
 		} finally {
 			actionContext.setContextMap(orgContext);
-			actionContext.getRequest().setAttribute(ActionContext.ACTION_URI, orgActionUri);
+			actionContext.getRequest().setAttribute(WebActionContext.ACTION_URI, orgActionUri);
 		}
 	}
 

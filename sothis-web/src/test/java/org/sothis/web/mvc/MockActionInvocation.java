@@ -1,5 +1,10 @@
 package org.sothis.web.mvc;
 
+import org.sothis.mvc.Action;
+import org.sothis.mvc.ActionContext;
+import org.sothis.mvc.ActionInvocation;
+import org.sothis.mvc.ActionInvocationException;
+
 public class MockActionInvocation implements ActionInvocation {
 
 	private Action action;
@@ -21,8 +26,7 @@ public class MockActionInvocation implements ActionInvocation {
 	public Object invoke() throws ActionInvocationException {
 		if (null != action.getActionMethod()) {
 			try {
-				return action.getActionMethod().invoke(controllerInstance,
-						(Object[]) actionContext.get(ActionContext.ACTION_PARAMS));
+				return action.getActionMethod().invoke(controllerInstance, (Object[]) actionContext.get(ActionContext.ACTION_PARAMS));
 			} catch (Exception e) {
 				throw new ActionInvocationException(e);
 			}

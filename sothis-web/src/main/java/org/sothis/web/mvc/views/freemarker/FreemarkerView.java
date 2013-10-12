@@ -4,19 +4,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.beans.Scope;
 import org.sothis.core.util.MapUtils;
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ActionInvocation;
-import org.sothis.web.mvc.ConfigurationException;
-import org.sothis.web.mvc.ModelAndView;
-import org.sothis.web.mvc.SothisConfig;
-import org.sothis.web.mvc.View;
+import org.sothis.mvc.ActionInvocation;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.ModelAndView;
+import org.sothis.mvc.View;
+import org.sothis.mvc.ViewRenderException;
+import org.sothis.web.mvc.WebActionContext;
 import org.sothis.web.mvc.util.MvcUtils;
 
 import freemarker.template.Configuration;
@@ -29,13 +28,14 @@ public class FreemarkerView implements View {
 	private Configuration configuration;
 
 	public void init() throws ClassNotFoundException, BeanInstantiationException, ConfigurationException {
-		Class<? extends ConfigurationFactory> configurationFactoryClass = SothisConfig.getConfig().getClass("freemarker.configurationFactory.class",
+		WebActionContext context = WebActionContext.getContext();
+		Class<? extends ConfigurationFactory> configurationFactoryClass = context.getConfiguration().getClass("freemarker.configurationFactory.class",
 				DefaultConfigurationFactory.class);
-		ConfigurationFactory configurationFactory = ActionContext.getContext().getBeanFactory().getBean(configurationFactoryClass);
-		configuration = configurationFactory.createConfiguration(ActionContext.getContext());
+		ConfigurationFactory configurationFactory = context.getApplicationContext().getBeanFactory().getBean(configurationFactoryClass);
+		configuration = configurationFactory.createConfiguration(WebActionContext.getContext());
 	}
 
-	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ServletException {
+	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ViewRenderException {
 		if (invocation.getAction().getActionMethod().getReturnType() == Void.class) {
 			renderAsTemplate(null, null, invocation);
 		} else if (null == mav.model()) {
@@ -47,15 +47,15 @@ public class FreemarkerView implements View {
 		}
 	}
 
-	private void renderAsTemplate(Object model, Map<String, Object> params, ActionInvocation invocation) throws IOException, ServletException {
+	private void renderAsTemplate(Object model, Map<String, Object> params, ActionInvocation invocation) throws IOException {
 		String path = MvcUtils.resolvePath(MapUtils.getString(params, "path"), invocation) + ".ftl";
-		ActionContext context = invocation.getActionContext();
+		WebActionContext context = (WebActionContext) invocation.getActionContext();
 		HttpServletResponse response = context.getResponse();
 		try {
 			Template template = configuration.getTemplate(path);
 			Object contentType = template.getCustomAttribute("content_type");
 			if (null == contentType) {
-				contentType = "text/html; charset=" + SothisConfig.getConfig().getCharacterEncoding();
+				contentType = "text/html; charset=" + context.getConfiguration().getCharacterEncoding();
 			} else {
 				contentType = template.getCustomAttribute("content_type").toString();
 			}
@@ -68,13 +68,14 @@ public class FreemarkerView implements View {
 		} catch (FileNotFoundException e) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND, path);
 		} catch (TemplateException e) {
-			throw new ServletException("error processing freemarker template '" + path + "': ", e);
+			throw new IOException("error processing freemarker template '" + path + "': ", e);
 		}
 	}
 
 	private void renderAsText(String text, ActionInvocation invocation) throws IOException {
-		HttpServletResponse response = invocation.getActionContext().getResponse();
-		response.setContentType("text/plain; charset=" + SothisConfig.getConfig().getCharacterEncoding());
+		WebActionContext context = (WebActionContext) invocation.getActionContext();
+		HttpServletResponse response = context.getResponse();
+		response.setContentType("text/plain; charset=" + context.getConfiguration().getCharacterEncoding());
 		response.getWriter().append(text);
 	}
 

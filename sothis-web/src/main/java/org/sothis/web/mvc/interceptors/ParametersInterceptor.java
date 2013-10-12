@@ -29,13 +29,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ActionInvocation;
-import org.sothis.web.mvc.ActionInvocationException;
+import org.sothis.mvc.ActionInvocation;
+import org.sothis.mvc.ActionInvocationException;
+import org.sothis.mvc.Interceptor;
+import org.sothis.mvc.annotation.Ignore;
 import org.sothis.web.mvc.HttpServletRequestAware;
 import org.sothis.web.mvc.HttpServletResponseAware;
-import org.sothis.web.mvc.Interceptor;
-import org.sothis.web.mvc.annotation.Ignore;
+import org.sothis.web.mvc.WebActionContext;
 import org.sothis.web.mvc.annotation.Param;
 
 /**
@@ -47,8 +47,8 @@ import org.sothis.web.mvc.annotation.Param;
 @Bean(scope = Scope.SINGLETON)
 public class ParametersInterceptor implements Interceptor {
 
-	public Object intercept(ActionInvocation invocation) throws ActionInvocationException {
-		ActionContext context = invocation.getActionContext();
+	public Object intercept(ActionInvocation invocation) throws Exception {
+		WebActionContext context = (WebActionContext) invocation.getActionContext();
 		Map<String, Object[]> parameterMap = context.getParameters();
 
 		Class<?>[] paramTypes = invocation.getAction().getActionMethod().getParameterTypes();
@@ -76,13 +76,13 @@ public class ParametersInterceptor implements Interceptor {
 				}
 			}
 		}
-		context.set(ActionContext.ACTION_PARAMS, actionParams);
+		context.put(WebActionContext.ACTION_PARAMS, actionParams);
 		return invocation.invoke();
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object getActionParamByAnnotation(Param parameter, Map<String, Object[]> parameterMap, Class<?> type,
-			ActionContext context) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+	private Object getActionParamByAnnotation(Param parameter, Map<String, Object[]> parameterMap, Class<?> type, WebActionContext context)
+			throws InstantiationException, IllegalAccessException, InvocationTargetException {
 		String name = null == parameter ? "" : parameter.name();
 		String pattern = null == parameter ? "" : parameter.pattern();
 		if ("".equals(name)) {
@@ -122,7 +122,7 @@ public class ParametersInterceptor implements Interceptor {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	private Object newInstance(Class<?> type) throws InstantiationException, IllegalAccessException {
 		if (type.isInterface() || Modifier.isAbstract(type.getModifiers())) {
 			if (Map.class.isAssignableFrom(type)) {
@@ -157,17 +157,16 @@ public class ParametersInterceptor implements Interceptor {
 	}
 
 	private boolean isPrimitiveLike(Class<?> type) {
-		if (type == Boolean.class || type == Short.class || type == Byte.class || type == Integer.class || type == Long.class
-				|| type == Double.class || type == Float.class || type == String.class || type == Character.class
-				|| type == Date.class || type == Number.class) {
+		if (type == Boolean.class || type == Short.class || type == Byte.class || type == Integer.class || type == Long.class || type == Double.class
+				|| type == Float.class || type == String.class || type == Character.class || type == Date.class || type == Number.class) {
 			return true;
 		}
 		return false;
 	}
 
-	@SuppressWarnings( { "unchecked" })
-	private Object populate(Map<String, Object[]> parameterMap, Object paramBean, String p) throws IllegalAccessException,
-			InvocationTargetException, InstantiationException {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Object populate(Map<String, Object[]> parameterMap, Object paramBean, String p) throws IllegalAccessException, InvocationTargetException,
+			InstantiationException {
 		Pattern pattern = "".equals(p) ? null : Pattern.compile(p);
 		for (Map.Entry<String, Object[]> entry : parameterMap.entrySet()) {
 			if (null == entry.getKey() || (null != pattern && !pattern.matcher(entry.getKey()).matches())) {
@@ -236,8 +235,7 @@ public class ParametersInterceptor implements Interceptor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object convert(Object[] values, Class<?> targetType, String pattern) throws InstantiationException,
-			IllegalAccessException {
+	private Object convert(Object[] values, Class<?> targetType, String pattern) throws InstantiationException, IllegalAccessException {
 		if (null == values || values.length == 0) {
 			if (targetType.isPrimitive()) {
 				return getPrimitiveDefaultValue(targetType);
@@ -299,8 +297,7 @@ public class ParametersInterceptor implements Interceptor {
 						bean = Long.parseLong(stringValue);
 					} else if ((targetType == float.class || targetType == Float.class) && isSimpleNumberic(stringValue)) {
 						bean = Float.parseFloat(stringValue);
-					} else if ((targetType == double.class || targetType == Double.class || targetType == Number.class)
-							&& isSimpleNumberic(stringValue)) {
+					} else if ((targetType == double.class || targetType == Double.class || targetType == Number.class) && isSimpleNumberic(stringValue)) {
 						bean = Double.parseDouble(stringValue);
 					} else if (targetType.isEnum()) {
 						Object[] enums = targetType.getEnumConstants();
@@ -312,8 +309,7 @@ public class ParametersInterceptor implements Interceptor {
 						}
 					} else if (Date.class.isAssignableFrom(targetType)) {
 						Date date = (Date) targetType.newInstance();
-						date.setTime(DateUtils.parseDate(stringValue,
-								new String[] { "".equals(pattern) ? "yyyy-MM-dd" : pattern }).getTime());
+						date.setTime(DateUtils.parseDate(stringValue, new String[] { "".equals(pattern) ? "yyyy-MM-dd" : pattern }).getTime());
 						bean = date;
 					}
 				} catch (NumberFormatException e) {

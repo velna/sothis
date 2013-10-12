@@ -5,13 +5,14 @@ import java.util.HashMap;
 
 import junit.framework.Assert;
 
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ConfigurationException;
-import org.sothis.web.mvc.Controller;
-import org.sothis.web.mvc.DefaultController;
+import org.sothis.core.beans.BeanInstantiationException;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.Controller;
+import org.sothis.mvc.DefaultController;
 import org.sothis.web.mvc.MockActionInvocation;
 import org.sothis.web.mvc.MockBeanFactory;
-import org.sothis.web.mvc.SothisConfig;
+import org.sothis.web.mvc.SothisFactory;
+import org.sothis.web.mvc.WebActionContext;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.testng.annotations.AfterMethod;
@@ -20,13 +21,11 @@ import org.testng.annotations.Test;
 
 public class FileUploadInterceptorTest {
 
-	private ActionContext context = null;
+	private WebActionContext context = null;
 
 	@BeforeMethod
-	public void beforeMethod() throws ConfigurationException, IOException {
-		context = ActionContext.getContext();
-		SothisConfig.initConfig("sothis.default.properties");
-		context.set(ActionContext.SOTHIS_CONFIG, SothisConfig.getConfig());
+	public void beforeMethod() throws ConfigurationException, IOException, BeanInstantiationException, ClassNotFoundException {
+		context = SothisFactory.initActionContext();
 	}
 
 	@AfterMethod
@@ -44,12 +43,12 @@ public class FileUploadInterceptorTest {
 		request.addFile(new MockMultipartFile("myFile", "c:\\myFile.txt", "text/xml", "abc".getBytes()));
 		MockActionInvocation invocation = new MockActionInvocation(context);
 
-		Controller controller = new DefaultController("", "", TestController.class);
-		invocation.setAction(controller.getAction(""));
+		Controller controller = new DefaultController(context.getConfiguration(), "", "", TestController.class);
+		invocation.setAction(controller.getAction("test"));
 		Object controllerInstance = factory.getBean(controller.getControllerClass());
 		invocation.setControllerInstance(controllerInstance);
 
-		ActionContext actionContext = ActionContext.getContext();
+		WebActionContext actionContext = WebActionContext.getContext();
 		actionContext.setRequest(request);
 		invocation.setActionContext(actionContext);
 		FileUploadInterceptor interceptor = new FileUploadInterceptor();

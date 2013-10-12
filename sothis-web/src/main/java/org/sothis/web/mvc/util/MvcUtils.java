@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ActionInvocation;
+import org.sothis.mvc.ActionInvocation;
 import org.sothis.web.mvc.Flash;
+import org.sothis.web.mvc.WebActionContext;
 
 /**
  * Mvcπ§æﬂ¿‡
@@ -75,7 +75,7 @@ public class MvcUtils {
 			attrMap.put("session", sessionMap);
 
 			// flash attributes
-			Flash flash = (Flash) session.getAttribute(ActionContext.FLASH);
+			Flash flash = (Flash) session.getAttribute(WebActionContext.FLASH);
 			if (null != flash) {
 				Map<String, Object> flashMap = new HashMap<String, Object>();
 				for (String key : flash) {

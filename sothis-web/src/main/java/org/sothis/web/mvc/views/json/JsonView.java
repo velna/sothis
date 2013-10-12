@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSON;
@@ -19,10 +18,11 @@ import net.sf.json.util.PropertyFilter;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
 import org.sothis.core.util.MapUtils;
-import org.sothis.web.mvc.ActionInvocation;
-import org.sothis.web.mvc.ModelAndView;
-import org.sothis.web.mvc.SothisConfig;
-import org.sothis.web.mvc.View;
+import org.sothis.mvc.ActionInvocation;
+import org.sothis.mvc.ModelAndView;
+import org.sothis.mvc.View;
+import org.sothis.mvc.ViewRenderException;
+import org.sothis.web.mvc.WebActionContext;
 
 @Bean(scope = Scope.SINGLETON)
 public class JsonView implements View {
@@ -55,7 +55,7 @@ public class JsonView implements View {
 		DEFAULT_JSON_CONFIG.registerJsonValueProcessor(Date.class, DATE_VALUE_PROCESSOR);
 	}
 
-	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ServletException {
+	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ViewRenderException {
 		Object model = mav.model();
 		Map<String, Object> params = mav.viewParams();
 		JSON json;
@@ -68,9 +68,9 @@ public class JsonView implements View {
 		} else {
 			json = JSONObject.fromObject(model, config);
 		}
-		HttpServletResponse response = invocation.getActionContext().getResponse();
-		response.setContentType(MapUtils.getString(params, "contentType", "text/plain;charset="
-				+ SothisConfig.getConfig().getCharacterEncoding()));
+		WebActionContext context = (WebActionContext) invocation.getActionContext();
+		HttpServletResponse response = context.getResponse();
+		response.setContentType(MapUtils.getString(params, "contentType", "text/plain;charset=" + context.getConfiguration().getCharacterEncoding()));
 		json.write(response.getWriter());
 	}
 }

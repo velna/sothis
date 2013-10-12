@@ -4,8 +4,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.sothis.web.mvc.ActionContext;
 import org.sothis.web.mvc.Flash;
+import org.sothis.web.mvc.WebActionContext;
 
 import freemarker.ext.servlet.HttpSessionHashModel;
 import freemarker.template.TemplateHashModel;
@@ -43,7 +43,7 @@ public class AllHttpScopesHashModel extends WrappingTemplateModel implements Tem
 		} else if ("flash".equals(key)) {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
-				final Flash flash = (Flash) session.getAttribute(ActionContext.FLASH);
+				final Flash flash = (Flash) session.getAttribute(WebActionContext.FLASH);
 				if (null != flash) {
 					return new TemplateHashModel() {
 

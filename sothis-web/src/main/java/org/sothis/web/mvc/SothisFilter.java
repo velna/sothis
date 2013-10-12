@@ -1,9 +1,10 @@
 package org.sothis.web.mvc;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Properties;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,26 +13,23 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sothis.core.beans.BeanFactory;
-import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.config.PropertiesBean;
-import org.sothis.core.util.ClassUtils;
-import org.sothis.web.mvc.annotation.Ignore;
+import org.sothis.mvc.ActionInvocationHelper;
+import org.sothis.mvc.ApplicationContext;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.DefaultApplicationContext;
 
 public class SothisFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SothisFilter.class);
 
-	private ActionStore actionStore;
+	private ApplicationContext applicationContext;
 	private ServletContext servletContext;
-	private BeanFactory beanFactory;
-	private SothisConfig config;
 
 	@SuppressWarnings("unchecked")
 	public void init(final FilterConfig filterConfig) throws ServletException {
@@ -39,7 +37,8 @@ public class SothisFilter implements Filter {
 			LOGGER.info("Sothis: initialization started");
 		}
 		try {
-			ActionContext context = ActionContext.getContext();
+			BeanFactory beanFactory = null;
+			WebConfiguration config;
 			servletContext = filterConfig.getServletContext();
 
 			String beanFactoryClass = filterConfig.getInitParameter("beanFactoryClass");
@@ -52,13 +51,23 @@ public class SothisFilter implements Filter {
 					throw new ServletException("'beanFactoryClass' param must be configured since 'configBeanName' is used.");
 				}
 				PropertiesBean propertiesBean = beanFactory.getBean(configBeanName);
-				config = SothisConfig.initConfig(propertiesBean.getProperties());
+				config = WebConfiguration.create(propertiesBean.getProperties());
 			} else {
 				String configLocation = filterConfig.getInitParameter("configLocation");
 				if (null == configLocation) {
 					configLocation = "sothis.properties";
 				}
-				config = SothisConfig.initConfig(configLocation);
+				InputStream input = WebConfiguration.class.getClassLoader().getResourceAsStream(configLocation);
+				if (null == input) {
+					if (LOGGER.isWarnEnabled()) {
+						LOGGER.warn("can not find sothi config file : {}, using sothis.default.properties as default.", configLocation);
+					}
+					input = WebConfiguration.class.getClassLoader().getResourceAsStream("sothis.default.properties");
+				}
+				Properties properties = new Properties();
+				properties.load(new InputStreamReader(input, "UTF-8"));
+				input.close();
+				config = WebConfiguration.create(properties);
 			}
 			if (null == beanFactory) {
 				if (null == config.getBeanFactoryClass()) {
@@ -66,31 +75,14 @@ public class SothisFilter implements Filter {
 				}
 				beanFactory = createBeanFactory(config.getBeanFactoryClass());
 			}
-			context.set(ActionContext.SOTHIS_CONFIG, this.config);
-			context.setBeanFactory(beanFactory);
-			servletContext = new SothisServletContext(servletContext);
-			context.setServletContext(servletContext);
 
-			this.actionStore = initActions();
-			context.set(ActionContext.ACTION_STORE, actionStore);
+			applicationContext = new DefaultApplicationContext(beanFactory, config);
 
-			initSothisBeans();
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("Sothis: initialization completed");
 			}
 		} catch (Exception e) {
 			throw new ServletException("sothis init failed: ", e);
-		}
-	}
-
-	private void initSothisBeans() throws BeanInstantiationException {
-		ActionContext context = ActionContext.getContext();
-		context.set(ActionContext.ACTION_MAPPER, beanFactory.getBean(config.getActionMapper()));
-		context.set(ActionContext.MODEL_AND_VIEW_RESOLVER, beanFactory.getBean(config.getModelAndViewResolver()));
-
-		Set<Entry<String, Class<View>>> views = config.getViews().entrySet();
-		for (Entry<String, Class<View>> entry : views) {
-			this.beanFactory.getBean(entry.getValue());
 		}
 	}
 
@@ -102,79 +94,30 @@ public class SothisFilter implements Filter {
 		return beanFactory;
 	}
 
-	private ActionStore initActions() throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
-		DefaultActionStore actions = new DefaultActionStore();
-		final String[] packageNames = config.getControllerPackages();
-		for (String packageName : packageNames) {
-			if (StringUtils.isEmpty(packageName)) {
-				continue;
-			}
-			final Class<?>[] classes = ClassUtils.getClasses(packageName);
-			for (Class<?> c : classes) {
-				if (c.isLocalClass() || c.isMemberClass() || c.isAnonymousClass() || c.isAnnotationPresent(Ignore.class)
-						|| c.getPackage().isAnnotationPresent(Ignore.class)) {
-					continue;
-				}
-				final String className = c.getName().substring(packageName.length() + 1);
-				String subPackageName;
-				int dotIndex = className.lastIndexOf('.');
-				if (dotIndex > 0) {
-					subPackageName = className.substring(0, dotIndex).replaceAll("\\.", "/");
-				} else {
-					subPackageName = "";
-				}
-				final String simpleName = c.getSimpleName();
-				dotIndex = simpleName.indexOf(Controller.CONTROLLER_SUFFIX);
-				String name;
-				if (dotIndex > 0) {
-					name = StringUtils.uncapitalize(simpleName.substring(0, dotIndex));
-				} else if (dotIndex == 0) {
-					name = "";
-				} else {
-					continue;
-				}
-				Controller controller = new DefaultController(subPackageName, name, c);
-				Map<String, Action> controllerActions = controller.getActions();
-				for (String actionName : controllerActions.keySet()) {
-					Action action = controllerActions.get(actionName);
-					ActionMapper actionMapper = beanFactory.getBean(config.getActionMapper());
-					Object actionKey = actionMapper.map(action);
-					if (actions.containsAction(actionKey)) {
-						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as " + actions.getAction(actionKey));
-					}
-					actions.setAction(actionKey, action);
-				}
-				if (config.isInitializeControllerOnStartup()) {
-					this.beanFactory.getBean(c);
-				}
-			}
-		}
-		return actions;
-	}
-
+	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+		WebActionContext context = WebActionContext.getContext();
 		try {
-			ActionContext context = ActionContext.getContext();
-			context.set(ActionContext.ACTION_MAPPER, beanFactory.getBean(config.getActionMapper()));
-			context.set(ActionContext.MODEL_AND_VIEW_RESOLVER, beanFactory.getBean(config.getModelAndViewResolver()));
-			context.set(ActionContext.SOTHIS_CONFIG, this.config);
-			context.set(ActionContext.ACTION_STORE, actionStore);
-			if (null != config.getExceptionHandler()) {
-				context.set(ActionContext.EXCEPTION_HANDLER, this.beanFactory.getBean(config.getExceptionHandler()));
-			}
-			context.setBeanFactory(beanFactory);
-			context.setRequest(new SothisHttpServletRequest((HttpServletRequest) req));
+			BeanFactory beanFactory = applicationContext.getBeanFactory();
+			WebConfiguration config = (WebConfiguration) applicationContext.getConfiguration();
+
+			context.put(WebActionContext.ACTION_MAPPER, beanFactory.getBean(config.getActionMapper()));
+			context.put(WebActionContext.MODEL_AND_VIEW_RESOLVER, beanFactory.getBean(config.getModelAndViewResolver()));
+			context.put(WebActionContext.APPLICATION_CONTEXT, applicationContext);
+			context.setRequest(req);
 			context.setResponse((HttpServletResponse) resp);
 			context.setServletContext(servletContext);
+			context.setParameters(new HashMap<String, Object[]>(req.getParameterMap()));
+
 			Flash flash = context.getFlash(false);
 			if (null != flash) {
 				flash.flash();
 			}
 			ActionInvocationHelper.invoke(context);
-		} catch (BeanInstantiationException e) {
+		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
-			ActionContext.getContext().clear();
+			context.clear();
 		}
 	}
 

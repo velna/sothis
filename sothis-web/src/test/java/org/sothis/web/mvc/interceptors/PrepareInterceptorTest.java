@@ -5,14 +5,15 @@ import java.util.HashMap;
 
 import junit.framework.Assert;
 
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ActionInvocationException;
-import org.sothis.web.mvc.ConfigurationException;
-import org.sothis.web.mvc.Controller;
-import org.sothis.web.mvc.DefaultController;
+import org.sothis.core.beans.BeanInstantiationException;
+import org.sothis.mvc.ActionInvocationException;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.Controller;
+import org.sothis.mvc.DefaultController;
 import org.sothis.web.mvc.MockActionInvocation;
 import org.sothis.web.mvc.MockBeanFactory;
-import org.sothis.web.mvc.SothisConfig;
+import org.sothis.web.mvc.SothisFactory;
+import org.sothis.web.mvc.WebActionContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -25,13 +26,11 @@ import org.testng.annotations.Test;
  */
 public class PrepareInterceptorTest {
 
-	private ActionContext context = null;
+	private WebActionContext context = null;
 
 	@BeforeMethod
-	public void beforeMethod() throws ConfigurationException, IOException {
-		context = ActionContext.getContext();
-		SothisConfig.initConfig("sothis.default.properties");
-		context.set(ActionContext.SOTHIS_CONFIG, SothisConfig.getConfig());
+	public void beforeMethod() throws ConfigurationException, IOException, BeanInstantiationException, ClassNotFoundException {
+		context = SothisFactory.initActionContext();
 	}
 
 	@AfterMethod
@@ -59,9 +58,9 @@ public class PrepareInterceptorTest {
 		MockBeanFactory factory = new MockBeanFactory();
 		MockActionInvocation invocation = new MockActionInvocation(context);
 
-		Controller controller = new DefaultController("", "", TestController.class);
+		Controller controller = new DefaultController(context.getConfiguration(), "", "", TestController.class);
 
-		invocation.setAction(controller.getAction(""));
+		invocation.setAction(controller.getAction("test"));
 
 		Object controllerInstance = factory.getBean(controller.getControllerClass());
 		invocation.setControllerInstance(controllerInstance);
@@ -86,9 +85,9 @@ public class PrepareInterceptorTest {
 		MockBeanFactory factory = new MockBeanFactory();
 		MockActionInvocation invocation = new MockActionInvocation(context);
 
-		Controller controller = new DefaultController("", "", TestController1.class);
+		Controller controller = new DefaultController(context.getConfiguration(), "", "", TestController1.class);
 
-		invocation.setAction(controller.getAction(""));
+		invocation.setAction(controller.getAction("test"));
 
 		Object controllerInstance = factory.getBean(controller.getControllerClass());
 		invocation.setControllerInstance(controllerInstance);
@@ -114,7 +113,7 @@ public class PrepareInterceptorTest {
 		MockBeanFactory factory = new MockBeanFactory();
 		MockActionInvocation invocation = new MockActionInvocation(context);
 
-		Controller controller = new DefaultController("", "", TestController2.class);
+		Controller controller = new DefaultController(context.getConfiguration(), "", "", TestController2.class);
 
 		invocation.setAction(controller.getAction(""));
 
@@ -138,6 +137,10 @@ public class PrepareInterceptorTest {
 		public void prepare() throws Exception {
 			a = true;
 		}
+
+		public void testAction() {
+
+		}
 	}
 
 	/**
@@ -152,6 +155,10 @@ public class PrepareInterceptorTest {
 		public void prepare() throws Exception {
 			a = true;
 		}
+
+		public void testAction() {
+
+		}
 	}
 
 	/**
@@ -163,6 +170,10 @@ public class PrepareInterceptorTest {
 
 		public void prepare() throws Exception {
 			throw new UnsupportedOperationException("throw ActionInvocationException");
+		}
+
+		public void testAction() {
+
 		}
 	}
 }

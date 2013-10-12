@@ -16,7 +16,7 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.ArrayUtils;
-import org.sothis.web.mvc.ActionContext;
+import org.sothis.web.mvc.WebActionContext;
 
 public class MultipartHttpServletRequest extends HttpServletRequestWrapper {
 
@@ -69,7 +69,7 @@ public class MultipartHttpServletRequest extends HttpServletRequestWrapper {
 				append(paramMap, fieldName + "ContentType", item.getContentType());
 			}
 		}
-		ActionContext.getContext().setParameters(paramMap);
+		WebActionContext.getContext().setParameters(paramMap);
 	}
 
 	private void append(Map<String, Object[]> map, String key, Object value) {

@@ -17,7 +17,7 @@ public class XmlSerializable {
 		converter.objectToXml(converter, object, out, StringUtils.uncapitalize(object.getClass().getSimpleName()));
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	public void addConverter(Class className, TypeConverter converter) {
 		this.converter.register(className, converter);
 	}

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public abstract class XmlConverter {
 	static Map<Class, TypeConverter> converterMap;
 
@@ -22,8 +23,7 @@ public abstract class XmlConverter {
 		converterMap.put(Collection.class, new ListConverter());
 	}
 
-	public abstract void objectToXml(XmlConverter converter, Object object, Writer out, String alias)
-			throws IOException;
+	public abstract void objectToXml(XmlConverter converter, Object object, Writer out, String alias) throws IOException;
 
 	public void register(Class className, TypeConverter converter) {
 		converterMap.put(className, converter);

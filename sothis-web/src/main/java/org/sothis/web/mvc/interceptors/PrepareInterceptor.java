@@ -1,12 +1,12 @@
 package org.sothis.web.mvc.interceptors;
 
-import org.sothis.web.mvc.ActionInvocation;
-import org.sothis.web.mvc.ActionInvocationException;
-import org.sothis.web.mvc.Interceptor;
+import org.sothis.mvc.ActionInvocation;
+import org.sothis.mvc.ActionInvocationException;
+import org.sothis.mvc.Interceptor;
 
 public class PrepareInterceptor implements Interceptor {
 
-	public Object intercept(ActionInvocation invocation) throws ActionInvocationException {
+	public Object intercept(ActionInvocation invocation) throws Exception {
 		Object controller = invocation.getControllerInstance();
 		if (controller instanceof Preparable) {
 			try {

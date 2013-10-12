@@ -15,15 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ConfigurationException;
-import org.sothis.web.mvc.Controller;
-import org.sothis.web.mvc.DefaultController;
+import org.sothis.core.beans.BeanInstantiationException;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.Controller;
+import org.sothis.mvc.DefaultController;
 import org.sothis.web.mvc.HttpServletRequestAware;
 import org.sothis.web.mvc.HttpServletResponseAware;
 import org.sothis.web.mvc.MockActionInvocation;
-import org.sothis.web.mvc.MockBeanFactory;
-import org.sothis.web.mvc.SothisConfig;
+import org.sothis.web.mvc.SothisFactory;
+import org.sothis.web.mvc.WebActionContext;
 import org.sothis.web.mvc.annotation.Param;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -35,13 +35,11 @@ import org.testng.annotations.Test;
 
 public class ParametersInterceptorTest {
 
-	private ActionContext context = null;
+	private WebActionContext context = null;
 
 	@BeforeMethod
-	public void beforeMethod() throws ConfigurationException, IOException {
-		context = ActionContext.getContext();
-		SothisConfig.initConfig("sothis.default.properties");
-		context.set(ActionContext.SOTHIS_CONFIG, SothisConfig.getConfig());
+	public void beforeMethod() throws ConfigurationException, IOException, BeanInstantiationException, ClassNotFoundException {
+		context = SothisFactory.initActionContext();
 	}
 
 	@AfterMethod
@@ -50,35 +48,28 @@ public class ParametersInterceptorTest {
 	}
 
 	@Test(dataProvider = "test")
-	public void testIntercept(Map<String, Object[]> parameters, String actionName, Object[] expectedActionParams)
-			throws Exception {
-
-		ActionContext context = ActionContext.getContext();
-		MockBeanFactory factory = new MockBeanFactory();
-		context.setBeanFactory(factory);
+	public void testIntercept(Map<String, Object[]> parameters, String actionName, Object[] expectedActionParams) throws Exception {
 
 		MockActionInvocation invocation = new MockActionInvocation(context);
 		invocation.setActionContext(context);
 
 		context.setParameters(parameters);
-		Controller controller = new DefaultController("", "test", TestController.class);
+		Controller controller = new DefaultController(context.getConfiguration(), "", "test", TestController.class);
 		invocation.setAction(controller.getAction(actionName));
 
-		Object controllerInstance = factory.getBean(controller.getAction(actionName).getController().getControllerClass());
+		Object controllerInstance = context.getApplicationContext().getBeanFactory()
+				.getBean(controller.getAction(actionName).getController().getControllerClass());
 		invocation.setControllerInstance(controllerInstance);
 
 		ParametersInterceptor interceptor = new ParametersInterceptor();
 		interceptor.intercept(invocation);
-		Object[] actionParams = (Object[]) invocation.getActionContext().get(ActionContext.ACTION_PARAMS);
+		Object[] actionParams = (Object[]) invocation.getActionContext().get(WebActionContext.ACTION_PARAMS);
 		Assert.assertNotNull(actionParams);
 		Assert.assertEquals(actionParams, expectedActionParams);
 	}
 
 	@Test
 	public void testRequestAndResponse() throws Exception {
-		ActionContext context = ActionContext.getContext();
-		MockBeanFactory factory = new MockBeanFactory();
-		context.setBeanFactory(factory);
 		HttpServletRequest request = new MockHttpServletRequest();
 		context.setRequest(request);
 		HttpServletResponse response = new MockHttpServletResponse();
@@ -89,25 +80,23 @@ public class ParametersInterceptorTest {
 
 		Map<String, Object[]> parameters = new HashMap<String, Object[]>();
 		context.setParameters(parameters);
-		Controller controller = new DefaultController("", "test", TestController.class);
+		Controller controller = new DefaultController(context.getConfiguration(), "", "test", TestController.class);
 		String actionName = "testRequestResponse";
 		invocation.setAction(controller.getAction(actionName));
 
-		Object controllerInstance = factory.getBean(controller.getAction(actionName).getController().getControllerClass());
+		Object controllerInstance = context.getApplicationContext().getBeanFactory()
+				.getBean(controller.getAction(actionName).getController().getControllerClass());
 		invocation.setControllerInstance(controllerInstance);
 
 		ParametersInterceptor interceptor = new ParametersInterceptor();
 		interceptor.intercept(invocation);
-		Object[] actionParams = (Object[]) invocation.getActionContext().get(ActionContext.ACTION_PARAMS);
+		Object[] actionParams = (Object[]) invocation.getActionContext().get(WebActionContext.ACTION_PARAMS);
 		Assert.assertNotNull(actionParams);
 		Assert.assertEquals(actionParams, new Object[] { request, response });
 	}
 
 	@Test
 	public void testRequestAndResponseAware() throws Exception {
-		ActionContext context = ActionContext.getContext();
-		MockBeanFactory factory = new MockBeanFactory();
-		context.setBeanFactory(factory);
 		HttpServletRequest request = new MockHttpServletRequest();
 		context.setRequest(request);
 		HttpServletResponse response = new MockHttpServletResponse();
@@ -118,16 +107,17 @@ public class ParametersInterceptorTest {
 
 		Map<String, Object[]> parameters = new HashMap<String, Object[]>();
 		context.setParameters(parameters);
-		Controller controller = new DefaultController("", "test", TestController.class);
+		Controller controller = new DefaultController(context.getConfiguration(), "", "test", TestController.class);
 		String actionName = "testBeanParam2";
 		invocation.setAction(controller.getAction(actionName));
 
-		Object controllerInstance = factory.getBean(controller.getAction(actionName).getController().getControllerClass());
+		Object controllerInstance = context.getApplicationContext().getBeanFactory()
+				.getBean(controller.getAction(actionName).getController().getControllerClass());
 		invocation.setControllerInstance(controllerInstance);
 
 		ParametersInterceptor interceptor = new ParametersInterceptor();
 		interceptor.intercept(invocation);
-		Object[] actionParams = (Object[]) invocation.getActionContext().get(ActionContext.ACTION_PARAMS);
+		Object[] actionParams = (Object[]) invocation.getActionContext().get(WebActionContext.ACTION_PARAMS);
 		Assert.assertNotNull(actionParams);
 		ParamModel2 model = new ParamModel2();
 		model.request = request;
@@ -145,8 +135,7 @@ public class ParametersInterceptorTest {
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "test", new Object[0] });
 
 		// 原始类型
-		dataList.add(new Object[] { Collections.EMPTY_MAP, "testPrimitiveParam",
-				new Object[] { false, (byte) 0, 0, 0L, 0F, 0D, (char) 0, (short) 0 } });
+		dataList.add(new Object[] { Collections.EMPTY_MAP, "testPrimitiveParam", new Object[] { false, (byte) 0, 0, 0L, 0F, 0D, (char) 0, (short) 0 } });
 
 		// 类原始类型
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "testPrimitiveLikeParam", new Object[4] });

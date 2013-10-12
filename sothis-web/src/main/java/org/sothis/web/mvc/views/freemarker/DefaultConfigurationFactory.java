@@ -3,9 +3,9 @@ package org.sothis.web.mvc.views.freemarker;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ConfigurationException;
-import org.sothis.web.mvc.SothisConfig;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.web.mvc.WebActionContext;
+import org.sothis.web.mvc.WebConfiguration;
 
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
@@ -16,13 +16,12 @@ import freemarker.template.TemplateHashModel;
 
 public class DefaultConfigurationFactory implements ConfigurationFactory {
 
-	public Configuration createConfiguration(ActionContext actionContext) throws ConfigurationException {
+	public Configuration createConfiguration(WebActionContext actionContext) throws ConfigurationException {
 		try {
-			SothisConfig sothisConfig = (SothisConfig) actionContext.get(ActionContext.SOTHIS_CONFIG);
+			WebConfiguration config = actionContext.getConfiguration();
 
 			Configuration configuration = new Configuration();
-			Map<String, String> configMap = sothisConfig.getAsGroup(Pattern.compile("freemarker\\.settings\\.(.*)"),
-					String.class);
+			Map<String, String> configMap = config.getAsGroup(Pattern.compile("freemarker\\.settings\\.(.*)"), String.class);
 			for (Map.Entry<String, String> entry : configMap.entrySet()) {
 				configuration.setSetting(entry.getKey(), entry.getValue());
 			}
@@ -34,22 +33,19 @@ public class DefaultConfigurationFactory implements ConfigurationFactory {
 
 			configuration.setSharedVariable("enums", wrapper.getEnumModels());
 			// shared directives
-			Map<String, Class<?>> sharedDirectiveVariables = (Map) sothisConfig.getAsGroup(
-					Pattern.compile("freemarker\\.directive\\.(\\w+)\\.class"), Class.class);
+			Map<String, Class<?>> sharedDirectiveVariables = (Map) config.getAsGroup(Pattern.compile("freemarker\\.directive\\.(\\w+)\\.class"), Class.class);
 			for (String key : sharedDirectiveVariables.keySet()) {
 				configuration.setSharedVariable(key, sharedDirectiveVariables.get(key).newInstance());
 			}
 
 			// shared statics
-			Map<String, String> sharedStaticVariables = (Map) sothisConfig.getAsGroup(
-					Pattern.compile("freemarker\\.static\\.(\\w+)\\.class"), String.class);
+			Map<String, String> sharedStaticVariables = (Map) config.getAsGroup(Pattern.compile("freemarker\\.static\\.(\\w+)\\.class"), String.class);
 			TemplateHashModel staticModels = wrapper.getStaticModels();
 			for (String key : sharedStaticVariables.keySet()) {
 				configuration.setSharedVariable(key, staticModels.get(sharedStaticVariables.get(key)));
 			}
-			MultiTemplateLoader multiTemplateLoader = new MultiTemplateLoader(new TemplateLoader[] {
-					new ClassPathTemplateLoader(), new WebappTemplateLoader(actionContext.getServletContext()),
-					new WebappTemplateLoader(actionContext.getServletContext(), "/WEB-INF/") });
+			MultiTemplateLoader multiTemplateLoader = new MultiTemplateLoader(new TemplateLoader[] { new ClassPathTemplateLoader(),
+					new WebappTemplateLoader(actionContext.getServletContext()), new WebappTemplateLoader(actionContext.getServletContext(), "/WEB-INF/") });
 			configuration.setTemplateLoader(multiTemplateLoader);
 			return configuration;
 		} catch (Exception e) {

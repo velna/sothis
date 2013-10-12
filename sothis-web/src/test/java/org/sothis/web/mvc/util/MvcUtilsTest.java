@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.sothis.web.mvc.ActionContext;
-import org.sothis.web.mvc.ConfigurationException;
-import org.sothis.web.mvc.Controller;
-import org.sothis.web.mvc.DefaultController;
+import org.sothis.core.beans.BeanInstantiationException;
+import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.Controller;
+import org.sothis.mvc.DefaultController;
 import org.sothis.web.mvc.MockActionInvocation;
 import org.sothis.web.mvc.MockBeanFactory;
-import org.sothis.web.mvc.SothisConfig;
+import org.sothis.web.mvc.SothisFactory;
+import org.sothis.web.mvc.WebActionContext;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -29,13 +30,11 @@ import org.testng.annotations.Test;
  */
 public class MvcUtilsTest {
 
-	private ActionContext context = null;
+	private WebActionContext context = null;
 
 	@BeforeMethod
-	public void beforeMethod() throws ConfigurationException, IOException {
-		context = ActionContext.getContext();
-		SothisConfig.initConfig("sothis.default.properties");
-		context.set(ActionContext.SOTHIS_CONFIG, SothisConfig.getConfig());
+	public void beforeMethod() throws ConfigurationException, IOException, BeanInstantiationException, ClassNotFoundException {
+		context = SothisFactory.initActionContext();
 	}
 
 	@AfterMethod
@@ -55,7 +54,7 @@ public class MvcUtilsTest {
 		MockBeanFactory factory = new MockBeanFactory();
 		MockActionInvocation invocation = new MockActionInvocation(context);
 
-		Controller controller = new DefaultController("", "test", TestController.class);
+		Controller controller = new DefaultController(context.getConfiguration(), "", "test", TestController.class);
 
 		invocation.setAction(controller.getAction("test"));
 
