@@ -19,8 +19,10 @@ public class ClassUtils {
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
-	public static Class<?>[] getClasses(String packageName) throws ClassNotFoundException, IOException {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	public static Class<?>[] getClasses(String packageName)
+			throws ClassNotFoundException, IOException {
+		ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
 		assert classLoader != null;
 		String path = packageName.replace('.', '/');
 		Enumeration<URL> resources = classLoader.getResources(path);
@@ -30,7 +32,9 @@ public class ClassUtils {
 			URL resource = resources.nextElement();
 			String p = "";
 			if (resource.getFile().indexOf("!") >= 0) {// 在其他的jar文件中
-				p = resource.getFile().substring(0, resource.getFile().indexOf("!")).replaceAll("%20", "");
+				p = resource.getFile()
+						.substring(0, resource.getFile().indexOf("!"))
+						.replaceAll("%20", "");
 			} else {// 在classes目录中
 				p = resource.getFile();
 			}
@@ -76,7 +80,8 @@ public class ClassUtils {
 	 * @return The classes
 	 * @throws ClassNotFoundException
 	 */
-	public static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
+	public static List<Class<?>> findClasses(File directory, String packageName)
+			throws ClassNotFoundException {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		if (!directory.exists()) {
 			return classes;
@@ -85,12 +90,39 @@ public class ClassUtils {
 		for (File file : files) {
 			if (file.isDirectory()) {
 				assert !file.getName().contains(".");
-				classes.addAll(findClasses(file, packageName + "." + file.getName()));
+				classes.addAll(findClasses(file,
+						packageName + "." + file.getName()));
 			} else if (file.getName().endsWith(".class")) {
-				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+				classes.add(Class.forName(packageName
+						+ '.'
+						+ file.getName().substring(0,
+								file.getName().length() - 6)));
 			}
 		}
 		return classes;
 	}
 
+	public static URL[] getResource(String resourceName, Class callingClass) {
+		List<URL> urls = new ArrayList<URL>();
+		URL url = null;
+
+		url = Thread.currentThread().getContextClassLoader()
+				.getResource(resourceName);
+		if (null != url) {
+			urls.add(url);
+		}
+		url = ClassUtils.class.getClassLoader().getResource(resourceName);
+		if (null != url) {
+			urls.add(url);
+		}
+
+		url = callingClass.getClassLoader().getResource(resourceName);
+		if (null != url) {
+			urls.add(url);
+		}
+
+		URL[] ret = new URL[urls.size()];
+		urls.toArray(ret);
+		return ret;
+	}
 }

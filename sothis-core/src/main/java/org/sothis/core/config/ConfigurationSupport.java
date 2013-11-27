@@ -13,6 +13,7 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sothis.core.util.ClassUtils;
 import org.sothis.core.util.CollectionUtils;
 
 public class ConfigurationSupport extends PropertiesConfiguration {
@@ -99,26 +100,28 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 
 	protected static Properties getClasspathProperties() throws IOException, URISyntaxException {
 		Properties allProperties = new Properties();
-		URL url = ConfigurationSupport.class.getClassLoader().getResource("");
-		if (null == url) {
+		URL[] urls = ClassUtils.getResource("", ConfigurationSupport.class);
+		if (null == urls || urls.length == 0) {
 			return allProperties;
 		}
-		File rootFolder = new File(url.toURI());
-		File[] propertiesFiles = rootFolder.listFiles(new FileFilter() {
-			public boolean accept(File pathname) {
-				if (null == pathname) {
-					return false;
+		for (URL url : urls) {
+			File rootFolder = new File(url.toURI());
+			File[] propertiesFiles = rootFolder.listFiles(new FileFilter() {
+				public boolean accept(File pathname) {
+					if (null == pathname) {
+						return false;
+					}
+					if (pathname.isDirectory()) {
+						return false;
+					}
+					return pathname.getName().endsWith(".properties");
 				}
-				if (pathname.isDirectory()) {
-					return false;
-				}
-				return pathname.getName().endsWith(".properties");
+			});
+			for (File pFile : propertiesFiles) {
+				Properties properties = new Properties();
+				properties.load(new InputStreamReader(new FileInputStream(pFile), "UTF-8"));
+				CollectionUtils.mergePropertiesIntoMap(properties, allProperties);
 			}
-		});
-		for (File pFile : propertiesFiles) {
-			Properties properties = new Properties();
-			properties.load(new InputStreamReader(new FileInputStream(pFile), "UTF-8"));
-			CollectionUtils.mergePropertiesIntoMap(properties, allProperties);
 		}
 		return allProperties;
 	}
