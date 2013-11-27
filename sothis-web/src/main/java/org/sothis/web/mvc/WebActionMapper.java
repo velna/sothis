@@ -7,8 +7,8 @@ import org.sothis.core.beans.Autowire;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
 import org.sothis.mvc.Action;
+import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ActionMapper;
-import org.sothis.mvc.ApplicationContext;
 
 /**
  * ActionMapper接口的默认实现
@@ -25,11 +25,9 @@ public class WebActionMapper implements ActionMapper {
 	}
 
 	@Override
-	public Action resolve(Object req, Object resp, ApplicationContext store) {
-		if (null == req || null == resp)
-			throw new IllegalArgumentException("null request or response.");
+	public Action resolve(ActionContext context) {
 
-		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletRequest request = (HttpServletRequest) context.getRequest();
 		String key = null;
 		if (null != request.getAttribute(WebActionContext.ACTION_URI)) {
 			key = request.getAttribute(WebActionContext.ACTION_URI).toString();
@@ -42,7 +40,7 @@ public class WebActionMapper implements ActionMapper {
 		if (key.endsWith("/")) {
 			key = key + "index";
 		}
-		Action action = store.getAction(key);
+		Action action = context.getApplicationContext().getAction(key);
 		if (null != action) {
 			Method[] ms = action.getAnnotation(Method.class);
 			String method = null;

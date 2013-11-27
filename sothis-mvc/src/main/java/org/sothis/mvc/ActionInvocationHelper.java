@@ -32,7 +32,7 @@ public class ActionInvocationHelper {
 	private static ActionInvocation prepareActionInvocation(ActionContext context) {
 		ActionMapper actionMapper = (ActionMapper) context.get(ActionContext.ACTION_MAPPER);
 
-		Action action = actionMapper.resolve(context.getRequest(), context.getResponse(), context.getApplicationContext());
+		Action action = actionMapper.resolve(context);
 		if (null == action) {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class ActionInvocationHelper {
 		context.put(ActionContext.ACTION, action);
 
 		Object controllerInstance = context.getApplicationContext().getBeanFactory().getBean(action.getController().getControllerClass());
-		return new DefaultActionInvocation(action, controllerInstance, context);
+		return new DefaultActionInvocation(controllerInstance, context);
 	}
 
 }
