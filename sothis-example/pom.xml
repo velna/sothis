@@ -7,10 +7,8 @@
 		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>org.sothis</groupId>
 	<artifactId>sothis-example</artifactId>
 	<packaging>war</packaging>
-	<version>0.3.0-SNAPSHOT</version>
 	<name>sothis-example</name>
 	<build>
 		<plugins>
