@@ -13,7 +13,6 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sothis.core.util.ClassUtils;
 import org.sothis.core.util.CollectionUtils;
 
 public class ConfigurationSupport extends PropertiesConfiguration {
@@ -100,24 +99,24 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 
 	protected static Properties getClasspathProperties() throws IOException, URISyntaxException {
 		Properties allProperties = new Properties();
-		URL[] urls = ClassUtils.getResource("", ConfigurationSupport.class);
-		if (null == urls || urls.length == 0) {
+		URL url = ConfigurationSupport.class.getClassLoader().getResource("");
+		if (null == url) {
 			return allProperties;
 		}
-		for (URL url : urls) {
-			File rootFolder = new File(url.toURI());
-			LOGGER.info("load property files from {}", rootFolder.getAbsolutePath());
-			File[] propertiesFiles = rootFolder.listFiles(new FileFilter() {
-				public boolean accept(File pathname) {
-					if (null == pathname) {
-						return false;
-					}
-					if (pathname.isDirectory()) {
-						return false;
-					}
-					return pathname.getName().endsWith(".properties");
+		File rootFolder = new File(url.toURI());
+		LOGGER.info("load property files from {}", rootFolder.getAbsolutePath());
+		File[] propertiesFiles = rootFolder.listFiles(new FileFilter() {
+			public boolean accept(File pathname) {
+				if (null == pathname) {
+					return false;
 				}
-			});
+				if (pathname.isDirectory()) {
+					return false;
+				}
+				return pathname.getName().endsWith(".properties");
+			}
+		});
+		if (null != propertiesFiles) {
 			for (File pFile : propertiesFiles) {
 				LOGGER.info("load properties from {}", pFile.getAbsolutePath());
 				Properties properties = new Properties();
