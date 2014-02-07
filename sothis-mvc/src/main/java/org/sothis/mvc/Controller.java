@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
- * controllerµÄ¼òµ¥·â×°
+ * controllerçš„ç®€å•å°è£…
  * 
  * @author velna
  * 
@@ -14,7 +14,7 @@ public interface Controller extends ActionBase {
 	public final static String CONTROLLER_SUFFIX = "Controller";
 
 	/**
-	 * µÃµ½Õâ¸öcontrollerÖĞnameÎªactionNameµÄAction
+	 * å¾—åˆ°è¿™ä¸ªcontrollerä¸­nameä¸ºactionNameçš„Action
 	 * 
 	 * @param actionName
 	 * @return
@@ -22,69 +22,69 @@ public interface Controller extends ActionBase {
 	Action getAction(String actionName);
 
 	/**
-	 * µÃµ½Õâ¸öcontrollerÖĞËùÓĞµÄaction
+	 * å¾—åˆ°è¿™ä¸ªcontrollerä¸­æ‰€æœ‰çš„action
 	 * 
-	 * @return ËùÓĞActionµÄMap£¬MapµÄkeyÎªactionÃû³Æ
+	 * @return æ‰€æœ‰Actionçš„Mapï¼ŒMapçš„keyä¸ºactionåç§°
 	 */
 	Map<String, Action> getActions();
 
 	/**
-	 * µÃµ½Êµ¼ÊcontrollerµÄÀà
+	 * å¾—åˆ°å®é™…controllerçš„ç±»
 	 * 
 	 * @return
 	 */
 	Class<?> getControllerClass();
 
 	/**
-	 * µÃµ½controllerÃû³Æ
+	 * å¾—åˆ°controlleråç§°
 	 * 
 	 * @return
 	 */
 	String getName();
 
 	/**
-	 * µÃµ½controllerËùÔÚµÄ°ü£¬Õâ¸ö°üÊÇÏà¶ÔÓÚsothis.controller.packagesÅäÖÃµÄ°üÃû<br>
-	 * ±ÈÈçsothis.controller.packages=com.my.app.controller£¬ÄÇÃ´£º<br>
-	 * com.my.app.controller.MyController£¬·µ»Ø¿Õ×Ö·û´®<br>
-	 * com.my.app.controller.user.LoginController£¬·µ»Øuser<br>
-	 * com.my.app.controller.user.task.TaskController£¬·µ»Øuser/task
+	 * å¾—åˆ°controlleræ‰€åœ¨çš„åŒ…ï¼Œè¿™ä¸ªåŒ…æ˜¯ç›¸å¯¹äºsothis.controller.packagesé…ç½®çš„åŒ…å<br>
+	 * æ¯”å¦‚sothis.controller.packages=com.my.app.controllerï¼Œé‚£ä¹ˆï¼š<br>
+	 * com.my.app.controller.MyControllerï¼Œè¿”å›ç©ºå­—ç¬¦ä¸²<br>
+	 * com.my.app.controller.user.LoginControllerï¼Œè¿”å›user<br>
+	 * com.my.app.controller.user.task.TaskControllerï¼Œè¿”å›user/task
 	 * 
-	 * @return Ïà¶ÔµÄpackageÃû³Æ
+	 * @return ç›¸å¯¹çš„packageåç§°
 	 */
 	String getPackageName();
 
 	/**
-	 * µÃµ½controllerµÄÍêÕûÃû³Æ£¬°üÀ¨packageÂ·¾¶
-	 * ±ÈÈçsothis.controller.packages=com.my.app.controller£¬ÄÇÃ´£º<br>
-	 * com.my.app.controller.MyController£¬·µ»Ø/my/<br>
-	 * com.my.app.controller.user.LoginController£¬·µ»Ø/user/my/<br>
-	 * com.my.app.controller.user.Controller£¬·µ»Ø/user/<br>
-	 * com.my.app.controller.user.task.TaskController£¬·µ»Ø/user/task/my/
+	 * å¾—åˆ°controllerçš„å®Œæ•´åç§°ï¼ŒåŒ…æ‹¬packageè·¯å¾„
+	 * æ¯”å¦‚sothis.controller.packages=com.my.app.controllerï¼Œé‚£ä¹ˆï¼š<br>
+	 * com.my.app.controller.MyControllerï¼Œè¿”å›/my/<br>
+	 * com.my.app.controller.user.LoginControllerï¼Œè¿”å›/user/my/<br>
+	 * com.my.app.controller.user.Controllerï¼Œè¿”å›/user/<br>
+	 * com.my.app.controller.user.task.TaskControllerï¼Œè¿”å›/user/task/my/
 	 * 
 	 * @return
 	 */
 	String getFullName();
 
 	/**
-	 * Ö¸¶¨µÄ×¢½âÊÇ·ñÔÚcontroller class»òcontroller packageÖĞ³öÏÖ<br>
+	 * æŒ‡å®šçš„æ³¨è§£æ˜¯å¦åœ¨controller classæˆ–controller packageä¸­å‡ºç°<br>
 	 * {@inheritDoc}
 	 */
 	boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
 
 	/**
-	 * µÃµ½ÔÚcontroller class»òcontroller packageÖĞ³öÏÖµÄ×¢½â<br>
+	 * å¾—åˆ°åœ¨controller classæˆ–controller packageä¸­å‡ºç°çš„æ³¨è§£<br>
 	 * {@inheritDoc}
 	 */
 	<T extends Annotation> T[] getAnnotation(Class<T> annotationClass);
 
 	/**
-	 * µÃµ½ËùÓĞÔÚcontroller classºÍcontroller packageÖĞÉùÃ÷µÄ×¢½â<br>
+	 * å¾—åˆ°æ‰€æœ‰åœ¨controller classå’Œcontroller packageä¸­å£°æ˜çš„æ³¨è§£<br>
 	 * {@inheritDoc}
 	 */
 	Annotation[] getAnnotations();
 
 	/**
-	 * Í¬ {@link Action#getAnnotations()}<br>
+	 * åŒ {@link Action#getAnnotations()}<br>
 	 * {@inheritDoc}
 	 */
 	Annotation[] getDeclaredAnnotations();

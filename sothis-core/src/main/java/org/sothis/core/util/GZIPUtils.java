@@ -11,10 +11,10 @@ import java.util.zip.GZIPOutputStream;
 public class GZIPUtils {
 
 	/**
-	 * ½«dataÒÔgzip·½Ê½Ñ¹Ëõ²¢·µ»Ø
+	 * å°†dataä»¥gzipæ–¹å¼å‹ç¼©å¹¶è¿”å›
 	 * 
 	 * @param data
-	 * @return ·µ»ØÑ¹ËõºóµÄÊı¾İ
+	 * @return è¿”å›å‹ç¼©åçš„æ•°æ®
 	 * @throws IOException
 	 */
 	public static byte[] makeAsByteArray(byte[] data) throws IOException {
@@ -26,10 +26,10 @@ public class GZIPUtils {
 	}
 
 	/**
-	 * ½«dataÒÔgzip·½Ê½Ñ¹Ëõ£¬²¢·µ»ØÒ»¸ö¿É¶ÁÈ¡µÄInputStream
+	 * å°†dataä»¥gzipæ–¹å¼å‹ç¼©ï¼Œå¹¶è¿”å›ä¸€ä¸ªå¯è¯»å–çš„InputStream
 	 * 
 	 * @param data
-	 * @return ·µ»Ø¿É¶ÁµÄInputStream
+	 * @return è¿”å›å¯è¯»çš„InputStream
 	 * @throws IOException
 	 */
 	public static InputStream makeAsInputStream(byte[] data) throws IOException {
@@ -37,10 +37,10 @@ public class GZIPUtils {
 	}
 
 	/**
-	 * ½«gzip¸ñÊ½µÄÊäÈëin×ª»»³É½âÑ¹ºóµÄÊäÈë
+	 * å°†gzipæ ¼å¼çš„è¾“å…¥inè½¬æ¢æˆè§£å‹åçš„è¾“å…¥
 	 * 
 	 * @param in
-	 * @return ·µ»Ø½âÑ¹ºóµÄÊäÈë
+	 * @return è¿”å›è§£å‹åçš„è¾“å…¥
 	 * @throws IOException
 	 */
 	public static InputStream wrap(InputStream in) throws IOException {
@@ -48,10 +48,10 @@ public class GZIPUtils {
 	}
 
 	/**
-	 * ½«Êä³ö×ª»»³ÉgzipÑ¹ËõºóµÄÊä³ö
+	 * å°†è¾“å‡ºè½¬æ¢æˆgzipå‹ç¼©åçš„è¾“å‡º
 	 * 
 	 * @param out
-	 * @return ·µ»ØgzipÑ¹ËõºóµÄÊä³ö
+	 * @return è¿”å›gzipå‹ç¼©åçš„è¾“å‡º
 	 * @throws IOException
 	 */
 	public static OutputStream wrap(OutputStream out) throws IOException {

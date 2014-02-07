@@ -22,7 +22,7 @@ import org.sothis.dal.query.Cnd;
 import org.sothis.dal.query.Op;
 
 /**
- * ÊµÏÖÁË»ùÓÚJPAµÄ×Ö¶ÎÓ³Éä
+ * å®ç°äº†åŸºäºJPAçš„å­—æ®µæ˜ å°„
  * 
  * @author velna
  * 
@@ -91,7 +91,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * µÃµ½±íÃû
+	 * å¾—åˆ°è¡¨å
 	 * 
 	 * @return
 	 */
@@ -100,7 +100,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * µÃµ½×Ö¶ÎÓ³Éä±í£¬keyÎªÊµÌåÀàµÄ×Ö¶ÎÃû£¨²¢·ÇÊµ¼ÊÊı¾İ¿âµÄ×Ö¶ÎÃû£©
+	 * å¾—åˆ°å­—æ®µæ˜ å°„è¡¨ï¼Œkeyä¸ºå®ä½“ç±»çš„å­—æ®µåï¼ˆå¹¶éå®é™…æ•°æ®åº“çš„å­—æ®µåï¼‰
 	 * 
 	 * @return
 	 */
@@ -109,7 +109,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * µÃµ½×Ö¶ÎpropertyµÄÓ³Éä£¬propertyÎªÊµÌåÀàµÄ×Ö¶ÎÃû£¨²¢·ÇÊµ¼ÊÊı¾İ¿âµÄ×Ö¶ÎÃû£©
+	 * å¾—åˆ°å­—æ®µpropertyçš„æ˜ å°„ï¼Œpropertyä¸ºå®ä½“ç±»çš„å­—æ®µåï¼ˆå¹¶éå®é™…æ•°æ®åº“çš„å­—æ®µåï¼‰
 	 * 
 	 * @param property
 	 * @return
@@ -123,7 +123,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * µÃµ½Êı¾İ¿â×Ö¶ÎÓ³Éä±í£¬keyÎªÊı¾İ¿âµÄ×Ö¶ÎÃû£¨²¢·ÇÊµÌåÀàµÄ×Ö¶ÎÃû£©
+	 * å¾—åˆ°æ•°æ®åº“å­—æ®µæ˜ å°„è¡¨ï¼Œkeyä¸ºæ•°æ®åº“çš„å­—æ®µåï¼ˆå¹¶éå®ä½“ç±»çš„å­—æ®µåï¼‰
 	 * 
 	 * @return
 	 */
@@ -132,7 +132,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * µÃµ½Êı¾İ¿â×Ö¶ÎfieldµÄÓ³Éä£¬fieldÎªÊı¾İ¿âµÄ×Ö¶ÎÃû£¨²¢·ÇÊµÌåÀàµÄ×Ö¶ÎÃû£©
+	 * å¾—åˆ°æ•°æ®åº“å­—æ®µfieldçš„æ˜ å°„ï¼Œfieldä¸ºæ•°æ®åº“çš„å­—æ®µåï¼ˆå¹¶éå®ä½“ç±»çš„å­—æ®µåï¼‰
 	 * 
 	 * @param field
 	 * @return
@@ -146,7 +146,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * µÃµ½id×Ö¶ÎµÄ×Ö¶ÎÃû
+	 * å¾—åˆ°idå­—æ®µçš„å­—æ®µå
 	 * 
 	 * @return
 	 */
@@ -155,7 +155,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * id×Ö¶ÎÊÇ·ñÎª×Ô¶¯Éú³É
+	 * idå­—æ®µæ˜¯å¦ä¸ºè‡ªåŠ¨ç”Ÿæˆ
 	 * 
 	 * @return
 	 */
@@ -248,7 +248,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	/**
-	 * ÊµÌåÀà×Ö¶ÎÊôĞÔĞÅÏ¢
+	 * å®ä½“ç±»å­—æ®µå±æ€§ä¿¡æ¯
 	 * 
 	 * @author velna
 	 * 
@@ -273,7 +273,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 		}
 
 		/**
-		 * µÃµ½×Ö¶ÎµÄÃèÊöĞÅÏ¢
+		 * å¾—åˆ°å­—æ®µçš„æè¿°ä¿¡æ¯
 		 * 
 		 * @return
 		 */
@@ -282,7 +282,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 		}
 
 		/**
-		 * µÃµ½Column×¢½â
+		 * å¾—åˆ°Columnæ³¨è§£
 		 * 
 		 * @return
 		 */
@@ -291,7 +291,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 		}
 
 		/**
-		 * ÊÇ·ñÎªid×Ö¶Î
+		 * æ˜¯å¦ä¸ºidå­—æ®µ
 		 * 
 		 * @return
 		 */
@@ -300,7 +300,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 		}
 
 		/**
-		 * µÃµ½ËùÊôµÄÊµÌåÀà
+		 * å¾—åˆ°æ‰€å±çš„å®ä½“ç±»
 		 * 
 		 * @return
 		 */
@@ -309,7 +309,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 		}
 
 		/**
-		 * ÊÇ·ñÎªË²Ì¬µÄ
+		 * æ˜¯å¦ä¸ºç¬æ€çš„
 		 * 
 		 * @return
 		 */

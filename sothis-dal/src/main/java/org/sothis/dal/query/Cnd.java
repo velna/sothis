@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * ²éÑ¯Ìõ¼şÀà¡£Í¨¹ı±¾Àà¿ÉÒÔ¼ò±ãµÄÉú³É²éÑ¯Ìõ¼ş¡£
+ * æŸ¥è¯¢æ¡ä»¶ç±»ã€‚é€šè¿‡æœ¬ç±»å¯ä»¥ç®€ä¾¿çš„ç”ŸæˆæŸ¥è¯¢æ¡ä»¶ã€‚
  * 
  * @author velna
  * 
@@ -33,14 +33,14 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Éú³ÉÒ»¸öÓÉ¼òµ¥±í´ïÊ½¿ªÊ¼µÄ²éÑ¯Ìõ¼ş
+	 * ç”Ÿæˆä¸€ä¸ªç”±ç®€å•è¡¨è¾¾å¼å¼€å§‹çš„æŸ¥è¯¢æ¡ä»¶
 	 * 
 	 * @param field
-	 *            ×Ö¶ÎÃû
+	 *            å­—æ®µå
 	 * @param op
-	 *            ²Ù×÷·û
+	 *            æ“ä½œç¬¦
 	 * @param value
-	 *            ×Ö¶ÎÖµ
+	 *            å­—æ®µå€¼
 	 * @return
 	 */
 	public static Cnd make(String field, Object op, Object value) {
@@ -48,7 +48,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Ïàµ±ÓÚCnd.make(field, Op.EQ, value);
+	 * ç›¸å½“äºCnd.make(field, Op.EQ, value);
 	 * 
 	 * @param field
 	 * @param value
@@ -59,7 +59,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Ïòµ±Ç°Ìõ¼şÌí¼ÓÒ»¸ö¼òµ¥±í´ïÊ½£¬²¢ÓÃandÂß¼­ÔËËã·û½øĞĞÁ¬½Ó
+	 * å‘å½“å‰æ¡ä»¶æ·»åŠ ä¸€ä¸ªç®€å•è¡¨è¾¾å¼ï¼Œå¹¶ç”¨andé€»è¾‘è¿ç®—ç¬¦è¿›è¡Œè¿æ¥
 	 * 
 	 * @param field
 	 * @param op
@@ -72,7 +72,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Ïàµ±ÓÚcnd.and(field, Op.EQ, value);
+	 * ç›¸å½“äºcnd.and(field, Op.EQ, value);
 	 * 
 	 * @param field
 	 * @param value
@@ -84,7 +84,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Ïòµ±Ç°Ìõ¼şÌí¼ÓÒ»¸öÌõ¼ş£¬²¢ÓÃandÂß¼­ÔËËã·û½øĞĞÁ¬½Ó
+	 * å‘å½“å‰æ¡ä»¶æ·»åŠ ä¸€ä¸ªæ¡ä»¶ï¼Œå¹¶ç”¨andé€»è¾‘è¿ç®—ç¬¦è¿›è¡Œè¿æ¥
 	 * 
 	 * @param cnd
 	 * @return
@@ -94,7 +94,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Ïòµ±Ç°Ìõ¼şÌí¼ÓÒ»¸öÌõ¼ş£¬²¢ÓÃorÂß¼­ÔËËã·û½øĞĞÁ¬½Ó
+	 * å‘å½“å‰æ¡ä»¶æ·»åŠ ä¸€ä¸ªæ¡ä»¶ï¼Œå¹¶ç”¨oré€»è¾‘è¿ç®—ç¬¦è¿›è¡Œè¿æ¥
 	 * 
 	 * @param cnd
 	 * @return
@@ -104,7 +104,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Ïòµ±Ç°Ìõ¼şÌí¼ÓÒ»¸ö¼òµ¥±í´ïÊ½£¬²¢ÓÃorÂß¼­ÔËËã·û½øĞĞÁ¬½Ó
+	 * å‘å½“å‰æ¡ä»¶æ·»åŠ ä¸€ä¸ªç®€å•è¡¨è¾¾å¼ï¼Œå¹¶ç”¨oré€»è¾‘è¿ç®—ç¬¦è¿›è¡Œè¿æ¥
 	 * 
 	 * @param field
 	 * @param op
@@ -117,7 +117,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * Ïàµ±ÓÚcnd.or(field, Op.EQ, value);
+	 * ç›¸å½“äºcnd.or(field, Op.EQ, value);
 	 * 
 	 * @param field
 	 * @param value
@@ -129,7 +129,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öÓÉÁ½¸öÌõ¼ş×é³ÉµÄÌõ¼ş£¬ÕâÁ½¸öÌõ¼şÓÃandÂß¼­ÔËËã·û½øĞĞÁ¬½Ó
+	 * åˆ›å»ºä¸€ä¸ªç”±ä¸¤ä¸ªæ¡ä»¶ç»„æˆçš„æ¡ä»¶ï¼Œè¿™ä¸¤ä¸ªæ¡ä»¶ç”¨andé€»è¾‘è¿ç®—ç¬¦è¿›è¡Œè¿æ¥
 	 * 
 	 * @param left
 	 * @param right
@@ -140,7 +140,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öÓÉÁ½¸öÌõ¼ş×é³ÉµÄÌõ¼ş£¬ÕâÁ½¸öÌõ¼şÓÃorÂß¼­ÔËËã·û½øĞĞÁ¬½Ó
+	 * åˆ›å»ºä¸€ä¸ªç”±ä¸¤ä¸ªæ¡ä»¶ç»„æˆçš„æ¡ä»¶ï¼Œè¿™ä¸¤ä¸ªæ¡ä»¶ç”¨oré€»è¾‘è¿ç®—ç¬¦è¿›è¡Œè¿æ¥
 	 * 
 	 * @param left
 	 * @param right
@@ -151,7 +151,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * ¶Ôµ±Ç°Ìõ¼ş½øĞĞÈ¡·´Âß¼­ÔËËã
+	 * å¯¹å½“å‰æ¡ä»¶è¿›è¡Œå–åé€»è¾‘è¿ç®—
 	 * 
 	 * @return
 	 */
@@ -161,7 +161,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öÖ»ÓĞÅÅĞòµÄÌõ¼ş
+	 * åˆ›å»ºä¸€ä¸ªåªæœ‰æ’åºçš„æ¡ä»¶
 	 * 
 	 * @param field
 	 * @param asc
@@ -204,7 +204,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * µÃµ½Ìõ¼şµÄ×óÔËËã·û
+	 * å¾—åˆ°æ¡ä»¶çš„å·¦è¿ç®—ç¬¦
 	 * 
 	 * @return
 	 */
@@ -213,7 +213,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * µÃµ½Ìõ¼şµÄ²Ù×÷·û
+	 * å¾—åˆ°æ¡ä»¶çš„æ“ä½œç¬¦
 	 * 
 	 * @return
 	 */
@@ -222,7 +222,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * µÃµ½Ìõ¼şµÄÓÒÔËËã·û
+	 * å¾—åˆ°æ¡ä»¶çš„å³è¿ç®—ç¬¦
 	 * 
 	 * @return
 	 */
@@ -231,7 +231,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * µÃµ½µ±Ç°Ìõ¼şÊÇ·ñÒÑÈ¡·´
+	 * å¾—åˆ°å½“å‰æ¡ä»¶æ˜¯å¦å·²å–å
 	 * 
 	 * @return
 	 */
@@ -240,7 +240,7 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * µÃµ½µ±Ç°Ìõ¼şÊÇ·ñÖ»ÓĞÅÅĞò
+	 * å¾—åˆ°å½“å‰æ¡ä»¶æ˜¯å¦åªæœ‰æ’åº
 	 * 
 	 * @return
 	 */

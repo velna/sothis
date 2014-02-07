@@ -1,46 +1,46 @@
 package org.sothis.dal.query;
 
 /**
- * ÔËËã·û
+ * è¿ç®—ç¬¦
  * 
  * @author velna
  * 
  */
 public enum Op {
 	/**
-	 * ´óÓÚ
+	 * å¤§äºŽ
 	 */
 	GT,
 	/**
-	 * ´óÓÚµÈÓÚ
+	 * å¤§äºŽç­‰äºŽ
 	 */
 	GTE,
 	/**
-	 * Ð¡ÓÚ
+	 * å°äºŽ
 	 */
 	LT,
 	/**
-	 * Ð¡ÓÚµÈÓÚ
+	 * å°äºŽç­‰äºŽ
 	 */
 	LTE,
 	/**
-	 * µÈÓÚ
+	 * ç­‰äºŽ
 	 */
 	EQ,
 	/**
-	 * ²»µÈÓÚ
+	 * ä¸ç­‰äºŽ
 	 */
 	NE,
 	/**
-	 * ¼¯ºÏin
+	 * é›†åˆin
 	 */
 	IN,
 	/**
-	 * ¼¯ºÏnot in
+	 * é›†åˆnot in
 	 */
 	NIN,
 	/**
-	 * Ä£ºýÆ¥Åä
+	 * æ¨¡ç³ŠåŒ¹é…
 	 */
 	LIKE
 }

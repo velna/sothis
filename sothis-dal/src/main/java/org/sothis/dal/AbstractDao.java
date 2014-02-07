@@ -16,7 +16,7 @@ import org.sothis.dal.query.Cnd;
 import org.sothis.dal.query.DaoCursor;
 
 /**
- * DaoµÄĞé»ùÀà£¬ÒÑ¾­Í¨¹ı·´ÉäµÃµ½ÁËÊµ¼ÊµÄÊµÌåÀà¡£²¢Ìá¹©ÁËÒ»Ğ©³£ÓÃ·½·¨¡£
+ * Daoçš„è™šåŸºç±»ï¼Œå·²ç»é€šè¿‡åå°„å¾—åˆ°äº†å®é™…çš„å®ä½“ç±»ã€‚å¹¶æä¾›äº†ä¸€äº›å¸¸ç”¨æ–¹æ³•ã€‚
  * 
  * @author velna
  * 
@@ -26,7 +26,7 @@ import org.sothis.dal.query.DaoCursor;
 public abstract class AbstractDao<E extends Entity, K extends Serializable> implements Dao<E, K> {
 
 	/**
-	 * ÓÃÀ´¼ÇÂ¼ĞÔÄÜÈÕÖ¾Êı¾İµÄThreadLocal key¡£
+	 * ç”¨æ¥è®°å½•æ€§èƒ½æ—¥å¿—æ•°æ®çš„ThreadLocal keyã€‚
 	 * 
 	 * @see {@link ExecuteCounter}
 	 */
@@ -51,12 +51,12 @@ public abstract class AbstractDao<E extends Entity, K extends Serializable> impl
 	}
 
 	/**
-	 * ¶Ôµ±Ç°Ïß³ÌµÄÊı¾İ¿â·ÃÎÊ½øĞĞ¼ÆÊı£¬²¢¼ÇÂ¼»¨·ÑµÄÊ±¼ä
+	 * å¯¹å½“å‰çº¿ç¨‹çš„æ•°æ®åº“è®¿é—®è¿›è¡Œè®¡æ•°ï¼Œå¹¶è®°å½•èŠ±è´¹çš„æ—¶é—´
 	 * 
 	 * @param operation
-	 *            ²Ù×÷ÀàĞÍ
+	 *            æ“ä½œç±»å‹
 	 * @param time
-	 *            »¨·ÑÊ±¼ä£¬µ¥Î»£ººÁÃë
+	 *            èŠ±è´¹æ—¶é—´ï¼Œå•ä½ï¼šæ¯«ç§’
 	 */
 	protected final void increaseExecuteCounter(String operation, long time, Object... queryParams) {
 		ExecuteCounter.getThreadLocalInstance(EXECUTE_COUNTER_KEY).increase(entityClass.getSimpleName(), operation, time);

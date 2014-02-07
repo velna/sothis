@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.sothis.core.util.BlockingThreadPoolExecutor;
 
 /**
- * ÓÃÓÚÖ´ĞĞcronÈÎÎñµÄºóÌ¨³ÌĞò
+ * ç”¨äºæ‰§è¡Œcronä»»åŠ¡çš„åå°ç¨‹åº
  * 
  * @author velna
  * 
@@ -30,17 +30,17 @@ public class Crond {
 	private final Condition nextUpdated = lock.newCondition();
 
 	/**
-	 * ´´½¨cron·şÎñ
+	 * åˆ›å»ºcronæœåŠ¡
 	 * 
 	 * @param executor
-	 *            ÓÃÓÚÖ´ĞĞÈÎÎñµÄExecutor
+	 *            ç”¨äºæ‰§è¡Œä»»åŠ¡çš„Executor
 	 */
 	public Crond(Executor executor) {
 		this.executor = executor;
 	}
 
 	/**
-	 * µÈÍ¬ÓÚ
+	 * ç­‰åŒäº
 	 * {@code Crond(new BlockingThreadPoolExecutor("CrondWroker", 1, 10, 10000, 60000))}
 	 */
 	public Crond() {
@@ -48,7 +48,7 @@ public class Crond {
 	}
 
 	/**
-	 * Æô¶¯cron·şÎñ¡£¶ÔÒÑÆô¶¯µÄcron·şÎñ²»»á²úÉúÈÎºÎĞ§¹û
+	 * å¯åŠ¨cronæœåŠ¡ã€‚å¯¹å·²å¯åŠ¨çš„cronæœåŠ¡ä¸ä¼šäº§ç”Ÿä»»ä½•æ•ˆæœ
 	 */
 	public void start() {
 		if (null == crondThread || !crondThread.isAlive()) {
@@ -59,7 +59,7 @@ public class Crond {
 	}
 
 	/**
-	 * Í£Ö¹cron·şÎñ¡£¶ÔÓÚÎ´Æô¶¯»òÒÑÍ£Ö¹µÄcron·şÎñ²»»á²úÉúÈÎºÎĞ§¹û
+	 * åœæ­¢cronæœåŠ¡ã€‚å¯¹äºæœªå¯åŠ¨æˆ–å·²åœæ­¢çš„cronæœåŠ¡ä¸ä¼šäº§ç”Ÿä»»ä½•æ•ˆæœ
 	 */
 	public void stop() {
 		if (null != crondThread && crondThread.isAlive()) {
@@ -68,14 +68,14 @@ public class Crond {
 	}
 
 	/**
-	 * Ïòcron·şÎñÌí¼ÓÒ»¸öÈÎÎñ
+	 * å‘cronæœåŠ¡æ·»åŠ ä¸€ä¸ªä»»åŠ¡
 	 * 
 	 * @param key
-	 *            ÈÎÎñµÄÎ¨Ò»±êÊ¶£¬setÏàÍ¬µÄkey»á¸²¸ÇÇ°Ò»¸ö
+	 *            ä»»åŠ¡çš„å”¯ä¸€æ ‡è¯†ï¼Œsetç›¸åŒçš„keyä¼šè¦†ç›–å‰ä¸€ä¸ª
 	 * @param cron
-	 *            ÈÎÎñµÄcron±í´ïÊ½
+	 *            ä»»åŠ¡çš„cronè¡¨è¾¾å¼
 	 * @param runnable
-	 *            ÈÎÎñRunnable
+	 *            ä»»åŠ¡Runnable
 	 */
 	public void set(Object key, Cron cron, Runnable runnable) {
 		Date next = cron.next(new Date());
@@ -125,7 +125,7 @@ public class Crond {
 	}
 
 	/**
-	 * ´Ócron·şÎñÖĞÉ¾³ıÒ»¸öÈÎÎñ
+	 * ä»cronæœåŠ¡ä¸­åˆ é™¤ä¸€ä¸ªä»»åŠ¡
 	 * 
 	 * @param key
 	 */

@@ -15,17 +15,17 @@ import org.testng.annotations.Test;
 
 /**
  * <p>
- * ²âÊÔUrlUtils¹¤¾ßÀà
+ * æµ‹è¯•UrlUtilså·¥å…·ç±»
  * </p>
  * 
- * @author£ºliupei
- * @date£º2011-6-17
+ * @authorï¼šliupei
+ * @dateï¼š2011-6-17
  */
 public class UrlUtilsTest {
 
 	/**
 	 * <p>
-	 * appendParams()·½·¨²âÊÔÕý³£Çé¿ö
+	 * appendParams()æ–¹æ³•æµ‹è¯•æ­£å¸¸æƒ…å†µ
 	 * </p>
 	 * 
 	 * @param url
@@ -43,7 +43,7 @@ public class UrlUtilsTest {
 
 	/**
 	 * <p>
-	 * appendParams()·½·¨²âÊÔÓÐÒì³£Çé¿ö
+	 * appendParams()æ–¹æ³•æµ‹è¯•æœ‰å¼‚å¸¸æƒ…å†µ
 	 * </p>
 	 * 
 	 * @param url
@@ -56,7 +56,7 @@ public class UrlUtilsTest {
 	}
 
 	/**
-	 * ²âÊÔencodePath()·½·¨
+	 * æµ‹è¯•encodePath()æ–¹æ³•
 	 * 
 	 * @param fileName
 	 * @param withRoot
@@ -71,13 +71,13 @@ public class UrlUtilsTest {
 	@DataProvider(name = "encodePath")
 	public Object[][] encodePathDataProvider() {
 		List<Object[]> paramList = new ArrayList<Object[]>();
-		paramList.add(new Object[] { "/res/district_pics/Íâ¾°Í¼/admin18/comm/art/000/000/198/31375_s.jpg", true,
+		paramList.add(new Object[] { "/res/district_pics/å¤–æ™¯å›¾/admin18/comm/art/000/000/198/31375_s.jpg", true,
 				"/res/district_pics/%E5%A4%96%E6%99%AF%E5%9B%BE/admin18/comm/art/000/000/198/31375_s.jpg" });
-		paramList.add(new Object[] { "/res/district_pics/Íâ¾°Í¼/admin18/comm/art/000/000/198/31375_s.jpg", false,
+		paramList.add(new Object[] { "/res/district_pics/å¤–æ™¯å›¾/admin18/comm/art/000/000/198/31375_s.jpg", false,
 				"/res/district_pics/%E5%A4%96%E6%99%AF%E5%9B%BE/admin18/comm/art/000/000/198/31375_s.jpg" });
-		paramList.add(new Object[] { "res/district_pics/Íâ¾°Í¼/admin18/comm/art/000/000/198/31375_s.jpg", true,
+		paramList.add(new Object[] { "res/district_pics/å¤–æ™¯å›¾/admin18/comm/art/000/000/198/31375_s.jpg", true,
 				"/res/district_pics/%E5%A4%96%E6%99%AF%E5%9B%BE/admin18/comm/art/000/000/198/31375_s.jpg" });
-		paramList.add(new Object[] { "res/district_pics/Íâ¾°Í¼/admin18/comm/art/000/000/198/31375_s.jpg", false,
+		paramList.add(new Object[] { "res/district_pics/å¤–æ™¯å›¾/admin18/comm/art/000/000/198/31375_s.jpg", false,
 				"res/district_pics/%E5%A4%96%E6%99%AF%E5%9B%BE/admin18/comm/art/000/000/198/31375_s.jpg" });
 
 		Object[][] params = new Object[paramList.size()][3];
@@ -96,7 +96,7 @@ public class UrlUtilsTest {
 		paramList.add(new Object[] { "/test/testAction", params, "/test/testAction?testLong=123" });
 
 		params = new HashMap<Object, Object>();
-		params.put("testString", new String("·¿¼ÛÍø"));
+		params.put("testString", new String("æˆ¿ä»·ç½‘"));
 		paramList.add(new Object[] { "/test/testAction", params, "/test/testAction?testString=%E6%88%BF%E4%BB%B7%E7%BD%91" });
 
 		params = new HashMap<Object, Object>();
@@ -130,7 +130,7 @@ public class UrlUtilsTest {
 		paramList.add(new Object[] { "/test/testAction", params });
 
 		params = new HashMap<Object, Object>();
-		params.put("testString", new String("·¿¼ÛÍø"));
+		params.put("testString", new String("æˆ¿ä»·ç½‘"));
 		paramList.add(new Object[] { "/test/testAction", params });
 
 		params = new HashMap<Object, Object>();

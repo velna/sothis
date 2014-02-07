@@ -26,12 +26,12 @@ import org.sothis.mvc.DefaultApplicationContext;
 
 /**
  * @param beanFactoryClass
- *            如果配置了configBeanName，则必须同时配置beanFactoryClass
+ *            濡傛灉閰嶇疆浜哻onfigBeanName锛屽垯蹇呴』鍚屾椂閰嶇疆beanFactoryClass
  * @param configBeanName
- *            在beanFactory中定义的config bean名称
+ *            鍦╞eanFactory涓畾涔夌殑config bean鍚嶇О
  * @param configLocation
- *            如果没有配置configBeanName，则使用configLocation指身的classpath路径查找配置文件，如果没有配置，
- *            则默认使用sothis.properties
+ *            濡傛灉娌℃湁閰嶇疆configBeanName锛屽垯浣跨敤configLocation鎸囪韩鐨刢lasspath璺緞鏌ユ壘閰嶇疆鏂囦欢锛屽鏋滄病鏈夐厤缃紝
+ *            鍒欓粯璁や娇鐢╯othis.properties
  * @author velna
  * 
  */

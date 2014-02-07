@@ -3,8 +3,8 @@ package org.sothis.mvc;
 import org.sothis.core.beans.BeanFactory;
 
 /**
- * modelºÍviewµÄ½âÎöÆ÷<br>
- * ¸ù¾İµ±Ç°µÄactionÖ´ĞĞ½á¹û£¬½âÎö³ö¶ÔÓ¦µÄmodelºÍview
+ * modelå’Œviewçš„è§£æå™¨<br>
+ * æ ¹æ®å½“å‰çš„actionæ‰§è¡Œç»“æœï¼Œè§£æå‡ºå¯¹åº”çš„modelå’Œview
  * 
  * @author velna
  * 
@@ -12,24 +12,24 @@ import org.sothis.core.beans.BeanFactory;
 public interface ModelAndViewResolver {
 
 	/**
-	 * È±Ê¡viewµÄÀàĞÍ
+	 * ç¼ºçœviewçš„ç±»å‹
 	 */
 	static final String DEFAULT_VIEW_TYPE = "org.sothis.web.mvc.view.DEFAULT_VIEW_TYPE";
 
 	/**
-	 * ½âÎömodelºÍview£¬view±ØĞëÊ¹ÓÃ{@link BeanFactory#getBean(Class)}·½·¨´´½¨
+	 * è§£æmodelå’Œviewï¼Œviewå¿…é¡»ä½¿ç”¨{@link BeanFactory#getBean(Class)}æ–¹æ³•åˆ›å»º
 	 * 
 	 * @param actionResult
 	 * @param invocation
 	 * @return
 	 * @throws ViewCreationException
-	 *             beanFactory³õÊ¼»¯Òì³£¡¢Ã»ÓĞ×¢²áviewÀàĞÍ¡¢
-	 *             Ã»ÓĞÉèÖÃdefaultViewÇÒactionResultÎªnullÊ±£¬Å×³ö¸ÃÒì³£
+	 *             beanFactoryåˆå§‹åŒ–å¼‚å¸¸ã€æ²¡æœ‰æ³¨å†Œviewç±»å‹ã€
+	 *             æ²¡æœ‰è®¾ç½®defaultViewä¸”actionResultä¸ºnullæ—¶ï¼ŒæŠ›å‡ºè¯¥å¼‚å¸¸
 	 */
 	ResolvedModelAndView resolve(Object actionResult, ActionInvocation invocation) throws ViewCreationException;
 
 	/**
-	 * ¸ù¾İtypeNameµÃµ½¶ÔÓ¦µÄviewÊµÀı
+	 * æ ¹æ®typeNameå¾—åˆ°å¯¹åº”çš„viewå®ä¾‹
 	 * 
 	 * @param typeName
 	 * @return

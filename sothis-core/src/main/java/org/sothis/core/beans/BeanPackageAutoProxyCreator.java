@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * ¸ù¾İpackageÃû³ÆÀ´´´½¨×Ô¶¯´úÀí¡£Í¬Ê±Ò²¿ÉÒÔÍ¨¹ı¶îÍâµÄÀàĞÍÀ´ÏŞÖÆ×Ô¶¯´úÀíµÄ´´½¨¡£
+ * æ ¹æ®packageåç§°æ¥åˆ›å»ºè‡ªåŠ¨ä»£ç†ã€‚åŒæ—¶ä¹Ÿå¯ä»¥é€šè¿‡é¢å¤–çš„ç±»å‹æ¥é™åˆ¶è‡ªåŠ¨ä»£ç†çš„åˆ›å»ºã€‚
  * 
  * @author velna
  * 
@@ -23,7 +23,7 @@ public class BeanPackageAutoProxyCreator extends AbstractAutoProxyCreator {
 	private Class<?> assignableClass;
 
 	/**
-	 * ÉèÖÃÓÃÀ´×Ô¶¯´´½¨´úÀíµÄ°üÃû¡£°üÃû±ØĞëÍêÈ«Æ¥Åä¡£
+	 * è®¾ç½®ç”¨æ¥è‡ªåŠ¨åˆ›å»ºä»£ç†çš„åŒ…åã€‚åŒ…åå¿…é¡»å®Œå…¨åŒ¹é…ã€‚
 	 * 
 	 * @param beanPackages
 	 */
@@ -36,7 +36,7 @@ public class BeanPackageAutoProxyCreator extends AbstractAutoProxyCreator {
 	}
 
 	/**
-	 * ÉèÖÃÓÃÀ´ÏŞÖÆ´úÀí´´½¨µÄÀàĞÍ¡£Ö»ÓĞ{@code assignableClass}ËùÖ¸¶¨µÄÀà¼°Æä×ÓÀà²Å×Ô¶¯´´½¨´úÀí¡£
+	 * è®¾ç½®ç”¨æ¥é™åˆ¶ä»£ç†åˆ›å»ºçš„ç±»å‹ã€‚åªæœ‰{@code assignableClass}æ‰€æŒ‡å®šçš„ç±»åŠå…¶å­ç±»æ‰è‡ªåŠ¨åˆ›å»ºä»£ç†ã€‚
 	 * 
 	 * @param assignableClass
 	 */

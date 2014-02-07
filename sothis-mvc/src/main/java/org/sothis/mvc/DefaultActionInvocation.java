@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 
 /**
- * ActionInvocation½Ó¿ÚµÄÄ¬ÈÏÊµÏÖ
+ * ActionInvocationæ¥å£çš„é»˜è®¤å®ç°
  * 
  * @author velna
  * 

@@ -12,13 +12,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * ²âÊÔMapUtilsÀà
+ * æµ‹è¯•MapUtilsç±»
  * 
  * @author liupei
  */
 public class MapUtilsTest {
 	/**
-	 * ²âÊÔMapUtils.containsKey·½·¨
+	 * æµ‹è¯•MapUtils.containsKeyæ–¹æ³•
 	 * 
 	 * @param map
 	 * @param key
@@ -31,7 +31,7 @@ public class MapUtilsTest {
 	}
 
 	/**
-	 * ²âÊÔMapUtils.getKeys·½·¨Õý³£Çé¿ö
+	 * æµ‹è¯•MapUtils.getKeysæ–¹æ³•æ­£å¸¸æƒ…å†µ
 	 * 
 	 * @param map
 	 * @param expected
@@ -43,7 +43,7 @@ public class MapUtilsTest {
 	}
 
 	/**
-	 * ²âÊÔMapUtils.getKeys·½·¨ÓÐÒì³£Çé¿ö
+	 * æµ‹è¯•MapUtils.getKeysæ–¹æ³•æœ‰å¼‚å¸¸æƒ…å†µ
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void testGetKeysWithException() {

@@ -3,7 +3,7 @@ package org.sothis.dal;
 import java.io.Serializable;
 
 /**
- * 所有实体类必须实现这个接口
+ * 鎵�鏈夊疄浣撶被蹇呴』瀹炵幇杩欎釜鎺ュ彛
  * 
  * @author velna
  * 

@@ -3,7 +3,7 @@ package org.sothis.core.cache;
 import java.util.concurrent.Executor;
 
 /**
- * ½«ËùÓĞput²Ù×÷×ª»¯ÎªÒì²½ÊµÏÖ¡£
+ * å°†æ‰€æœ‰putæ“ä½œè½¬åŒ–ä¸ºå¼‚æ­¥å®ç°ã€‚
  * 
  * @author velna
  * 

@@ -3,7 +3,7 @@ package org.sothis.dal.query;
 import java.util.List;
 
 /**
- * ÅÅĞòÌõ¼ş
+ * æ’åºæ¡ä»¶
  * 
  * @author velna
  * 
@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderBy {
 
 	/**
-	 * Ìí¼ÓÒ»¸ö°´{@code field}ÉıĞòµÄÅÅĞòÌõ¼ş
+	 * æ·»åŠ ä¸€ä¸ªæŒ‰{@code field}å‡åºçš„æ’åºæ¡ä»¶
 	 * 
 	 * @param field
 	 * @return
@@ -19,7 +19,7 @@ public interface OrderBy {
 	OrderBy asc(String field);
 
 	/**
-	 * Ìí¼ÓÒ»¸ö°´{@code field}½µĞòµÄÅÅĞòÌõ¼ş
+	 * æ·»åŠ ä¸€ä¸ªæŒ‰{@code field}é™åºçš„æ’åºæ¡ä»¶
 	 * 
 	 * @param field
 	 * @return
@@ -27,7 +27,7 @@ public interface OrderBy {
 	OrderBy desc(String field);
 
 	/**
-	 * µÃµ½ËùÓĞµÄÅÅĞòÌõ¼ş
+	 * å¾—åˆ°æ‰€æœ‰çš„æ’åºæ¡ä»¶
 	 * 
 	 * @return
 	 */

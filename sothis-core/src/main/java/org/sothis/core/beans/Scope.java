@@ -1,22 +1,22 @@
 package org.sothis.core.beans;
 
 /**
- * beanµÄ×÷ÓÃÓò£¬Í¬springÖĞµÄ¶¨Òå
+ * beançš„ä½œç”¨åŸŸï¼ŒåŒspringä¸­çš„å®šä¹‰
  * 
  * @author velna
  * 
  */
 public enum Scope {
 	/**
-	 * Ä¬ÈÏ×÷ÓÃÓò
+	 * é»˜è®¤ä½œç”¨åŸŸ
 	 */
 	DEFAULT,
 	/**
-	 * ¶àÀı
+	 * å¤šä¾‹
 	 */
 	PROTOTYPE,
 	/**
-	 * µ¥Àı
+	 * å•ä¾‹
 	 */
 	SINGLETON
 }

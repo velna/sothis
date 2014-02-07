@@ -14,13 +14,13 @@ import org.sothis.web.mvc.Flash;
 import org.sothis.web.mvc.WebActionContext;
 
 /**
- * Mvc¹¤¾ßÀà
+ * Mvcå·¥å…·ç±»
  */
 public class MvcUtils {
 
 	/**
 	 * <p>
-	 * ¸ù¾İActionInvocation¼°Ìá¹©µÄpath£¬½âÎö³ö¶ÔÓ¦µÄÂ·¾¶¡£
+	 * æ ¹æ®ActionInvocationåŠæä¾›çš„pathï¼Œè§£æå‡ºå¯¹åº”çš„è·¯å¾„ã€‚
 	 * </p>
 	 * 
 	 * <pre>

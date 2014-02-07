@@ -3,7 +3,7 @@ package org.sothis.dal.sql;
 import org.sothis.dal.Entity;
 
 /**
- * ËùÓĞsqlÊµÌåÀà±ØĞëÊµÏÖÕâ¸ö½Ó¿Ú
+ * æ‰€æœ‰sqlå®ä½“ç±»å¿…é¡»å®ç°è¿™ä¸ªæ¥å£
  * 
  * @author velna
  * 

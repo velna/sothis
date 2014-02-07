@@ -11,7 +11,7 @@ import org.sothis.mvc.ActionInvocationException;
 import org.sothis.mvc.Interceptor;
 
 /**
- * ÎÄ¼þÉÏ´«À¹½ØÆ÷
+ * æ–‡ä»¶ä¸Šä¼ æ‹¦æˆªå™¨
  * 
  * @author velna
  * 

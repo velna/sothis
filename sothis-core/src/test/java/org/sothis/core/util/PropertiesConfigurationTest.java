@@ -20,18 +20,18 @@ import org.testng.annotations.Test;
 
 /**
  * <p>
- * ²âÊÔPropertiesConfiguration
+ * æµ‹è¯•PropertiesConfiguration
  * </p>
  * 
- * @author£ºliupei
- * @date£º2011-6-17
+ * @authorï¼šliupei
+ * @dateï¼š2011-6-17
  */
 public class PropertiesConfigurationTest {
 	private PropertiesConfiguration pc;
 
 	/**
 	 * <p>
-	 * Ô¤¶¨ÒåÊôĞÔ¼°³õÊ¼»¯PropertiesConfiguration
+	 * é¢„å®šä¹‰å±æ€§åŠåˆå§‹åŒ–PropertiesConfiguration
 	 * </p>
 	 */
 	@BeforeClass
@@ -59,7 +59,7 @@ public class PropertiesConfigurationTest {
 
 	/**
 	 * <p>
-	 * Õı³£Çé¿öÏÂµÄ²âÊÔ
+	 * æ­£å¸¸æƒ…å†µä¸‹çš„æµ‹è¯•
 	 * </p>
 	 * 
 	 * @param pattern
@@ -76,7 +76,7 @@ public class PropertiesConfigurationTest {
 
 	/**
 	 * <p>
-	 * ²âÊÔÅ×³öIllegalArgumentExceptionÒì³£
+	 * æµ‹è¯•æŠ›å‡ºIllegalArgumentExceptionå¼‚å¸¸
 	 * </p>
 	 * 
 	 * @throws Exception
@@ -93,7 +93,7 @@ public class PropertiesConfigurationTest {
 
 	/**
 	 * <p>
-	 * Ìá¹©¸÷ÖÖÕı³£Çé¿öµÄ²ÎÊı
+	 * æä¾›å„ç§æ­£å¸¸æƒ…å†µçš„å‚æ•°
 	 * </p>
 	 * 
 	 * @return

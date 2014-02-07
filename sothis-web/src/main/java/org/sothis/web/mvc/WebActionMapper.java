@@ -11,7 +11,7 @@ import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ActionMapper;
 
 /**
- * ActionMapper½Ó¿ÚµÄÄ¬ÈÏÊµÏÖ
+ * ActionMapperæ¥å£çš„é»˜è®¤å®ç°
  * 
  * @author velna
  * 

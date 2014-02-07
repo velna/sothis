@@ -3,7 +3,7 @@ package org.sothis.dal.query;
 import java.util.Iterator;
 
 /**
- * Ìá¹©¼ò±ãµÄ·½·¨À´Éú³É{@code name}»ò{@code name value}µÄÁ´±í
+ * æä¾›ç®€ä¾¿çš„æ–¹æ³•æ¥ç”Ÿæˆ{@code name}æˆ–{@code name value}çš„é“¾è¡¨
  * 
  * @author velna
  * 
@@ -25,7 +25,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öÃûÖµ¶ÔÁ´±í
+	 * åˆ›å»ºä¸€ä¸ªåå€¼å¯¹é“¾è¡¨
 	 * 
 	 * @param name
 	 * @param value
@@ -43,7 +43,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öÖ»ÓĞÃûµÄÁ´±í
+	 * åˆ›å»ºä¸€ä¸ªåªæœ‰åçš„é“¾è¡¨
 	 * 
 	 * @param name
 	 * @return
@@ -53,7 +53,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * ´´½¨Ò»¸ö¿ÕµÄÁ´±í
+	 * åˆ›å»ºä¸€ä¸ªç©ºçš„é“¾è¡¨
 	 * 
 	 * @return
 	 */
@@ -62,7 +62,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * Ìí¼ÓÒ»¸öÃûÖµ¶Ô
+	 * æ·»åŠ ä¸€ä¸ªåå€¼å¯¹
 	 * 
 	 * @param name
 	 * @param value
@@ -85,7 +85,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * Ìí¼ÓÒ»¸öÃû
+	 * æ·»åŠ ä¸€ä¸ªå
 	 * 
 	 * @param name
 	 * @return
@@ -95,7 +95,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * µÃµ½Á´±íµÄÏÂÒ»¸ö½Úµã
+	 * å¾—åˆ°é“¾è¡¨çš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
 	 * 
 	 * @return
 	 */
@@ -104,7 +104,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * µÃµ½Á´±íµÄËùÓĞ½ÚµãÊıÁ¿
+	 * å¾—åˆ°é“¾è¡¨çš„æ‰€æœ‰èŠ‚ç‚¹æ•°é‡
 	 * 
 	 * @return
 	 */
@@ -113,7 +113,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * µÃµ½±¾½ÚµãµÄÃû
+	 * å¾—åˆ°æœ¬èŠ‚ç‚¹çš„å
 	 * 
 	 * @return
 	 */
@@ -122,7 +122,7 @@ public class Chain implements Iterable<Chain> {
 	}
 
 	/**
-	 * µÃµ½±¾½ÚµãµÄÖµ
+	 * å¾—åˆ°æœ¬èŠ‚ç‚¹çš„å€¼
 	 * 
 	 * @return
 	 */

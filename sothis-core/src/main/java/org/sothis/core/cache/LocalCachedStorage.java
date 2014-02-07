@@ -10,11 +10,11 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.cache.CacheBuilder;
 
 /**
- * °üº¬Ò»¸ö±¾µØ»º´æµÄ»º´æÒıÇæ´úÀí¡£<br>
- * ±¾µØ»º´æ²ÉÓÃGoogle <a
- * href="http://code.google.com/p/guava-libraries">guava</a>ÏîÄ¿µÄÊµÏÖ<br>
- * ËùÓĞµÄget»áÏÈ´Ó±¾µØ»º´æÖĞ¶ÁÈ¡£¬Èç¹û±¾µØ»º´æÖĞÃ»ÓĞÔÙ´ÓÊµ¼Ê»º´æÖĞÈ¡¡£<br>
- * ËùÓĞµÄput»áÏÈputµ½±¾µØ»º´æ£¬ÔÙputµ½Êµ¼Ê»º´æ
+ * åŒ…å«ä¸€ä¸ªæœ¬åœ°ç¼“å­˜çš„ç¼“å­˜å¼•æ“ä»£ç†ã€‚<br>
+ * æœ¬åœ°ç¼“å­˜é‡‡ç”¨Google <a
+ * href="http://code.google.com/p/guava-libraries">guava</a>é¡¹ç›®çš„å®ç°<br>
+ * æ‰€æœ‰çš„getä¼šå…ˆä»æœ¬åœ°ç¼“å­˜ä¸­è¯»å–ï¼Œå¦‚æœæœ¬åœ°ç¼“å­˜ä¸­æ²¡æœ‰å†ä»å®é™…ç¼“å­˜ä¸­å–ã€‚<br>
+ * æ‰€æœ‰çš„putä¼šå…ˆputåˆ°æœ¬åœ°ç¼“å­˜ï¼Œå†putåˆ°å®é™…ç¼“å­˜
  * 
  * @author velna
  * 
@@ -25,7 +25,7 @@ public class LocalCachedStorage implements Storage {
 	private final Storage storage;
 
 	/**
-	 * ´´½¨Ò»¸öconcurrencyLevelÎª50£¬soft value£¬´æ»î60ÃëµÄ±¾µØ»º´æ
+	 * åˆ›å»ºä¸€ä¸ªconcurrencyLevelä¸º50ï¼Œsoft valueï¼Œå­˜æ´»60ç§’çš„æœ¬åœ°ç¼“å­˜
 	 * 
 	 * @param cacheStore
 	 */

@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Èç¹û×¢½âÔÚset·½·¨ÉÏ£¬Ôò¶ÔÓ¦µÄrequest²ÎÊı²»»á±»set<br>
- * Èç¹û×¢½âÔÚaction·½·¨ÉÏ£¬Ôò¸Ãaction·½·¨²»»á±»×¢²áµ½sothisÖĞ<br>
- * Èç¹û×¢½âÔÚcontrollerÀàÉÏ£¬Ôò¸ÃcontrollerÖĞµÄËùÓĞaction¶¼²»»á±»×¢²áÔÚsothisÖĞ<br>
- * Èç¹û×¢½âÔÚpackageÉÏ£¬Ôò¸ÃpackageÖĞµÄËùÓĞcontroller¶¼²»»á±»×¢²áÔÚsothisÖĞ<br>
+ * å¦‚æœæ³¨è§£åœ¨setæ–¹æ³•ä¸Šï¼Œåˆ™å¯¹åº”çš„requestå‚æ•°ä¸ä¼šè¢«set<br>
+ * å¦‚æœæ³¨è§£åœ¨actionæ–¹æ³•ä¸Šï¼Œåˆ™è¯¥actionæ–¹æ³•ä¸ä¼šè¢«æ³¨å†Œåˆ°sothisä¸­<br>
+ * å¦‚æœæ³¨è§£åœ¨controllerç±»ä¸Šï¼Œåˆ™è¯¥controllerä¸­çš„æ‰€æœ‰actionéƒ½ä¸ä¼šè¢«æ³¨å†Œåœ¨sothisä¸­<br>
+ * å¦‚æœæ³¨è§£åœ¨packageä¸Šï¼Œåˆ™è¯¥packageä¸­çš„æ‰€æœ‰controlleréƒ½ä¸ä¼šè¢«æ³¨å†Œåœ¨sothisä¸­<br>
  * 
  * @author velna
  * 

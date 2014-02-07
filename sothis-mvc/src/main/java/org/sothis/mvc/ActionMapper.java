@@ -1,7 +1,7 @@
 package org.sothis.mvc;
 
 /**
- * ÓÃÓÚÓ³ÉäºÍ½âÎöaction<br>
+ * ç”¨äºæ˜ å°„å’Œè§£æaction<br>
  * 
  * @author velna
  * 
@@ -9,22 +9,22 @@ package org.sothis.mvc;
 public interface ActionMapper {
 
 	/**
-	 * ¸ù¾İactionÉú³ÉactionµÄÎ¨Ò»ID
+	 * æ ¹æ®actionç”Ÿæˆactionçš„å”¯ä¸€ID
 	 * 
 	 * @param action
-	 *            ĞèÒªÓ³ÉäµÄaction
+	 *            éœ€è¦æ˜ å°„çš„action
 	 * 
-	 * @return ·µ»ØactionµÄÎ¨Ò»ID£¬·µ»Ønull½«µ¼ÖÂNullPointerException
+	 * @return è¿”å›actionçš„å”¯ä¸€IDï¼Œè¿”å›nullå°†å¯¼è‡´NullPointerException
 	 */
 	Object map(Action action);
 
 	/**
-	 * ¸ù¾İÇëÇóÕÒµ½¶ÔÓ¦µÄaction
+	 * æ ¹æ®è¯·æ±‚æ‰¾åˆ°å¯¹åº”çš„action
 	 * 
 	 * @param context
-	 * @return ·µ»ØnullÔò±íÊ¾ÎŞ·¨½âÎö£¬½«µ¼ÖÂ404£¬³ı·ÇresponseÒÑ¾­±»commit
+	 * @return è¿”å›nullåˆ™è¡¨ç¤ºæ— æ³•è§£æï¼Œå°†å¯¼è‡´404ï¼Œé™¤éresponseå·²ç»è¢«commit
 	 * @throws NullPointerException
-	 *             request»òresponseÎªnullÊ±£¬Å×³ö¸ÃÒì³£
+	 *             requestæˆ–responseä¸ºnullæ—¶ï¼ŒæŠ›å‡ºè¯¥å¼‚å¸¸
 	 */
 	Action resolve(ActionContext context);
 }

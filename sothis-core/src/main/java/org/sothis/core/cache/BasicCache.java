@@ -11,7 +11,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.sothis.core.util.Closure;
 
 /**
- * »º´æÒ»¸ö»ù±¾ÊµÏÖ
+ * ç¼“å­˜ä¸€ä¸ªåŸºæœ¬å®žçŽ°
  * 
  * @author velna
  * 
@@ -104,7 +104,7 @@ public class BasicCache implements Cache {
 			}
 		}
 
-		// »º´æÖÐÃ»ÓÐµÄÊý¾Ý£¬µ÷ÓÃ±Õ°ü»ñÈ¡
+		// ç¼“å­˜ä¸­æ²¡æœ‰çš„æ•°æ®ï¼Œè°ƒç”¨é—­åŒ…èŽ·å–
 		if (nullValueKeys.size() > 0) {
 			Map<String, CacheValue> exeRet = closure.execute(nullValueKeys);
 			if (null != exeRet) {

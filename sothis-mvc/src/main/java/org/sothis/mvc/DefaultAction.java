@@ -3,7 +3,7 @@ package org.sothis.mvc;
 import java.lang.reflect.Method;
 
 /**
- * Action½Ó¿ÚµÄÄ¬ÈÏÊµÏÖ
+ * Actionæ¥å£çš„é»˜è®¤å®ç°
  * 
  * @author velna
  * 

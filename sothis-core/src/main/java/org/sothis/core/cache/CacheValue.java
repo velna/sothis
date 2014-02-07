@@ -6,7 +6,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 /**
- * »º´æÖµ¡£Êµ¼Ê·ÅÈë»º´æµÄÎªÕâ¸öÀà¡£
+ * ç¼“å­˜å€¼ã€‚å®é™…æ”¾å…¥ç¼“å­˜çš„ä¸ºè¿™ä¸ªç±»ã€‚
  * 
  * @author velna
  * 
@@ -17,11 +17,11 @@ public class CacheValue implements Externalizable {
 	protected Object value;
 
 	/**
-	 * ´´½¨Ò»¸öÖµÎª{@code value}£¬´æ»îÊ±¼äÎª{@code timeToLive}ÃëµÄ»º´æ
+	 * åˆ›å»ºä¸€ä¸ªå€¼ä¸º{@code value}ï¼Œå­˜æ´»æ—¶é—´ä¸º{@code timeToLive}ç§’çš„ç¼“å­˜
 	 * 
 	 * @param value
 	 * @param timeToLive
-	 *            µ¥Î»£ºÃë
+	 *            å•ä½ï¼šç§’
 	 */
 	public CacheValue(Object value, long timeToLive) {
 		this.value = value;
@@ -29,7 +29,7 @@ public class CacheValue implements Externalizable {
 	}
 
 	/**
-	 * Êµ¼Ê»º´æµÄÖµ
+	 * å®é™…ç¼“å­˜çš„å€¼
 	 * 
 	 * @return
 	 */
@@ -39,9 +39,9 @@ public class CacheValue implements Externalizable {
 	}
 
 	/**
-	 * »º´æ´æ»îÊ±¼ä
+	 * ç¼“å­˜å­˜æ´»æ—¶é—´
 	 * 
-	 * @return µ¥Î»£ºÃë
+	 * @return å•ä½ï¼šç§’
 	 */
 	public long getTimeToLive() {
 		return timeToLive;

@@ -16,7 +16,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 /**
- * mongo db µÄ²éÑ¯Éú³ÉÆ÷
+ * mongo db çš„æŸ¥è¯¢ç”Ÿæˆå™¨
  * 
  * @author velna
  * 
@@ -60,7 +60,7 @@ public class MongoQueryBuilder {
 	}
 
 	/**
-	 * ½«{@code cnd}×ª»¯Îªmongo db¿ÉÓÃµÄ²éÑ¯¶ÔÏó
+	 * å°†{@code cnd}è½¬åŒ–ä¸ºmongo dbå¯ç”¨çš„æŸ¥è¯¢å¯¹è±¡
 	 * 
 	 * @param cnd
 	 * @return
@@ -103,7 +103,7 @@ public class MongoQueryBuilder {
 	}
 
 	/**
-	 * ½«{@code chain}×ª»¯Îªmongo db¿ÉÓÃµÄ×Ö¶ÎĞÅÏ¢
+	 * å°†{@code chain}è½¬åŒ–ä¸ºmongo dbå¯ç”¨çš„å­—æ®µä¿¡æ¯
 	 * 
 	 * @param chain
 	 * @return
@@ -120,7 +120,7 @@ public class MongoQueryBuilder {
 	}
 
 	/**
-	 * ½«{@code chain}×ª»¯Îªmongo db¿ÉÓÃµÄupdateÓï¾ä
+	 * å°†{@code chain}è½¬åŒ–ä¸ºmongo dbå¯ç”¨çš„updateè¯­å¥
 	 * 
 	 * @param chain
 	 * @return
@@ -141,7 +141,7 @@ public class MongoQueryBuilder {
 	}
 
 	/**
-	 * ½«{@code orderBy}×ª»¯Îªmongo db¿ÉÓÃµÄÅÅĞò¶ÔÏó
+	 * å°†{@code orderBy}è½¬åŒ–ä¸ºmongo dbå¯ç”¨çš„æ’åºå¯¹è±¡
 	 * 
 	 * @param orderBy
 	 * @return

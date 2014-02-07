@@ -1,19 +1,19 @@
 package org.sothis.dal.query;
 
 /**
- * Âß¼­ÔËËã·û
+ * é€»è¾‘è¿ç®—ç¬¦
  * 
  * @author velna
  * 
  */
 public enum Logic {
 	/**
-	 * Óë
+	 * ä¸
 	 */
 	AND,
 
 	/**
-	 * »ò
+	 * æˆ–
 	 */
 	OR
 }

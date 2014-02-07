@@ -1,37 +1,37 @@
 package org.sothis.core.beans;
 
 /**
- * Bean¹¤³§<br>
+ * Beanå·¥å‚<br>
  * 
  * @author velna
  * 
  */
 public interface BeanFactory {
 	/**
-	 * ¸ù¾İbeanµÄclassÀ´µÃµ½bean<br>
-	 * bean²éÕÒË³ĞòÈçÏÂ£º<br>
-	 * 1.¸ù¾İbeanClassµÄsimple name²éÕÒbean£¬¼´{@link Class#getSimpleName()}£¬simple
-	 * nameµÄÊ××ÖÄ¸»áÏÈ×ª»»³ÉĞ¡Ğ´<br>
-	 * 2.¸ù¾İÍêÕûµÄclass name²éÕÒbean£¬¼´{@link Class#getName()} <br>
-	 * 3.¸ù¾İ{@link Bean}×¢½âµÄÉùÃ÷×¢²áÕâ¸öbeanClass£¬Èç¹ûÃ»ÓĞ{@link Bean}×¢½â£¬ÔòÊ¹ÓÃ{@link Bean}
-	 * ÖĞµÄÄ¬ÈÏÖµ
+	 * æ ¹æ®beançš„classæ¥å¾—åˆ°bean<br>
+	 * beanæŸ¥æ‰¾é¡ºåºå¦‚ä¸‹ï¼š<br>
+	 * 1.æ ¹æ®beanClassçš„simple nameæŸ¥æ‰¾beanï¼Œå³{@link Class#getSimpleName()}ï¼Œsimple
+	 * nameçš„é¦–å­—æ¯ä¼šå…ˆè½¬æ¢æˆå°å†™<br>
+	 * 2.æ ¹æ®å®Œæ•´çš„class nameæŸ¥æ‰¾beanï¼Œå³{@link Class#getName()} <br>
+	 * 3.æ ¹æ®{@link Bean}æ³¨è§£çš„å£°æ˜æ³¨å†Œè¿™ä¸ªbeanClassï¼Œå¦‚æœæ²¡æœ‰{@link Bean}æ³¨è§£ï¼Œåˆ™ä½¿ç”¨{@link Bean}
+	 * ä¸­çš„é»˜è®¤å€¼
 	 * 
 	 * @param <T>
 	 * @param beanClass
 	 * @return
 	 * @throws BeanInstantiationException
-	 *             Èç¹ûÔÚbean´´½¨¹ı³Ì·¢ÉúÈÎºÎÒì³£
+	 *             å¦‚æœåœ¨beanåˆ›å»ºè¿‡ç¨‹å‘ç”Ÿä»»ä½•å¼‚å¸¸
 	 */
 	<T> T getBean(Class<T> beanClass) throws BeanInstantiationException;
 
 	/**
-	 * µÃµ½nameÎªbeanNameµÄbean£¬²»»á½øĞĞbean×¢²á¶¯×÷
+	 * å¾—åˆ°nameä¸ºbeanNameçš„beanï¼Œä¸ä¼šè¿›è¡Œbeanæ³¨å†ŒåŠ¨ä½œ
 	 * 
 	 * @param <T>
 	 * @param beanName
-	 * @return Èç¹ûÎ´ÕÒµ½Ôò·µ»Ønull
+	 * @return å¦‚æœæœªæ‰¾åˆ°åˆ™è¿”å›null
 	 * @throws BeanInstantiationException
-	 *             Èç¹ûÔÚbean´´½¨¹ı³Ì·¢ÉúÈÎºÎÒì³£
+	 *             å¦‚æœåœ¨beanåˆ›å»ºè¿‡ç¨‹å‘ç”Ÿä»»ä½•å¼‚å¸¸
 	 */
 	<T> T getBean(String beanName) throws BeanInstantiationException;
 }

@@ -1,17 +1,17 @@
 package org.sothis.mvc;
 
 /**
- * À¹½ØÆ÷½Ó¿Ú
+ * æ‹¦æˆªå™¨æ¥å£
  * 
  * @author velna
  * 
  */
 public interface Interceptor {
 	/**
-	 * À¹½Øµ±Ç°µÄActionµ÷ÓÃ<br>
-	 * Í¨³£ÊµÏÖÀàĞèÒªµ÷ÓÃ<code>invocation.invoke()</code>
-	 * ·½·¨À´Ö´ĞĞÏÂÒ»¸öinterceptor»òaction£¬ÄãÒ²¿ÉÒÔÑ¡Ôñ²»Ö´ĞĞ<code>invocation.invoke()</code>
-	 * £¬¶øÊÇ·µ»ØÁíÒ»¸öObject×öÎª±¾´ÎActionµ÷ÓÃµÄ½á¹û
+	 * æ‹¦æˆªå½“å‰çš„Actionè°ƒç”¨<br>
+	 * é€šå¸¸å®ç°ç±»éœ€è¦è°ƒç”¨<code>invocation.invoke()</code>
+	 * æ–¹æ³•æ¥æ‰§è¡Œä¸‹ä¸€ä¸ªinterceptoræˆ–actionï¼Œä½ ä¹Ÿå¯ä»¥é€‰æ‹©ä¸æ‰§è¡Œ<code>invocation.invoke()</code>
+	 * ï¼Œè€Œæ˜¯è¿”å›å¦ä¸€ä¸ªObjectåšä¸ºæœ¬æ¬¡Actionè°ƒç”¨çš„ç»“æœ
 	 * 
 	 * @param invocation
 	 * @return

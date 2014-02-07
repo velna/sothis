@@ -136,7 +136,7 @@ public class PagerDirective implements TemplateDirectiveModel {
 	}
 
 	/**
-	 * ×ÓÀà¿ÉÒÔ¸²¸ÇÕâ¸ö·½·¨À´¶ÔpagerµÄ²ÎÊı½øĞĞ¹ıÂË
+	 * å­ç±»å¯ä»¥è¦†ç›–è¿™ä¸ªæ–¹æ³•æ¥å¯¹pagerçš„å‚æ•°è¿›è¡Œè¿‡æ»¤
 	 * 
 	 * @param params
 	 * @return

@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * ¶ÔAction·½·¨µÄ¼òµ¥·â×°
+ * å¯¹Actionæ–¹æ³•çš„ç®€å•å°è£…
  * 
  * @author velna
  * 
@@ -20,46 +20,46 @@ public interface Action extends ActionBase {
 	Method getActionMethod();
 
 	/**
-	 * µÃµ½Õâ¸öAction¶ÔÓ¦µÄController¶ÔÏó
+	 * å¾—åˆ°è¿™ä¸ªActionå¯¹åº”çš„Controllerå¯¹è±¡
 	 * 
 	 * @return
 	 */
 	Controller getController();
 
 	/**
-	 * µÃµ½ActionÃû³Æ
+	 * å¾—åˆ°Actionåç§°
 	 * 
 	 * @return
 	 */
 	String getName();
 
 	/**
-	 * µÃµ½ActionµÄÍêÕûÃû³Æ£¬°üÀ¨packageºÍcontrollerÂ·¾¶
+	 * å¾—åˆ°Actionçš„å®Œæ•´åç§°ï¼ŒåŒ…æ‹¬packageå’Œcontrollerè·¯å¾„
 	 * 
 	 * @return
 	 */
 	String getFullName();
 
 	/**
-	 * Ö¸¶¨µÄ×¢½âÊÇ·ñÔÚaction method¡¢controller class»òcontroller packageÖĞ³öÏÖ<br>
+	 * æŒ‡å®šçš„æ³¨è§£æ˜¯å¦åœ¨action methodã€controller classæˆ–controller packageä¸­å‡ºç°<br>
 	 * {@inheritDoc}
 	 */
 	boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
 
 	/**
-	 * µÃµ½ÔÚaction method»òcontroller class»òcontroller packageÖĞ³öÏÖµÄ×¢½â<br>
+	 * å¾—åˆ°åœ¨action methodæˆ–controller classæˆ–controller packageä¸­å‡ºç°çš„æ³¨è§£<br>
 	 * {@inheritDoc}
 	 */
 	<T extends Annotation> T[] getAnnotation(Class<T> annotationClass);
 
 	/**
-	 * µÃµ½ËùÓĞÔÚaction method¡¢controller classºÍcontroller packageÖĞÉùÃ÷µÄ×¢½â<br>
+	 * å¾—åˆ°æ‰€æœ‰åœ¨action methodã€controller classå’Œcontroller packageä¸­å£°æ˜çš„æ³¨è§£<br>
 	 * {@inheritDoc}
 	 */
 	Annotation[] getAnnotations();
 
 	/**
-	 * Í¬ {@link Action#getAnnotations()}<br>
+	 * åŒ {@link Action#getAnnotations()}<br>
 	 * {@inheritDoc}
 	 */
 	Annotation[] getDeclaredAnnotations();

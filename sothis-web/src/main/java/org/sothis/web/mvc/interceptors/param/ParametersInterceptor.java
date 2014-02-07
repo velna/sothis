@@ -36,7 +36,7 @@ import org.sothis.mvc.Interceptor;
 import org.sothis.web.mvc.WebActionContext;
 
 /**
- * ²ÎÊý×¢ÈëÀ¹½ØÆ÷
+ * å‚æ•°æ³¨å…¥æ‹¦æˆªå™¨
  * 
  * @author velna
  * 
@@ -193,7 +193,7 @@ public class ParametersInterceptor implements Interceptor {
 					break;
 				}
 				Type[] types = writeMethod.getGenericParameterTypes();
-				// Èç¹ûÊÇ·ºÐÍ£¬Ôò¾¡Á¿ÕÒµ½·ºÐÍ¶ÔÓ¦µÄÊµ¼ÊÀàÐÍ
+				// å¦‚æžœæ˜¯æ³›åž‹ï¼Œåˆ™å°½é‡æ‰¾åˆ°æ³›åž‹å¯¹åº”çš„å®žé™…ç±»åž‹
 				if (types != null && types.length > 0 && types[0] instanceof TypeVariable) {
 					TypeVariable typeVariable = (TypeVariable) types[0];
 					Type type = bean.getClass().getGenericSuperclass();

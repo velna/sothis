@@ -42,10 +42,10 @@ public class ModelAndViewSupport implements ModelAndView, Serializable {
 	}
 
 	/**
-	 * ÁÙÊ±ÖØ¶¨Ïò(302)
+	 * ä¸´æ—¶é‡å®šå‘(302)
 	 * 
 	 * @param location
-	 *            ĞèÒªÖØ¶¨ÏòµÄaction»òurl
+	 *            éœ€è¦é‡å®šå‘çš„actionæˆ–url
 	 * @return
 	 */
 	public final ModelAndViewSupport redirect(String location) {
@@ -55,10 +55,10 @@ public class ModelAndViewSupport implements ModelAndView, Serializable {
 	}
 
 	/**
-	 * ÓÀ¾ÃÖØ¶¨Ïò(301)
+	 * æ°¸ä¹…é‡å®šå‘(301)
 	 * 
 	 * @param location
-	 *            ĞèÒªÖØ¶¨ÏòµÄaction»òurl
+	 *            éœ€è¦é‡å®šå‘çš„actionæˆ–url
 	 * @return
 	 */
 	public final ModelAndViewSupport redirectPermanently(String location) {
@@ -69,10 +69,10 @@ public class ModelAndViewSupport implements ModelAndView, Serializable {
 	}
 
 	/**
-	 * Ò³ÃæÎ´ÕÒµ½(404)
+	 * é¡µé¢æœªæ‰¾åˆ°(404)
 	 * 
 	 * @param path
-	 *            404Ò³ÃæµÄÂ·¾¶
+	 *            404é¡µé¢çš„è·¯å¾„
 	 * @return
 	 */
 	public final ModelAndViewSupport notFound(String path) {
@@ -82,7 +82,7 @@ public class ModelAndViewSupport implements ModelAndView, Serializable {
 	}
 
 	/**
-	 * Ò³ÃæÎ´ÕÒµ½(404)£¬Ä¬ÈÏ404Ò³ÃæµÄÂ·¾¶Îª /404
+	 * é¡µé¢æœªæ‰¾åˆ°(404)ï¼Œé»˜è®¤404é¡µé¢çš„è·¯å¾„ä¸º /404
 	 * 
 	 * @return
 	 */
@@ -91,7 +91,7 @@ public class ModelAndViewSupport implements ModelAndView, Serializable {
 	}
 
 	/**
-	 * ×ªÏòµ½pathÖ¸¶¨µÄÒ³Ãæ
+	 * è½¬å‘åˆ°pathæŒ‡å®šçš„é¡µé¢
 	 * 
 	 * @param path
 	 * @return
@@ -240,7 +240,7 @@ public class ModelAndViewSupport implements ModelAndView, Serializable {
 	}
 
 	/**
-	 * ·ÖÒ³Æ÷£¬³õÊ¼ÎªÃ¿Ò³<code>pageSize</code>Ìõ¼ÇÂ¼
+	 * åˆ†é¡µå™¨ï¼Œåˆå§‹ä¸ºæ¯é¡µ<code>pageSize</code>æ¡è®°å½•
 	 * 
 	 * @param pageSize
 	 * @return

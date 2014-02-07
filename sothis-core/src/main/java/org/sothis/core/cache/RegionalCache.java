@@ -1,7 +1,7 @@
 package org.sothis.core.cache;
 
 /**
- * ·ÖÇø·½Ê½µÄ»º´æÊµÏÖ
+ * åˆ†åŒºæ–¹å¼çš„ç¼“å­˜å®ç°
  * 
  * @author velna
  * 
@@ -10,7 +10,7 @@ public class RegionalCache extends BasicCache {
 	private final String region;
 
 	/**
-	 * ´´½¨Ò»¸ö·ÖÇøÃûÎª{@code region}µÄ»º´æ
+	 * åˆ›å»ºä¸€ä¸ªåˆ†åŒºåä¸º{@code region}çš„ç¼“å­˜
 	 * 
 	 * @param region
 	 * @param storage
@@ -34,7 +34,7 @@ public class RegionalCache extends BasicCache {
 	}
 
 	/**
-	 * ·ÖÇøÃû
+	 * åˆ†åŒºå
 	 * 
 	 * @return
 	 */

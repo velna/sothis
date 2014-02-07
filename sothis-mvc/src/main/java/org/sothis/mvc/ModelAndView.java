@@ -3,9 +3,9 @@ package org.sothis.mvc;
 import java.util.Map;
 
 /**
- * ActionµÄ·µ»ØÖµÈç¹ûÊµÏÖÁËÕâ¸ö½Ó¿Ú£¬ÄÇÃ´Êµ¼ÊµÄmodel¡¢viewTypeºÍviewParams¶¼Ê¹ÓÃÕâ¸ö½Ó¿ÚÖĞ¶¨ÒåµÄ·½·¨À´»ñÈ¡£¬
- * ·ñÔò¸ù¾İ²»Í¬µÄviewÊµÏÖÀ´¾ö¶¨<br>
- * Õâ¸öÀàµÄËùÓĞ·½·¨Ö®ËùÒÔ²»ÒÔgetXXXÃüÃû£¬ÊÇÎªÁË²»ºÍbeanµÄget·½·¨»ìÏı£¬ÒÔÃâÓ°Ïì²¿·Ö³ÌĞòµÄ·´Éä
+ * Actionçš„è¿”å›å€¼å¦‚æœå®ç°äº†è¿™ä¸ªæ¥å£ï¼Œé‚£ä¹ˆå®é™…çš„modelã€viewTypeå’ŒviewParamséƒ½ä½¿ç”¨è¿™ä¸ªæ¥å£ä¸­å®šä¹‰çš„æ–¹æ³•æ¥è·å–ï¼Œ
+ * å¦åˆ™æ ¹æ®ä¸åŒçš„viewå®ç°æ¥å†³å®š<br>
+ * è¿™ä¸ªç±»çš„æ‰€æœ‰æ–¹æ³•ä¹‹æ‰€ä»¥ä¸ä»¥getXXXå‘½åï¼Œæ˜¯ä¸ºäº†ä¸å’Œbeançš„getæ–¹æ³•æ··æ·†ï¼Œä»¥å…å½±å“éƒ¨åˆ†ç¨‹åºçš„åå°„
  * 
  * @author velna
  * 
@@ -13,8 +13,8 @@ import java.util.Map;
 public interface ModelAndView {
 
 	/**
-	 * ·µ»ØÊµ¼ÊµÄmodel<br>
-	 * Õâ¸ö·µ»ØÖµ×îºó»á´«¸ø{@link View#render(Object, Map, ActionInvocation)}·½·¨
+	 * è¿”å›å®é™…çš„model<br>
+	 * è¿™ä¸ªè¿”å›å€¼æœ€åä¼šä¼ ç»™{@link View#render(Object, Map, ActionInvocation)}æ–¹æ³•
 	 * 
 	 * @return
 	 * @see View#render(Object, Map, ActionInvocation)
@@ -22,15 +22,15 @@ public interface ModelAndView {
 	Object model();
 
 	/**
-	 * ·µ»ØÊµ¼ÊµÄviewType
+	 * è¿”å›å®é™…çš„viewType
 	 * 
 	 * @return
 	 */
 	String viewType();
 
 	/**
-	 * ·µ»ØÊµ¼ÊµÄviewParams<br>
-	 * Õâ¸ö·µ»ØÖµ×îºó»á´«¸ø{@link View#render(Object, Map, ActionInvocation)}·½·¨
+	 * è¿”å›å®é™…çš„viewParams<br>
+	 * è¿™ä¸ªè¿”å›å€¼æœ€åä¼šä¼ ç»™{@link View#render(Object, Map, ActionInvocation)}æ–¹æ³•
 	 * 
 	 * @return
 	 * @see View#render(Object, Map, ActionInvocation)

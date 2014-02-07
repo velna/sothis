@@ -23,10 +23,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * ²âÊÔMvcUtils¹¤¾ßÀà
+ * æµ‹è¯•MvcUtilså·¥å…·ç±»
  * 
- * @author£ºliupei
- * @date£º2011-6-16
+ * @authorï¼šliupei
+ * @dateï¼š2011-6-16
  */
 public class MvcUtilsTest {
 
@@ -43,7 +43,7 @@ public class MvcUtilsTest {
 	}
 
 	/**
-	 * ²âÊÔMvcUtils.resolvePath()·½·¨
+	 * æµ‹è¯•MvcUtils.resolvePath()æ–¹æ³•
 	 * 
 	 * @param path
 	 * @param actual
@@ -67,7 +67,7 @@ public class MvcUtilsTest {
 	}
 
 	/**
-	 * Êı¾İ¹©¸ø·½·¨
+	 * æ•°æ®ä¾›ç»™æ–¹æ³•
 	 * 
 	 * @return
 	 */
@@ -75,19 +75,19 @@ public class MvcUtilsTest {
 	public Object[][] interceptDataProvider() {
 		List<String[]> paramList = new ArrayList<String[]>();
 
-		// µ±pathÎªnull£¬ÈÏÎª½âÎö³öµÄÂ·¾¶Îª"/test/test"
+		// å½“pathä¸ºnullï¼Œè®¤ä¸ºè§£æå‡ºçš„è·¯å¾„ä¸º"/test/test"
 		paramList.add(new String[] { null, "/test/test" });
 
-		// µ±pathÎª¿Õ×Ö·û´®£¬ÈÏÎª½âÎö³öµÄÂ·¾¶Îª"/test/test"
+		// å½“pathä¸ºç©ºå­—ç¬¦ä¸²ï¼Œè®¤ä¸ºè§£æå‡ºçš„è·¯å¾„ä¸º"/test/test"
 		paramList.add(new String[] { "", "/test/test" });
 
-		// µ±pathÎª³ıÒÑ"/"¿ªÍ·Ö®ÍâµÄÓĞĞ§×Ö·û´®£¬ÈÏÎª½âÎö³öµÄÂ·¾¶Îª"/test/abcd"
+		// å½“pathä¸ºé™¤å·²"/"å¼€å¤´ä¹‹å¤–çš„æœ‰æ•ˆå­—ç¬¦ä¸²ï¼Œè®¤ä¸ºè§£æå‡ºçš„è·¯å¾„ä¸º"/test/abcd"
 		paramList.add(new String[] { "abcd", "/test/abcd" });
 
-		// µ±pathÎªÒÑ"/"¿ªÍ·µÄ×Ö·û´®£¬ÈÏÎª½âÎö³öµÄÂ·¾¶Îª"/abcd"
+		// å½“pathä¸ºå·²"/"å¼€å¤´çš„å­—ç¬¦ä¸²ï¼Œè®¤ä¸ºè§£æå‡ºçš„è·¯å¾„ä¸º"/abcd"
 		paramList.add(new String[] { "/abcd", "/abcd" });
 
-		// µ±pathÎª"/"£¬ÈÏÎª½âÎö³öµÄÂ·¾¶Îª"/"
+		// å½“pathä¸º"/"ï¼Œè®¤ä¸ºè§£æå‡ºçš„è·¯å¾„ä¸º"/"
 		paramList.add(new String[] { "/", "/" });
 
 		Object[][] params = new Object[paramList.size()][2];

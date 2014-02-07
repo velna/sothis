@@ -6,115 +6,115 @@ import java.util.Map;
 import org.sothis.core.util.Closure;
 
 /**
- * »º´æ½Ó¿Ú¡£<br>
- * nullÖµÒ²»á±»·ÅÈëµ½»º´æÖĞÈ¥¡£
+ * ç¼“å­˜æ¥å£ã€‚<br>
+ * nullå€¼ä¹Ÿä¼šè¢«æ”¾å…¥åˆ°ç¼“å­˜ä¸­å»ã€‚
  * 
  * @author velna
  * 
  */
 public interface Cache {
 	/**
-	 * ´Ó»º´æÖĞÈ¡³ö¼üÎª{@code key}µÄÖµ
+	 * ä»ç¼“å­˜ä¸­å–å‡ºé”®ä¸º{@code key}çš„å€¼
 	 * 
 	 * @param key
-	 *            »º´æµÄ¼üÖµ
-	 * @return {@code key}¶ÔÓ¦µÄ»º´æÖµ
+	 *            ç¼“å­˜çš„é”®å€¼
+	 * @return {@code key}å¯¹åº”çš„ç¼“å­˜å€¼
 	 */
 	<V> V get(String key);
 
 	/**
-	 * ´Ó»º´æÖĞÈ¡³ö¼üÎª{@code key}µÄÖµ£¬Èç¹û»º´æÖĞÕÒ²»µ½£¬Ôòµ÷ÓÃ{@code closure}À´Éú³É»º´æ£¬²¢½«¸ÃÖµ¸üĞÂµ½»º´æÖĞÈ¥¡£
+	 * ä»ç¼“å­˜ä¸­å–å‡ºé”®ä¸º{@code key}çš„å€¼ï¼Œå¦‚æœç¼“å­˜ä¸­æ‰¾ä¸åˆ°ï¼Œåˆ™è°ƒç”¨{@code closure}æ¥ç”Ÿæˆç¼“å­˜ï¼Œå¹¶å°†è¯¥å€¼æ›´æ–°åˆ°ç¼“å­˜ä¸­å»ã€‚
 	 * 
 	 * @param key
-	 *            »º´æµÄ¼üÖµ
+	 *            ç¼“å­˜çš„é”®å€¼
 	 * @param closure
-	 *            Éú³É{@code key}¶ÔÓ¦µÄ»º´æÖµµÄ±Õ°ü
-	 * @return {@code key}¶ÔÓ¦µÄ»º´æÖµ
+	 *            ç”Ÿæˆ{@code key}å¯¹åº”çš„ç¼“å­˜å€¼çš„é—­åŒ…
+	 * @return {@code key}å¯¹åº”çš„ç¼“å­˜å€¼
 	 */
 	<V> V get(String key, Closure<CacheValue, String> closure);
 
 	/**
-	 * ¸ù¾İÒ»×é¼üÖµ£¬µÃµ½ÕâĞ©¼üËù¶ÔÓ¦µÄ»º´æ¡£{@code extraKey}ºÍ{@code keys}ÖĞµÄÃ¿Ò»¸öÖµ½øĞĞÆ´½Óºó×öÎªÊµ¼ÊÓÃÀ´È¡»º´æµÄ¼üÖµ¡£
+	 * æ ¹æ®ä¸€ç»„é”®å€¼ï¼Œå¾—åˆ°è¿™äº›é”®æ‰€å¯¹åº”çš„ç¼“å­˜ã€‚{@code extraKey}å’Œ{@code keys}ä¸­çš„æ¯ä¸€ä¸ªå€¼è¿›è¡Œæ‹¼æ¥ååšä¸ºå®é™…ç”¨æ¥å–ç¼“å­˜çš„é”®å€¼ã€‚
 	 * 
 	 * @param extraKey
-	 *            ¶îÍâµÄ¼üÖµ
+	 *            é¢å¤–çš„é”®å€¼
 	 * @param keys
-	 *            ĞèÒª²éÕÒµÄkey¼¯ºÏ
-	 * @return ·µ»ØÒ»¸öMap£¬keyÎª{@code keys}ÖĞµÄÒ»¸öÖµ£¬valueÎª¸Ãkey¶ÔÓ¦µÄ»º´æÖµ
+	 *            éœ€è¦æŸ¥æ‰¾çš„keyé›†åˆ
+	 * @return è¿”å›ä¸€ä¸ªMapï¼Œkeyä¸º{@code keys}ä¸­çš„ä¸€ä¸ªå€¼ï¼Œvalueä¸ºè¯¥keyå¯¹åº”çš„ç¼“å­˜å€¼
 	 */
 	<V> Map<String, V> get(String extraKey, Collection<String> keys);
 
 	/**
-	 * ¸ù¾İÒ»×é¼üÖµ£¬µÃµ½ÕâĞ©¼üËù¶ÔÓ¦µÄ»º´æ¡£{@code extraKey}ºÍ{@code keys}ÖĞµÄÃ¿Ò»¸öÖµ½øĞĞÆ´½Óºó×öÎªÊµ¼ÊÓÃÀ´È¡»º´æµÄ¼üÖµ¡£<br>
-	 * Èç¹û»º´æÖĞÕÒ²»µ½{@code keys}ÖĞµÄÒ»¸ö»ò¶à¸ö»º´æ£¬ÕâĞ©key»áÍ¨¹ıµ÷ÓÃ{@code closure}À´Éú³É¡£
+	 * æ ¹æ®ä¸€ç»„é”®å€¼ï¼Œå¾—åˆ°è¿™äº›é”®æ‰€å¯¹åº”çš„ç¼“å­˜ã€‚{@code extraKey}å’Œ{@code keys}ä¸­çš„æ¯ä¸€ä¸ªå€¼è¿›è¡Œæ‹¼æ¥ååšä¸ºå®é™…ç”¨æ¥å–ç¼“å­˜çš„é”®å€¼ã€‚<br>
+	 * å¦‚æœç¼“å­˜ä¸­æ‰¾ä¸åˆ°{@code keys}ä¸­çš„ä¸€ä¸ªæˆ–å¤šä¸ªç¼“å­˜ï¼Œè¿™äº›keyä¼šé€šè¿‡è°ƒç”¨{@code closure}æ¥ç”Ÿæˆã€‚
 	 * 
 	 * @param extraKey
-	 *            ¶îÍâµÄ¼üÖµ
+	 *            é¢å¤–çš„é”®å€¼
 	 * @param keys
-	 *            ĞèÒª²éÕÒµÄkey¼¯ºÏ
+	 *            éœ€è¦æŸ¥æ‰¾çš„keyé›†åˆ
 	 * @param closure
-	 * @return ·µ»ØÒ»¸öMap£¬keyÎª{@code keys}ÖĞµÄÒ»¸öÖµ£¬valueÎª¸Ãkey¶ÔÓ¦µÄ»º´æÖµ
+	 * @return è¿”å›ä¸€ä¸ªMapï¼Œkeyä¸º{@code keys}ä¸­çš„ä¸€ä¸ªå€¼ï¼Œvalueä¸ºè¯¥keyå¯¹åº”çš„ç¼“å­˜å€¼
 	 */
 	<V> Map<String, V> get(String extraKey, Collection<String> keys, Closure<Map<String, CacheValue>, Collection<String>> closure);
 
 	/**
-	 * ½«{@code value}·Åµ½{@code key}¶ÔÓ¦µÄ»º´æÖĞ¡£
+	 * å°†{@code value}æ”¾åˆ°{@code key}å¯¹åº”çš„ç¼“å­˜ä¸­ã€‚
 	 * 
 	 * @param key
-	 *            »º´æ¼ü
+	 *            ç¼“å­˜é”®
 	 * @param value
-	 *            »º´æÖµ
+	 *            ç¼“å­˜å€¼
 	 * @param timeToLive
-	 *            »º´æµÄ´æ»îÊ±¼ä£¬ÒÔÃëÎªµ¥Î»
-	 * @return ³É¹¦·µ»Øtrue£¬·ñÔò·µ»Øfalse
+	 *            ç¼“å­˜çš„å­˜æ´»æ—¶é—´ï¼Œä»¥ç§’ä¸ºå•ä½
+	 * @return æˆåŠŸè¿”å›trueï¼Œå¦åˆ™è¿”å›false
 	 */
 	boolean put(String key, Object value, long timeToLive);
 
 	/**
-	 * ½«{@code cacheValue}·Åµ½{@code key}¶ÔÓ¦µÄ»º´æÖĞ¡£
+	 * å°†{@code cacheValue}æ”¾åˆ°{@code key}å¯¹åº”çš„ç¼“å­˜ä¸­ã€‚
 	 * 
 	 * @param key
-	 *            »º´æ¼ü
+	 *            ç¼“å­˜é”®
 	 * @param cacheValue
-	 *            »º´æÖµ
-	 * @return ³É¹¦·µ»Øtrue£¬·ñÔò·µ»Øfalse
+	 *            ç¼“å­˜å€¼
+	 * @return æˆåŠŸè¿”å›trueï¼Œå¦åˆ™è¿”å›false
 	 */
 	boolean put(String key, CacheValue cacheValue);
 
 	/**
-	 * ´Ó»º´æÖĞÉ¾³ı¼üÖµÎª{@code key}µÄ»º´æ¡£
+	 * ä»ç¼“å­˜ä¸­åˆ é™¤é”®å€¼ä¸º{@code key}çš„ç¼“å­˜ã€‚
 	 * 
 	 * @param key
-	 *            ÒªÉ¾³ıµÄ»º´æ¼üÖµ
-	 * @return ³É¹¦·µ»Øtrue£¬·ñÔò·µ»Øfalse
+	 *            è¦åˆ é™¤çš„ç¼“å­˜é”®å€¼
+	 * @return æˆåŠŸè¿”å›trueï¼Œå¦åˆ™è¿”å›false
 	 */
 	boolean remove(String key);
 
 	/**
-	 * ´Ó»º´æÖĞÉ¾³ı¼üÖµÎª{@code extraKey}ºÍ{@code key}µÄ»º´æ¡£
+	 * ä»ç¼“å­˜ä¸­åˆ é™¤é”®å€¼ä¸º{@code extraKey}å’Œ{@code key}çš„ç¼“å­˜ã€‚
 	 * 
 	 * @param extraKey
 	 * @param key
-	 * @return ³É¹¦·µ»Øtrue£¬·ñÔò·µ»Øfalse
+	 * @return æˆåŠŸè¿”å›trueï¼Œå¦åˆ™è¿”å›false
 	 */
 	boolean remove(String extraKey, String key);
 
 	/**
-	 * µÃµ½»º´æÖĞµÄ¼ÇÂ¼Êı¡£
+	 * å¾—åˆ°ç¼“å­˜ä¸­çš„è®°å½•æ•°ã€‚
 	 * 
 	 * @return
 	 */
 	long size();
 
 	/**
-	 * µÃµ½»º´æµÄÍ³¼ÆÇé¿ö
+	 * å¾—åˆ°ç¼“å­˜çš„ç»Ÿè®¡æƒ…å†µ
 	 * 
 	 * @return
 	 */
 	CacheStat stats();
 
 	/**
-	 * µÃµ½»º´æµÄ´æ´¢ÒıÇæ
+	 * å¾—åˆ°ç¼“å­˜çš„å­˜å‚¨å¼•æ“
 	 * 
 	 * @param storage
 	 */

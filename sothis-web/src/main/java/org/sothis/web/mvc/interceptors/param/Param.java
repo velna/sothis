@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Action·½·¨µÄ²ÎÊı×¢Èë×¢½â<br>
+ * Actionæ–¹æ³•çš„å‚æ•°æ³¨å…¥æ³¨è§£<br>
  * 
  * <pre>
  * class UserController{
@@ -30,14 +30,14 @@ import java.util.Date;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Param {
 	/**
-	 * ÇëÇóÖĞµÄ²ÎÊıÃû
+	 * è¯·æ±‚ä¸­çš„å‚æ•°å
 	 * 
 	 * @return
 	 */
 	String name() default "";
 
 	/**
-	 * ÕıÔò±í´ïÊ½Æ¥Åä£¬Ö»ÓĞÆ¥Åä²Å»á½øĞĞ²ÎÊı×¢Èë¡£¶ÔÓÚ{@link Date}ÀàĞÍÔò¶ÔÓ¦{@link SimpleDateFormat}µÄpattern
+	 * æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…ï¼Œåªæœ‰åŒ¹é…æ‰ä¼šè¿›è¡Œå‚æ•°æ³¨å…¥ã€‚å¯¹äº{@link Date}ç±»å‹åˆ™å¯¹åº”{@link SimpleDateFormat}çš„pattern
 	 * 
 	 * @return
 	 */

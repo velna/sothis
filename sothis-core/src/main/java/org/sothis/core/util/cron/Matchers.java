@@ -5,7 +5,7 @@ import java.util.Calendar;
 public class Matchers {
 
 	/**
-	 * Æ¥ÅäËùÓĞ
+	 * åŒ¹é…æ‰€æœ‰
 	 */
 	public final static Matcher MATCH_ALL_MATHCER = new Matcher() {
 		@Override
@@ -15,7 +15,7 @@ public class Matchers {
 	};
 
 	/**
-	 * Æ¥Åä×îºóÃ¿¸öÔÂ×îºóÒ»¸ö¹¤×÷ÈÕ
+	 * åŒ¹é…æœ€åæ¯ä¸ªæœˆæœ€åä¸€ä¸ªå·¥ä½œæ—¥
 	 */
 	public final static Matcher LAST_WORK_DAY_MATCHER = new Matcher() {
 		@Override
@@ -35,7 +35,7 @@ public class Matchers {
 	};
 
 	/**
-	 * Æ¥Åäµ¥¸öÖµ
+	 * åŒ¹é…å•ä¸ªå€¼
 	 * 
 	 * @param value
 	 * @return
@@ -50,7 +50,7 @@ public class Matchers {
 	}
 
 	/**
-	 * Æ¥Åä´øÓĞÆ«ÒÆµÄÖØ¸´×Ö¶Î
+	 * åŒ¹é…å¸¦æœ‰åç§»çš„é‡å¤å­—æ®µ
 	 * 
 	 * @param offset
 	 * @param repeat
@@ -66,7 +66,7 @@ public class Matchers {
 	}
 
 	/**
-	 * Æ¥Åä´øÓĞÇø¼äµÄÖØ¸´×Ö¶Î
+	 * åŒ¹é…å¸¦æœ‰åŒºé—´çš„é‡å¤å­—æ®µ
 	 * 
 	 * @param range
 	 * @param repeat
@@ -95,7 +95,7 @@ public class Matchers {
 	}
 
 	/**
-	 * Æ¥Åä´øÓĞL(last)±êÊ¶µÄ×Ö¶Î
+	 * åŒ¹é…å¸¦æœ‰L(last)æ ‡è¯†çš„å­—æ®µ
 	 * 
 	 * @param last
 	 * @return
@@ -121,7 +121,7 @@ public class Matchers {
 	}
 
 	/**
-	 * Æ¥Åä´øÓĞ¡°#¡±±êÊ¶µÄ×Ö¶Î
+	 * åŒ¹é…å¸¦æœ‰â€œ#â€æ ‡è¯†çš„å­—æ®µ
 	 * 
 	 * @param matcher
 	 * @param week
@@ -143,7 +143,7 @@ public class Matchers {
 	}
 
 	/**
-	 * Æ¥Åä¹¤×÷ÈÕ×Ö¶Î£¬1WµÈ
+	 * åŒ¹é…å·¥ä½œæ—¥å­—æ®µï¼Œ1Wç­‰
 	 * 
 	 * @param dayOfMonth
 	 * @return

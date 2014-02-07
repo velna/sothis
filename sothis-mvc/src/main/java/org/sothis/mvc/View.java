@@ -3,18 +3,18 @@ package org.sothis.mvc;
 import java.io.IOException;
 
 /**
- * view½Ó¿Ú£¬ËùÓĞµÄview¶¼ĞèÒªÊµÏÖÕâ¸ö½Ó¿Ú
+ * viewæ¥å£ï¼Œæ‰€æœ‰çš„viewéƒ½éœ€è¦å®ç°è¿™ä¸ªæ¥å£
  * 
  * @author velna
  * 
  */
 public interface View {
 	/**
-	 * Ê¹ÓÃµ±Ç°µÄviewäÖÈ¾ÇëÇó½á¹û
+	 * ä½¿ç”¨å½“å‰çš„viewæ¸²æŸ“è¯·æ±‚ç»“æœ
 	 * 
 	 * @param mav
 	 * @param invocation
-	 *            µ±Ç°µÄactionµ÷ÓÃ
+	 *            å½“å‰çš„actionè°ƒç”¨
 	 * @throws IOException
 	 * @throws ViewRenderException
 	 */

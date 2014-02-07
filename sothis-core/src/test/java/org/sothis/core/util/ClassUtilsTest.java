@@ -17,13 +17,13 @@ import org.testng.annotations.Test;
 import org.sothis.core.beans.Scope;
 
 /**
- * ClassUtils²âÊÔÀà
+ * ClassUtilsæµ‹è¯•ç±»
  * 
  * @author liupei
  */
 public class ClassUtilsTest {
 	/**
-	 * ²âÊÔgetClasses·½·¨Õı³£Çé¿ö
+	 * æµ‹è¯•getClassesæ–¹æ³•æ­£å¸¸æƒ…å†µ
 	 * 
 	 * @param path
 	 * @param expected

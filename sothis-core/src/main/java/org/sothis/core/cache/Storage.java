@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * »º´æµÄ´æ´¢ÒıÇæ
+ * ç¼“å­˜çš„å­˜å‚¨å¼•æ“
  * 
  * @author velna
  * 
@@ -12,7 +12,7 @@ import java.util.Map;
 public interface Storage {
 
 	/**
-	 * È¡³ö¼üÖµÎª{@code key}µÄ»º´æÖµ
+	 * å–å‡ºé”®å€¼ä¸º{@code key}çš„ç¼“å­˜å€¼
 	 * 
 	 * @param key
 	 * @return
@@ -20,15 +20,15 @@ public interface Storage {
 	CacheValue get(String key);
 
 	/**
-	 * ¸ù¾İ{@code keys}µÃµ½»º´æÖµ
+	 * æ ¹æ®{@code keys}å¾—åˆ°ç¼“å­˜å€¼
 	 * 
 	 * @param keys
-	 * @return keyÎª{@code keys}ÖĞµÄÖµ£¬valueÎª¸Ãkey¶ÔÓ¦µÄ»º´æÖµ
+	 * @return keyä¸º{@code keys}ä¸­çš„å€¼ï¼Œvalueä¸ºè¯¥keyå¯¹åº”çš„ç¼“å­˜å€¼
 	 */
 	Map<String, CacheValue> get(Collection<String> keys);
 
 	/**
-	 * ½«{@code value}·Åµ½{@code key}¶ÔÓ¦µÄ»º´æÖĞ
+	 * å°†{@code value}æ”¾åˆ°{@code key}å¯¹åº”çš„ç¼“å­˜ä¸­
 	 * 
 	 * @param key
 	 * @param value
@@ -37,7 +37,7 @@ public interface Storage {
 	boolean put(String key, CacheValue value);
 
 	/**
-	 * ´Ó»º´æÖĞÉ¾³ı¼üÎª{@code key}µÄÖµ
+	 * ä»ç¼“å­˜ä¸­åˆ é™¤é”®ä¸º{@code key}çš„å€¼
 	 * 
 	 * @param key
 	 * @return
@@ -45,7 +45,7 @@ public interface Storage {
 	boolean remove(String key);
 
 	/**
-	 * µÃµ½»º´æÖĞµÄ¼ÇÂ¼ÌõÊı¡£
+	 * å¾—åˆ°ç¼“å­˜ä¸­çš„è®°å½•æ¡æ•°ã€‚
 	 * 
 	 * @return
 	 */

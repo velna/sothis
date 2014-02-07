@@ -132,32 +132,32 @@ public class ParametersInterceptorTest {
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
 		List<Object[]> dataList = new ArrayList<Object[]>();
 
-		// ÎŞÈÎºÎ²ÎÊı
+		// æ— ä»»ä½•å‚æ•°
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "test", new Object[0] });
 
-		// Ô­Ê¼ÀàĞÍ
+		// åŸå§‹ç±»å‹
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "testPrimitiveParam", new Object[] { false, (byte) 0, 0, 0L, 0F, 0D, (char) 0, (short) 0 } });
 
-		// ÀàÔ­Ê¼ÀàĞÍ
+		// ç±»åŸå§‹ç±»å‹
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "testPrimitiveLikeParam", new Object[4] });
 
-		// Ã¶¾ÙÀàĞÍÎªnull
+		// æšä¸¾ç±»å‹ä¸ºnull
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "testEnumParam", new Object[1] });
 
-		// Ã¶¾ÙÀàĞÍ²»Îªnull
+		// æšä¸¾ç±»å‹ä¸ä¸ºnull
 
 		params.put("E1", new Object[] { "" });
 		dataList.add(new Object[] { params, "testEnumParam", new Object[] { TestEnum.E1 } });
 
-		// Map²ÎÊıÎªnull
+		// Mapå‚æ•°ä¸ºnull
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "testMapParam", new Object[] { Collections.EMPTY_MAP } });
 
-		// Map²ÎÊı²»Îªnull
+		// Mapå‚æ•°ä¸ä¸ºnull
 		params = new HashMap<String, Object[]>();
 		params.put("E1", new String[] { "" });
 		dataList.add(new Object[] { params, "testMapParam", new Object[] { params } });
 
-		// Ç¶Ì×map
+		// åµŒå¥—map
 		params = new HashMap<String, Object[]>();
 		params.put("params.name", new String[] { "123", "234" });
 		params.put("params.bob.friends", new String[] { "tom", "jack" });
@@ -181,7 +181,7 @@ public class ParametersInterceptorTest {
 		params.put("byteValue", new String[] { "127" });
 		params.put("byteObject", new String[] { "1" });
 		params.put("charValue", new String[] { "c" });
-		params.put("charObject", new String[] { "ÎÒµÄ" });
+		params.put("charObject", new String[] { "æˆ‘çš„" });
 		params.put("shortValue", new String[] { "152" });
 		params.put("shortObject", new String[] { "-523" });
 
@@ -213,7 +213,7 @@ public class ParametersInterceptorTest {
 		expected.byteValue = 127;
 		expected.byteObject = 1;
 		expected.charValue = 'c';
-		expected.charObject = 'ÎÒ';
+		expected.charObject = 'æˆ‘';
 		expected.shortValue = 152;
 		expected.shortObject = -523;
 
@@ -223,7 +223,7 @@ public class ParametersInterceptorTest {
 
 		dataList.add(new Object[] { params, "testBeanParam", new Object[] { expected } });
 
-		// Òì³£Êı¾İ
+		// å¼‚å¸¸æ•°æ®
 		params = new HashMap<String, Object[]>();
 		params.put("params.name", new String[] { "123", "234" });
 		params.put("model.intArray", new String[] { "sdf", "234" });
@@ -281,22 +281,22 @@ public class ParametersInterceptorTest {
 
 		dataList.add(new Object[] { params, "testBeanParam", new Object[] { expected } });
 
-		// @param ×¢½â·½Ê½
+		// @param æ³¨è§£æ–¹å¼
 		params = new HashMap<String, Object[]>();
 		params.put("username", new String[] { "123" });
 		params.put("password", new String[] { "456" });
 		dataList.add(new Object[] { params, "testParamAnnotation", new Object[] { "123", "456" } });
 
-		// @param ×¢½â·½Ê½ ²ÎÊıÖµÎªnull
+		// @param æ³¨è§£æ–¹å¼ å‚æ•°å€¼ä¸ºnull
 		params = new HashMap<String, Object[]>();
 		params.put("username", new String[] { null });
 		params.put("password", new String[] { null });
 		dataList.add(new Object[] { params, "testParamAnnotation", new Object[] { null, null } });
 
-		// @param ×¢½â·½Ê½²ÎÊıÎªnull
+		// @param æ³¨è§£æ–¹å¼å‚æ•°ä¸ºnull
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "testParamAnnotation", new Object[2] });
 
-		// @param ×¢½â·½Ê½
+		// @param æ³¨è§£æ–¹å¼
 		dataList.add(new Object[] { Collections.EMPTY_MAP, "testParamAnnotationPrimitive", new Object[] { 0, false } });
 
 		Object[][] ret = new Object[dataList.size()][3];

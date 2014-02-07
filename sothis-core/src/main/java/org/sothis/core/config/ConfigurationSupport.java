@@ -26,7 +26,7 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 	}
 
 	/**
-	 * ×ÓÀà¿ÉÒÔÖØĞ´Õâ¸ö·½·¨£¬Èç¹ûĞèÒª×öÒ»Ğ©×Ô¶¨ÒåµÄ²Ù×÷
+	 * å­ç±»å¯ä»¥é‡å†™è¿™ä¸ªæ–¹æ³•ï¼Œå¦‚æœéœ€è¦åšä¸€äº›è‡ªå®šä¹‰çš„æ“ä½œ
 	 * 
 	 * @return
 	 * @throws IOException

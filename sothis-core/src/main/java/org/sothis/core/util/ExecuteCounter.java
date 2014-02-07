@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Ö´ĞĞ¼ÆÊıÆ÷£¬¿ÉÒÔÓÃÀ´¶Ôµ±Ç°Ïß³ÌÏÂµÄÄ³Ğ©·½·¨½øĞĞ¼ÆÊıÍ³¼Æ
+ * æ‰§è¡Œè®¡æ•°å™¨ï¼Œå¯ä»¥ç”¨æ¥å¯¹å½“å‰çº¿ç¨‹ä¸‹çš„æŸäº›æ–¹æ³•è¿›è¡Œè®¡æ•°ç»Ÿè®¡
  * 
  * @author velna
  * 
@@ -61,7 +61,7 @@ public class ExecuteCounter {
 	}
 
 	/**
-	 * ¶ÔÖ¸¶¨µÄkey½øĞĞ1´Î¼ÆÊı
+	 * å¯¹æŒ‡å®šçš„keyè¿›è¡Œ1æ¬¡è®¡æ•°
 	 * 
 	 * @param key
 	 * @return
@@ -78,7 +78,7 @@ public class ExecuteCounter {
 	}
 
 	/**
-	 * µÃµ½Ò»¸ö»ùÓÚthread localµÄÊµÀı
+	 * å¾—åˆ°ä¸€ä¸ªåŸºäºthread localçš„å®ä¾‹
 	 * 
 	 * @return
 	 */

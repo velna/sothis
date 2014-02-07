@@ -24,7 +24,7 @@ import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
 /**
- * mongo db Dao的虚基类
+ * mongo db Dao鐨勮櫄鍩虹被
  * 
  * @author velna
  * 
@@ -51,7 +51,7 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 	}
 
 	/**
-	 * 得到集合
+	 * 寰楀埌闆嗗悎
 	 * 
 	 * @return
 	 */

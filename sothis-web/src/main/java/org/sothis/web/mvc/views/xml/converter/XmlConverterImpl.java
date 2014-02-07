@@ -26,7 +26,7 @@ public class XmlConverterImpl extends XmlConverter {
 	public void objectToXml(XmlConverter converter, Object object, Writer out, String alias) throws IOException {
 		Field[] fields = object.getClass().getDeclaredFields();
 
-		// »ñÈ¡xmlÊôĞÔ½Úµã
+		// è·å–xmlå±æ€§èŠ‚ç‚¹
 		List<Attribute> attrs = getAttributeNode(object);
 
 		out.write("<");

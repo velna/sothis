@@ -3,7 +3,7 @@ package org.sothis.dal.mongo;
 import org.sothis.dal.Dao;
 
 /**
- * mongo db Dao╣д╫с©зё╛рт╨С©идэ╩Аю╘у╧р╩п╘mongo dbльсп╣д╥╫╥╗
+ * mongo db DaoГ └Ф▌╔Е▐ёО╪▄Д╩╔Е░▌Е▐╞Х┐╫Д╪ Ф┴╘Е╠∙Д╦─Д╨⌡mongo dbГ┴╧Ф°┴Г └Ф√╧ФЁ∙
  * 
  * @author velna
  * 

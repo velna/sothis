@@ -1,7 +1,7 @@
 package org.sothis.dal.query;
 
 /**
- * ÅÅĞò×Ö¶Î
+ * æ’åºå­—æ®µ
  * 
  * @author velna
  * 
@@ -16,7 +16,7 @@ public class Sort {
 	}
 
 	/**
-	 * ÅÅĞòµÄ×Ö¶ÎÃû
+	 * æ’åºçš„å­—æ®µå
 	 * 
 	 * @return
 	 */
@@ -26,7 +26,7 @@ public class Sort {
 
 	/**
 	 * 
-	 * @return ÉıĞò·µ»Øtrue£¬½µĞò·µ»Øfalse
+	 * @return å‡åºè¿”å›trueï¼Œé™åºè¿”å›false
 	 */
 	public boolean isAsc() {
 		return asc;

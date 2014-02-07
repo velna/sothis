@@ -14,7 +14,7 @@ import java.util.Set;
 public class CollectionUtils extends org.apache.commons.collections.CollectionUtils {
 
 	/**
-	 * ¶ÔÒ»¸öÁĞ±í½øĞĞ·Ö×é
+	 * å¯¹ä¸€ä¸ªåˆ—è¡¨è¿›è¡Œåˆ†ç»„
 	 * 
 	 * @param <K>
 	 * @param <V>
@@ -40,7 +40,7 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 	}
 
 	/**
-	 * ¶ÔÒ»¸öÁĞ±í½øĞĞ·Ö×é
+	 * å¯¹ä¸€ä¸ªåˆ—è¡¨è¿›è¡Œåˆ†ç»„
 	 * 
 	 * @param <K>
 	 * @param <V>
@@ -63,7 +63,7 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 	}
 
 	/**
-	 * ½«Ò»¸öÁĞ±í×ª»»³ÉÁíÒ»¸öÁĞ±í
+	 * å°†ä¸€ä¸ªåˆ—è¡¨è½¬æ¢æˆå¦ä¸€ä¸ªåˆ—è¡¨
 	 * 
 	 * @param <O>
 	 * @param <I>
@@ -86,7 +86,7 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 	}
 
 	/**
-	 * ½«Ò»¸öÁĞ±í×ª»»³ÉÁíÒ»¸öÁĞ±í¡£Èç¹ûclosureµÄexecute·½·¨·µ»ØnullÔò¶ªÆúµ±Ç°½á¹û
+	 * å°†ä¸€ä¸ªåˆ—è¡¨è½¬æ¢æˆå¦ä¸€ä¸ªåˆ—è¡¨ã€‚å¦‚æœclosureçš„executeæ–¹æ³•è¿”å›nullåˆ™ä¸¢å¼ƒå½“å‰ç»“æœ
 	 * 
 	 * @param <O>
 	 * @param <I>

@@ -1,29 +1,29 @@
 package org.sothis.mvc;
 
 /**
- * Actionµ÷ÓÃµÄ·â×°£¬°üÀ¨ÁËinterceptorsµÄÖ´ĞĞºÍactionµÄÖ´ĞĞ<br/>
- * ActionInvocationÄ¿Ç°²»»á¾­¹ıBeanFactoryÊµÀı»¯£¬¶øÖ»ÊÇÊ¹ÓÃÁËDefaultActionInvocationÀà
+ * Actionè°ƒç”¨çš„å°è£…ï¼ŒåŒ…æ‹¬äº†interceptorsçš„æ‰§è¡Œå’Œactionçš„æ‰§è¡Œ<br/>
+ * ActionInvocationç›®å‰ä¸ä¼šç»è¿‡BeanFactoryå®ä¾‹åŒ–ï¼Œè€Œåªæ˜¯ä½¿ç”¨äº†DefaultActionInvocationç±»
  * 
  * @author velna
  * 
  */
 public interface ActionInvocation {
 	/**
-	 * µÃµ½µ±Ç°Action¶ÔÏó
+	 * å¾—åˆ°å½“å‰Actionå¯¹è±¡
 	 * 
 	 * @return
 	 */
 	Action getAction();
 
 	/**
-	 * µÃµ½µ±Ç°µÄActionÉÏÏÂÎÄ
+	 * å¾—åˆ°å½“å‰çš„Actionä¸Šä¸‹æ–‡
 	 * 
 	 * @return
 	 */
 	ActionContext getActionContext();
 
 	/**
-	 * µ÷ÓÃÏÂÒ»¸öinterceptor£¬Èç¹ûinterceptorÈ«²¿Ö´ĞĞÍê±Ï£¬Ôòµ÷ÓÃÏÂÒ»¸öAction
+	 * è°ƒç”¨ä¸‹ä¸€ä¸ªinterceptorï¼Œå¦‚æœinterceptorå…¨éƒ¨æ‰§è¡Œå®Œæ¯•ï¼Œåˆ™è°ƒç”¨ä¸‹ä¸€ä¸ªAction
 	 * 
 	 * @return
 	 * @throws Exception
@@ -31,7 +31,7 @@ public interface ActionInvocation {
 	Object invoke() throws Exception;
 
 	/**
-	 * µÃµ½µ±Ç°µÄcontrollerÊµÀı
+	 * å¾—åˆ°å½“å‰çš„controllerå®ä¾‹
 	 * 
 	 * @return
 	 */

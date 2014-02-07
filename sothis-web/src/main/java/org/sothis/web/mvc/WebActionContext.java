@@ -33,7 +33,7 @@ public class WebActionContext implements ActionContext {
 	protected final Map<String, Object> context = new HashMap<String, Object>();
 
 	/**
-	 * µÃµ½µ±Ç°µÄÉÏÏÂÎÄ
+	 * å¾—åˆ°å½“å‰çš„ä¸Šä¸‹æ–‡
 	 * 
 	 * @return
 	 */
@@ -42,7 +42,7 @@ public class WebActionContext implements ActionContext {
 	}
 
 	/**
-	 * µÃµ½µ±Ç°ÉÏÏÂÎÄµÄHttpServletRequest¶ÔÏó
+	 * å¾—åˆ°å½“å‰ä¸Šä¸‹æ–‡çš„HttpServletRequestå¯¹è±¡
 	 * 
 	 * @return
 	 */
@@ -51,17 +51,17 @@ public class WebActionContext implements ActionContext {
 	}
 
 	/**
-	 * ÉèÖÃµ±Ç°ÉÏÏÂÎÄµÄHttpServletRequest¶ÔÏó
+	 * è®¾ç½®å½“å‰ä¸Šä¸‹æ–‡çš„HttpServletRequestå¯¹è±¡
 	 * 
 	 * @param request
-	 * @return ·µ»ØÔ­Ê¼Öµ£¬Ã»ÓĞÔò·µ»Ønull
+	 * @return è¿”å›åŸå§‹å€¼ï¼Œæ²¡æœ‰åˆ™è¿”å›null
 	 */
 	public void setRequest(Object request) {
 		context.put(REQUEST, request);
 	}
 
 	/**
-	 * µÃµ½µ±Ç°ÉÏÏÂÎÄµÄHttpServletResponse¶ÔÏó
+	 * å¾—åˆ°å½“å‰ä¸Šä¸‹æ–‡çš„HttpServletResponseå¯¹è±¡
 	 * 
 	 * @return
 	 */
@@ -70,17 +70,17 @@ public class WebActionContext implements ActionContext {
 	}
 
 	/**
-	 * ÉèÖÃµ±Ç°ÉÏÏÂÎÄµÄHttpServletResponse¶ÔÏó
+	 * è®¾ç½®å½“å‰ä¸Šä¸‹æ–‡çš„HttpServletResponseå¯¹è±¡
 	 * 
 	 * @param response
-	 * @return ·µ»ØÔ­Ê¼Öµ£¬Ã»ÓĞÔò·µ»Ønull
+	 * @return è¿”å›åŸå§‹å€¼ï¼Œæ²¡æœ‰åˆ™è¿”å›null
 	 */
 	public void setResponse(Object response) {
 		context.put(RESPONSE, response);
 	}
 
 	/**
-	 * µÃµ½µ±Ç°ÉÏÏÂÎÄµÄServletContext¶ÔÏó
+	 * å¾—åˆ°å½“å‰ä¸Šä¸‹æ–‡çš„ServletContextå¯¹è±¡
 	 * 
 	 * @return
 	 */
@@ -89,17 +89,17 @@ public class WebActionContext implements ActionContext {
 	}
 
 	/**
-	 * ÉèÖÃµ±Ç°ÉÏÏÂÎÄµÄServletContext¶ÔÏó
+	 * è®¾ç½®å½“å‰ä¸Šä¸‹æ–‡çš„ServletContextå¯¹è±¡
 	 * 
 	 * @param servletContext
-	 * @return ·µ»ØÔ­Ê¼Öµ£¬Ã»ÓĞÔò·µ»Ønull
+	 * @return è¿”å›åŸå§‹å€¼ï¼Œæ²¡æœ‰åˆ™è¿”å›null
 	 */
 	public void setServletContext(ServletContext servletContext) {
 		put(SERVLET_CONTEXT, servletContext);
 	}
 
 	/**
-	 * µÃµ½µ±Ç°ÉÏÏÂÎÄµÄËùÓĞÇëÇó²ÎÊı
+	 * å¾—åˆ°å½“å‰ä¸Šä¸‹æ–‡çš„æ‰€æœ‰è¯·æ±‚å‚æ•°
 	 * 
 	 * @return
 	 */
@@ -109,10 +109,10 @@ public class WebActionContext implements ActionContext {
 	}
 
 	/**
-	 * ÉèÖÃµ±Ç°ÉÏÏÂÎÄµÄµÄËùÓĞÇëÇó²ÎÊı
+	 * è®¾ç½®å½“å‰ä¸Šä¸‹æ–‡çš„çš„æ‰€æœ‰è¯·æ±‚å‚æ•°
 	 * 
 	 * @param parameters
-	 * @return ·µ»ØÔ­Ê¼Öµ£¬Ã»ÓĞÔò·µ»Ønull
+	 * @return è¿”å›åŸå§‹å€¼ï¼Œæ²¡æœ‰åˆ™è¿”å›null
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, Object[]> setParameters(Map<String, Object[]> parameters) {
@@ -120,7 +120,7 @@ public class WebActionContext implements ActionContext {
 	}
 
 	/**
-	 * µÃµ½µ±Ç°ÉÏÏÂÎÄÖĞµÄFlash¶ÔÏó£¬Ã»ÓĞÔò»á´´½¨Ò»¸öĞÂµÄFlash¶ÔÏó
+	 * å¾—åˆ°å½“å‰ä¸Šä¸‹æ–‡ä¸­çš„Flashå¯¹è±¡ï¼Œæ²¡æœ‰åˆ™ä¼šåˆ›å»ºä¸€ä¸ªæ–°çš„Flashå¯¹è±¡
 	 * 
 	 * @return
 	 */
@@ -129,10 +129,10 @@ public class WebActionContext implements ActionContext {
 	}
 
 	/**
-	 * µÃµ½µ±Ç°ÉÏÏÂÎÄÖĞµÄFlash¶ÔÏó
+	 * å¾—åˆ°å½“å‰ä¸Šä¸‹æ–‡ä¸­çš„Flashå¯¹è±¡
 	 * 
 	 * @param create
-	 *            µ±µ±Ç°ÉÏÏÂÎÄÖĞÃ»ÓĞFlash¶ÔÏóÊ±ÊÇ·ñ´´½¨Ò»¸öĞÂµÄ¶ÔÏó£¬trueÎª´´½¨£¬falseÎª²»´´½¨
+	 *            å½“å½“å‰ä¸Šä¸‹æ–‡ä¸­æ²¡æœ‰Flashå¯¹è±¡æ—¶æ˜¯å¦åˆ›å»ºä¸€ä¸ªæ–°çš„å¯¹è±¡ï¼Œtrueä¸ºåˆ›å»ºï¼Œfalseä¸ºä¸åˆ›å»º
 	 * @return
 	 */
 	public Flash getFlash(boolean create) {

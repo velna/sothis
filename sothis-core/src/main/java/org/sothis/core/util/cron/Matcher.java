@@ -3,18 +3,18 @@ package org.sothis.core.util.cron;
 import java.util.Calendar;
 
 /**
- * ×Ö¶ÎÄÚ²¿µÄÆ¥ÅäÆ÷£¬Æ¥ÅäÒÔ¶ººÅ·Ö¸ôµÄµ¥¸ö×é
+ * å­—æ®µå†…éƒ¨çš„åŒ¹é…å™¨ï¼ŒåŒ¹é…ä»¥é€—å·åˆ†éš”çš„å•ä¸ªç»„
  * 
  * @author velna
  * 
  */
 public interface Matcher {
 	/**
-	 * ÅĞ¶ÏÕâ¸ö×éÊÇ·ñºÍÄ³Ò»Ê±¼äµÄÄ³¸ö×Ö¶ÎÏàÆ¥Åä
+	 * åˆ¤æ–­è¿™ä¸ªç»„æ˜¯å¦å’ŒæŸä¸€æ—¶é—´çš„æŸä¸ªå­—æ®µç›¸åŒ¹é…
 	 * 
 	 * @param calendar
 	 * @param field
-	 *            CalendarµÄ×Ö¶Î
+	 *            Calendarçš„å­—æ®µ
 	 * @return
 	 */
 	boolean matches(Calendar calendar, int field);

@@ -6,14 +6,14 @@ import java.util.List;
 public interface ActionBase {
 
 	/**
-	 * 名称
+	 * 鍚嶇О
 	 * 
 	 * @return
 	 */
 	String getName();
 
 	/**
-	 * 完整名称，包括package和controller路径
+	 * 瀹屾暣鍚嶇О锛屽寘鎷琾ackage鍜宑ontroller璺緞
 	 * 
 	 * @return
 	 */

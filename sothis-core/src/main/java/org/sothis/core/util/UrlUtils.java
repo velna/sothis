@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * <p>
- * url¹¤¾ßÀà
+ * urlå·¥å…·ç±»
  * </p>
  */
 public final class UrlUtils {
@@ -22,7 +22,7 @@ public final class UrlUtils {
 	}
 
 	/**
-	 * ÅĞ¶ÏÒ»¸öurl×Ö·û´®ÊÇ·ñ·µ»Ø200µÄÏìÓ¦×´Ì¬Âë
+	 * åˆ¤æ–­ä¸€ä¸ªurlå­—ç¬¦ä¸²æ˜¯å¦è¿”å›200çš„å“åº”çŠ¶æ€ç 
 	 * 
 	 * @param str
 	 * @return
@@ -45,7 +45,7 @@ public final class UrlUtils {
 
 	/**
 	 * <p>
-	 * ½«Ìá¹©µÄurlÓëparams²ÎÊı°´ÕÕÄ¬ÈÏ(UTF-8)±àÂë¸ñÊ½£¬×é×°³ÉÒ»¸öĞÂµÄurl
+	 * å°†æä¾›çš„urlä¸paramså‚æ•°æŒ‰ç…§é»˜è®¤(UTF-8)ç¼–ç æ ¼å¼ï¼Œç»„è£…æˆä¸€ä¸ªæ–°çš„url
 	 * </p>
 	 * 
 	 * @param url
@@ -59,14 +59,14 @@ public final class UrlUtils {
 
 	/**
 	 * <p>
-	 * ½«Ìá¹©µÄurlÓëparams²ÎÊı°´ÕÕcharset±àÂë¸ñÊ½£¬×é×°³ÉÒ»¸öĞÂµÄurl
+	 * å°†æä¾›çš„urlä¸paramså‚æ•°æŒ‰ç…§charsetç¼–ç æ ¼å¼ï¼Œç»„è£…æˆä¸€ä¸ªæ–°çš„url
 	 * </p>
 	 * 
 	 * <p>
 	 * url:/test/testAction, params:{testLong=123} =
 	 * /test/testAction?testLong=123<br>
 	 * 
-	 * url:/test/testAction, params:{testString=·¿¼ÛÍø} =
+	 * url:/test/testAction, params:{testString=æˆ¿ä»·ç½‘} =
 	 * /test/testAction?testString=%E6%88%BF%E4%BB%B7%E7%BD%91<br>
 	 * 
 	 * url:/test/testAction, params:{testList=[1, 2, 3]} =
@@ -151,8 +151,8 @@ public final class UrlUtils {
 	}
 
 	/**
-	 * °ÑÎÄ¼şÃûencode³Éutf-8¸ñÊ½
-	 * ÈçÊäÈëµÄÎÄ¼şÃûÎª£º/res/district_pics/Íâ¾°Í¼/admin18/comm/art/000/000/198/31375_s.jpg
+	 * æŠŠæ–‡ä»¶åencodeæˆutf-8æ ¼å¼
+	 * å¦‚è¾“å…¥çš„æ–‡ä»¶åä¸ºï¼š/res/district_pics/å¤–æ™¯å›¾/admin18/comm/art/000/000/198/31375_s.jpg
 	 * 
 	 * @param fileName
 	 * @return

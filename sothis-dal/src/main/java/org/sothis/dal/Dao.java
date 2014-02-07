@@ -9,7 +9,7 @@ import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
 
 /**
- * Êı¾İ¿â·ÃÎÊ½Ó¿Ú¡£¶¨ÒåÁËÊı¾İ¿â·ÃÎÊµÄ³£ÓÃ·½·¨¡£
+ * æ•°æ®åº“è®¿é—®æ¥å£ã€‚å®šä¹‰äº†æ•°æ®åº“è®¿é—®çš„å¸¸ç”¨æ–¹æ³•ã€‚
  * 
  * @author velna
  * 
@@ -19,31 +19,31 @@ import org.sothis.dal.query.Cnd;
 public interface Dao<E extends Entity, K extends Serializable> {
 
 	/**
-	 * ·µ»Ø±¾DAO¶ÔÓ¦µÄÊı¾İ¿âÊµÌåÀà
+	 * è¿”å›æœ¬DAOå¯¹åº”çš„æ•°æ®åº“å®ä½“ç±»
 	 * 
 	 * @return
 	 */
 	Class<E> getEntityClass();
 
 	/**
-	 * ¸ù¾İÌõ¼ş²éÑ¯Êı¾İ¿â£¬²¢·µ»ØÒ»¸öÁĞ±í¡£<br>
+	 * æ ¹æ®æ¡ä»¶æŸ¥è¯¢æ•°æ®åº“ï¼Œå¹¶è¿”å›ä¸€ä¸ªåˆ—è¡¨ã€‚<br>
 	 * {@code dao.find(Cnd.make("age", 22).asc("id"), Pager.make(0, 10), Chain.make("username").add("gender"));}
 	 * <br>
-	 * Ïàµ±ÓÚselect username, gender from mytable where age=22 order by id asc
+	 * ç›¸å½“äºselect username, gender from mytable where age=22 order by id asc
 	 * limit 0, 10
 	 * 
 	 * @param cnd
-	 *            ²éÑ¯Ìõ¼ş
+	 *            æŸ¥è¯¢æ¡ä»¶
 	 * @param pager
-	 *            ·ÖÒ³£¬Èç¹ûÎªnullÔò·µ»ØËùÓĞÊı¾İ¼ÇÂ¼
+	 *            åˆ†é¡µï¼Œå¦‚æœä¸ºnullåˆ™è¿”å›æ‰€æœ‰æ•°æ®è®°å½•
 	 * @param fields
-	 *            ĞèÒª·µ»ØµÄ×Ö¶Î¼¯£¬Èç¹ûÎªnullÔò²éÑ¯ËùÓĞ×Ö¶Î
+	 *            éœ€è¦è¿”å›çš„å­—æ®µé›†ï¼Œå¦‚æœä¸ºnullåˆ™æŸ¥è¯¢æ‰€æœ‰å­—æ®µ
 	 * @return
 	 */
 	List<E> find(Cnd cnd, Pager pager, Chain fields);
 
 	/**
-	 * Ïàµ±ÓÚ{@code find(cnd, pager, fields)}<br>
+	 * ç›¸å½“äº{@code find(cnd, pager, fields)}<br>
 	 * {@code pager.setTotalRows(count(cnd))}
 	 * 
 	 * @param cnd
@@ -54,7 +54,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	List<E> findAndCount(Cnd cnd, Pager pager, Chain fields);
 
 	/**
-	 * Ïàµ±ÓÚ{@code find(cnd, pager, null)}<br>
+	 * ç›¸å½“äº{@code find(cnd, pager, null)}<br>
 	 * {@code pager.setTotalRows(count(cnd))}
 	 * 
 	 * @param cnd
@@ -64,7 +64,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	List<E> findAndCount(Cnd cnd, Pager pager);
 
 	/**
-	 * Ïàµ±ÓÚ{@code find(cnd, pager, null)}
+	 * ç›¸å½“äº{@code find(cnd, pager, null)}
 	 * 
 	 * @param cnd
 	 * @param pager
@@ -73,7 +73,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	List<E> find(Cnd cnd, Pager pager);
 
 	/**
-	 * Ïàµ±ÓÚ{@code find(cnd, null, null)}
+	 * ç›¸å½“äº{@code find(cnd, null, null)}
 	 * 
 	 * @param cnd
 	 * @return
@@ -81,7 +81,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	List<E> find(Cnd cnd);
 
 	/**
-	 * ÒÔµü´ú·½Ê½²éÑ¯¡£
+	 * ä»¥è¿­ä»£æ–¹å¼æŸ¥è¯¢ã€‚
 	 * 
 	 * @param cnd
 	 * @param fields
@@ -90,7 +90,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	Cursor<E> cursor(Cnd cnd, Chain fields);
 
 	/**
-	 * Ïàµ±ÓÚ{@code find(cnd, Pager.make(0,1), fields)}
+	 * ç›¸å½“äº{@code find(cnd, Pager.make(0,1), fields)}
 	 * 
 	 * @param cnd
 	 * @param fields
@@ -99,7 +99,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	E findOne(Cnd cnd, Chain fields);
 
 	/**
-	 * Ïàµ±ÓÚ{@code find(cnd, Pager.make(0,1), null)}
+	 * ç›¸å½“äº{@code find(cnd, Pager.make(0,1), null)}
 	 * 
 	 * @param cnd
 	 * @return
@@ -107,7 +107,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	E findOne(Cnd cnd);
 
 	/**
-	 * ¸ù¾İid²éÕÒ¶ÔÏó
+	 * æ ¹æ®idæŸ¥æ‰¾å¯¹è±¡
 	 * 
 	 * @param id
 	 * @return
@@ -115,7 +115,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	E findById(K id);
 
 	/**
-	 * ¸ù¾İidÁĞ±í²éÕÒËùÓĞ¶ÔÏó£¬·µ»ØµÄÁĞ±í¸ù¾İ´«ÈëµÄidListÅÅĞò
+	 * æ ¹æ®idåˆ—è¡¨æŸ¥æ‰¾æ‰€æœ‰å¯¹è±¡ï¼Œè¿”å›çš„åˆ—è¡¨æ ¹æ®ä¼ å…¥çš„idListæ’åº
 	 * 
 	 * @param idList
 	 * @return
@@ -123,18 +123,18 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	List<E> findByIds(List<K> idList);
 
 	/**
-	 * ¸ù¾İ²éÑ¯Ìõ¼ş{@code cnd}¸üĞÂÊı¾İ¿â¡£<br>
+	 * æ ¹æ®æŸ¥è¯¢æ¡ä»¶{@code cnd}æ›´æ–°æ•°æ®åº“ã€‚<br>
 	 * {@code dao.update(Cnd.make("age", 24), Chain.make("age", 23));}<br>
-	 * Ïàµ±ÓÚ£ºupdate mytable set age=23 where age=24
+	 * ç›¸å½“äºï¼šupdate mytable set age=23 where age=24
 	 * 
 	 * @param cnd
 	 * @param update
-	 * @return ÊÜÓ°ÏìµÄ¼ÇÂ¼Êı
+	 * @return å—å½±å“çš„è®°å½•æ•°
 	 */
 	int update(Cnd cnd, Chain update);
 
 	/**
-	 * ¸ù¾İid¸üĞÂÊı¾İ<br>
+	 * æ ¹æ®idæ›´æ–°æ•°æ®<br>
 	 * 
 	 * @param id
 	 * @param update
@@ -143,39 +143,39 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	int updateById(K id, Chain update);
 
 	/**
-	 * ¸ù¾İÖ÷¼ü½«ÊµÌåÀàÖĞµÄËùÓĞ×Ö¶Î¸üĞÂÈëÊı¾İ¿âÖĞ¡£
+	 * æ ¹æ®ä¸»é”®å°†å®ä½“ç±»ä¸­çš„æ‰€æœ‰å­—æ®µæ›´æ–°å…¥æ•°æ®åº“ä¸­ã€‚
 	 * 
 	 * @param entity
-	 * @return ÊÜÓ°ÏìµÄ¼ÇÂ¼Êı
+	 * @return å—å½±å“çš„è®°å½•æ•°
 	 */
 	E update(E entity);
 
 	/**
-	 * ¸ù¾İ²éÑ¯Ìõ¼şÉ¾³ı¼ÇÂ¼¡£
+	 * æ ¹æ®æŸ¥è¯¢æ¡ä»¶åˆ é™¤è®°å½•ã€‚
 	 * 
 	 * @param cnd
-	 * @return ÊÜÓ°ÏìµÄ¼ÇÂ¼Êı
+	 * @return å—å½±å“çš„è®°å½•æ•°
 	 */
 	int delete(Cnd cnd);
 
 	/**
-	 * ¸ù¾İidÉ¾³ıÒ»ÌõÊı¾İ
+	 * æ ¹æ®idåˆ é™¤ä¸€æ¡æ•°æ®
 	 * 
 	 * @param id
-	 * @return ÊÜÓ°ÏìµÄ¼ÇÂ¼Êı
+	 * @return å—å½±å“çš„è®°å½•æ•°
 	 */
 	int deleteById(K id);
 
 	/**
-	 * ¸ù¾İidÁĞ±íÉ¾³ıÒ»ÅúÊı¾İ
+	 * æ ¹æ®idåˆ—è¡¨åˆ é™¤ä¸€æ‰¹æ•°æ®
 	 * 
 	 * @param idList
-	 * @return ÊÜÓ°ÏìµÄ¼ÇÂ¼Êı
+	 * @return å—å½±å“çš„è®°å½•æ•°
 	 */
 	int deleteByIds(List<K> idList);
 
 	/**
-	 * ²åÈëÒ»Ìõ¼ÇÂ¼¡£
+	 * æ’å…¥ä¸€æ¡è®°å½•ã€‚
 	 * 
 	 * @param entity
 	 * @return
@@ -183,14 +183,14 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	E insert(E entity);
 
 	/**
-	 * µÃµ½Êı¾İ±íµÄËùÓĞ¼ÇÂ¼ÌõÊı¡£
+	 * å¾—åˆ°æ•°æ®è¡¨çš„æ‰€æœ‰è®°å½•æ¡æ•°ã€‚
 	 * 
 	 * @return
 	 */
 	int count();
 
 	/**
-	 * ¸ù¾İ²éÑ¯Ìõ¼şµÃµ½Âú×ã¸ÃÌõ¼şµÄ¼ÇÂ¼Êı¡£
+	 * æ ¹æ®æŸ¥è¯¢æ¡ä»¶å¾—åˆ°æ»¡è¶³è¯¥æ¡ä»¶çš„è®°å½•æ•°ã€‚
 	 * 
 	 * @param cnd
 	 * @return

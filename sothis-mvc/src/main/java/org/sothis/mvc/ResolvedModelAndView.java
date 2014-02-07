@@ -1,7 +1,7 @@
 package org.sothis.mvc;
 
 /**
- * modelºÍviewµÄ½âÎö½á¹û
+ * modelå’Œviewçš„è§£æç»“æœ
  * 
  * @author velna
  * 

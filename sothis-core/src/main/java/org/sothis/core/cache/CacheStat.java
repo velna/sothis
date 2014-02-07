@@ -3,7 +3,7 @@ package org.sothis.core.cache;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * »º´æÍ³¼Æ½á¹ûÀà
+ * ç¼“å­˜ç»Ÿè®¡ç»“æœç±»
  * 
  * @author velna
  * 
@@ -27,7 +27,7 @@ public class CacheStat {
 	private final AtomicLong lRequests = new AtomicLong(0);
 
 	/**
-	 * ´´½¨Ò»¸öÃû³ÆÎª{@code name}µÄ»º´æÍ³¼Æ
+	 * åˆ›å»ºä¸€ä¸ªåç§°ä¸º{@code name}çš„ç¼“å­˜ç»Ÿè®¡
 	 * 
 	 * @param name
 	 */
@@ -36,12 +36,12 @@ public class CacheStat {
 	}
 
 	/**
-	 * ¼ÇÂ¼Ò»´Îget²Ù×÷
+	 * è®°å½•ä¸€æ¬¡getæ“ä½œ
 	 * 
 	 * @param hits
-	 *            »º´æµÄÃüÖĞÊı
+	 *            ç¼“å­˜çš„å‘½ä¸­æ•°
 	 * @param misses
-	 *            »º´æµÄÎ´ÃüÖĞÊı
+	 *            ç¼“å­˜çš„æœªå‘½ä¸­æ•°
 	 */
 	public void requestGet(int hits, int misses) {
 		checkPeriod();
@@ -58,7 +58,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * ¼ÇÂ¼Ò»´Îput²Ù×÷
+	 * è®°å½•ä¸€æ¬¡putæ“ä½œ
 	 */
 	public void requestPut() {
 		checkPeriod();
@@ -81,7 +81,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½±¾»º´æÉú³ÉµÄÊ±¼ä¡£Êµ¼ÊÎª±¾ÊµÀıµÄ³õÊ¼»¯Ê±¼ä
+	 * å¾—åˆ°æœ¬ç¼“å­˜ç”Ÿæˆçš„æ—¶é—´ã€‚å®é™…ä¸ºæœ¬å®ä¾‹çš„åˆå§‹åŒ–æ—¶é—´
 	 * 
 	 * @return
 	 */
@@ -90,7 +90,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½ËùÓĞµÄÇëÇó´ÎÊı¡£°üÀ¨getºÍput¡£
+	 * å¾—åˆ°æ‰€æœ‰çš„è¯·æ±‚æ¬¡æ•°ã€‚åŒ…æ‹¬getå’Œputã€‚
 	 * 
 	 * @return
 	 */
@@ -99,7 +99,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½ÃüÖĞµÄ´ÎÊı
+	 * å¾—åˆ°å‘½ä¸­çš„æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -108,7 +108,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½Î´ÃüÖĞµÄ´ÎÊı
+	 * å¾—åˆ°æœªå‘½ä¸­çš„æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -117,7 +117,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½putµÄ´ÎÊı
+	 * å¾—åˆ°putçš„æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -126,7 +126,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓµÄÍ³¼Æ¿ªÊ¼Ê±¼ä
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿçš„ç»Ÿè®¡å¼€å§‹æ—¶é—´
 	 * 
 	 * @return
 	 */
@@ -135,7 +135,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓµÄËùÓĞÇëÇóÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿçš„æ‰€æœ‰è¯·æ±‚æ•°
 	 * 
 	 * @return
 	 */
@@ -144,7 +144,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓµÄÃüÖĞ´ÎÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿçš„å‘½ä¸­æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -153,7 +153,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓµÄÎ´ÃüÖĞ´ÎÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿçš„æœªå‘½ä¸­æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -162,7 +162,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓµÄput´ÎÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿçš„putæ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -171,7 +171,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½Ã¿ÃëÃüÖĞ´ÎÊı
+	 * å¾—åˆ°æ¯ç§’å‘½ä¸­æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -180,7 +180,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½Ã¿ÃëÎ´ÃüÖĞ´ÎÊı
+	 * å¾—åˆ°æ¯ç§’æœªå‘½ä¸­æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -189,7 +189,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½Ã¿Ãëput´ÎÊı
+	 * å¾—åˆ°æ¯ç§’putæ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -198,7 +198,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½Ã¿ÃëÇëÇó´ÎÊı
+	 * å¾—åˆ°æ¯ç§’è¯·æ±‚æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -207,7 +207,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓÃ¿ÃëÃüÖĞ´ÎÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿæ¯ç§’å‘½ä¸­æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -216,7 +216,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓÃ¿ÃëÎ´ÃüÖĞ´ÎÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿæ¯ç§’æœªå‘½ä¸­æ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -225,7 +225,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓÃ¿Ãëput´ÎÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿæ¯ç§’putæ¬¡æ•°
 	 * 
 	 * @return
 	 */
@@ -234,7 +234,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * µÃµ½×î½ü5·ÖÖÓÃ¿ÃëÇëÇóÊı
+	 * å¾—åˆ°æœ€è¿‘5åˆ†é’Ÿæ¯ç§’è¯·æ±‚æ•°
 	 * 
 	 * @return
 	 */
@@ -243,7 +243,7 @@ public class CacheStat {
 	}
 
 	/**
-	 * »º´æÍ³¼ÆµÄÃû³Æ
+	 * ç¼“å­˜ç»Ÿè®¡çš„åç§°
 	 * 
 	 * @return
 	 */

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * <p>
- * 属性配置读取工具类
+ * 灞炴�ч厤缃鍙栧伐鍏风被
  * </p>
  */
 public class PropertiesConfiguration implements PropertiesBean {
@@ -24,7 +24,7 @@ public class PropertiesConfiguration implements PropertiesBean {
 
 	/**
 	 * <p>
-	 * 根据提供的正则表达式pattern，到properties配置文件中取出指定类型valueClass的已配置信息
+	 * 鏍规嵁鎻愪緵鐨勬鍒欒〃杈惧紡pattern锛屽埌properties閰嶇疆鏂囦欢涓彇鍑烘寚瀹氱被鍨媣alueClass鐨勫凡閰嶇疆淇℃伅
 	 * </p>
 	 * 
 	 * @param <T>

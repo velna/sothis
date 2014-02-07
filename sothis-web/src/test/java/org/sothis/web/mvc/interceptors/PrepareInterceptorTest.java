@@ -22,7 +22,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
- * ²âÊÔPrepareInterceptor
+ * æµ‹è¯•PrepareInterceptor
  * 
  * @author liupei
  */
@@ -41,7 +41,7 @@ public class PrepareInterceptorTest {
 	}
 
 	/**
-	 * PrepareInterceptorÊµÀı
+	 * PrepareInterceptorå®ä¾‹
 	 */
 	private PrepareInterceptor pi;
 
@@ -51,7 +51,7 @@ public class PrepareInterceptorTest {
 	}
 
 	/**
-	 * ²âÊÔÊµÏÖPreparableµÄController ¾­¹ıPrepareInterceptorÀ¹½ØÆ÷
+	 * æµ‹è¯•å®ç°Preparableçš„Controller ç»è¿‡PrepareInterceptoræ‹¦æˆªå™¨
 	 * 
 	 * @throws Exception
 	 */
@@ -73,12 +73,12 @@ public class PrepareInterceptorTest {
 
 		TestController testController = (TestController) invocation.getControllerInstance();
 
-		// ÈÏÎª»áµ÷ÓÃTestController.prepare()·½·¨
+		// è®¤ä¸ºä¼šè°ƒç”¨TestController.prepare()æ–¹æ³•
 		Assert.assertEquals(testController.a, true);
 	}
 
 	/**
-	 * ²âÊÔÎ´ÊµÏÖPreparableµÄController ¾­¹ıPrepareInterceptorÀ¹½ØÆ÷
+	 * æµ‹è¯•æœªå®ç°Preparableçš„Controller ç»è¿‡PrepareInterceptoræ‹¦æˆªå™¨
 	 * 
 	 * @throws Exception
 	 */
@@ -100,13 +100,13 @@ public class PrepareInterceptorTest {
 
 		TestController1 testController = (TestController1) invocation.getControllerInstance();
 
-		// ÈÏÎª²»»áµ÷ÓÃTestController.prepare()·½·¨
+		// è®¤ä¸ºä¸ä¼šè°ƒç”¨TestController.prepare()æ–¹æ³•
 		Assert.assertEquals(testController.a, false);
 	}
 
 	/**
-	 * ²âÊÔÊµÏÖPreparableµÄController£¬µ«Å×³öActionInvocationExceptionÒì³£
-	 * ¾­¹ıPrepareInterceptorÀ¹½ØÆ÷
+	 * æµ‹è¯•å®ç°Preparableçš„Controllerï¼Œä½†æŠ›å‡ºActionInvocationExceptionå¼‚å¸¸
+	 * ç»è¿‡PrepareInterceptoræ‹¦æˆªå™¨
 	 * 
 	 * @throws Exception
 	 */
@@ -128,7 +128,7 @@ public class PrepareInterceptorTest {
 	}
 
 	/**
-	 * ÊµÏÖPreparableµÄController
+	 * å®ç°Preparableçš„Controller
 	 * 
 	 * @author liupei
 	 */
@@ -146,7 +146,7 @@ public class PrepareInterceptorTest {
 	}
 
 	/**
-	 * Î´ÊµÏÖPreparableµÄController
+	 * æœªå®ç°Preparableçš„Controller
 	 * 
 	 * @author liupei
 	 */
@@ -164,7 +164,7 @@ public class PrepareInterceptorTest {
 	}
 
 	/**
-	 * ÊµÏÖPreparableµÄController£¬µ«Å×³öÒì³£ActionInvocationException
+	 * å®ç°Preparableçš„Controllerï¼Œä½†æŠ›å‡ºå¼‚å¸¸ActionInvocationException
 	 * 
 	 * @author liupei
 	 */

@@ -19,11 +19,11 @@ public class MapUtils extends org.apache.commons.collections.MapUtils {
 	}
 
 	/**
-	 * 获取map中所有的key
+	 * 鑾峰彇map涓墍鏈夌殑key
 	 * 
 	 * @param map
 	 * @param keys
-	 *            map中所有的key
+	 *            map涓墍鏈夌殑key
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")

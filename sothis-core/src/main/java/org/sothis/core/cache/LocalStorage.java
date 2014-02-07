@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.cache.CacheBuilder;
 
 /**
- * »ù±¾Google <a
- * href="http://code.google.com/p/guava-libraries">guava</a>ÏîÄ¿µÄ»º´æÒıÇæÊµÏÖ¡£
+ * åŸºæœ¬Google <a
+ * href="http://code.google.com/p/guava-libraries">guava</a>é¡¹ç›®çš„ç¼“å­˜å¼•æ“å®ç°ã€‚
  * 
  * @author velna
  * 

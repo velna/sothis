@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.sothis.dal.Dao;
 
 /**
- * 基本sql的Dao接口
+ * 鍩烘湰sql鐨凞ao鎺ュ彛
  * 
  * @author velna
  * 

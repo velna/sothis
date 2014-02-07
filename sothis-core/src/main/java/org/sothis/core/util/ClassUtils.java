@@ -11,7 +11,7 @@ import java.util.jar.JarFile;
 
 public class ClassUtils {
 	/**
-	 * »ñµÃ°üÏÂµÄÀà
+	 * è·å¾—åŒ…ä¸‹çš„ç±»
 	 * 
 	 * @param packageName
 	 *            The base package
@@ -29,9 +29,9 @@ public class ClassUtils {
 		while (resources.hasMoreElements()) {
 			URL resource = resources.nextElement();
 			String p = "";
-			if (resource.getFile().indexOf("!") >= 0) {// ÔÚÆäËûµÄjarÎÄ¼şÖĞ
+			if (resource.getFile().indexOf("!") >= 0) {// åœ¨å…¶ä»–çš„jaræ–‡ä»¶ä¸­
 				p = resource.getFile().substring(0, resource.getFile().indexOf("!")).replaceAll("%20", "");
-			} else {// ÔÚclassesÄ¿Â¼ÖĞ
+			} else {// åœ¨classesç›®å½•ä¸­
 				p = resource.getFile();
 			}
 			if (p.startsWith("file:/"))
@@ -67,7 +67,7 @@ public class ClassUtils {
 	}
 
 	/**
-	 * ²éÕÒÒ»¸öÎÄ¼ş¼ĞÏÂµÄÎÄ¼ş
+	 * æŸ¥æ‰¾ä¸€ä¸ªæ–‡ä»¶å¤¹ä¸‹çš„æ–‡ä»¶
 	 * 
 	 * @param directory
 	 *            The base directory

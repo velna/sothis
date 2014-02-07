@@ -9,7 +9,7 @@ import org.sothis.core.util.ExecuteCounter;
 import org.sothis.core.util.LoggerFactory;
 
 /**
- * ¼ÇÂ¼ÁË»º´æÐÔÄÜÈÕÖ¾
+ * è®°å½•äº†ç¼“å­˜æ€§èƒ½æ—¥å¿—
  * 
  * @author velna
  * 
@@ -17,7 +17,7 @@ import org.sothis.core.util.LoggerFactory;
 public class PerformanceLogCache extends FilterCache {
 	private static final Logger PERFORMANCE_LOGGER = LoggerFactory.getPerformanceLogger(PerformanceLogCache.class);
 	/**
-	 * »º´æµ÷ÓÃÈÕÖ¾µÄThreadLocal key¡£
+	 * ç¼“å­˜è°ƒç”¨æ—¥å¿—çš„ThreadLocal keyã€‚
 	 * 
 	 * @see {@link ExecuteCounter}
 	 */

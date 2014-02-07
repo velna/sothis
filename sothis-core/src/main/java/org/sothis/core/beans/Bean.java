@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ÔÚÀàÉùÃ÷ÉÏ×¢½â£¬¶¨ÒåÕâ¸öÀàµÄbeanÊôĞÔ
+ * åœ¨ç±»å£°æ˜ä¸Šæ³¨è§£ï¼Œå®šä¹‰è¿™ä¸ªç±»çš„beanå±æ€§
  * 
  * @author velna
  * 
@@ -15,28 +15,28 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Bean {
 	/**
-	 * bean×÷ÓÃÓò£¬Ä¬ÈÏÊÇµ¥Àı
+	 * beanä½œç”¨åŸŸï¼Œé»˜è®¤æ˜¯å•ä¾‹
 	 * 
 	 * @return
 	 */
 	Scope scope() default Scope.SINGLETON;
 
 	/**
-	 * bean×Ô¶¯×°ÅäÄ£Ê½£¬Ä¬ÈÏÊÇ¸ù¾İÃû³Æ×Ô¶¯×°Åä(BY_NAME)
+	 * beanè‡ªåŠ¨è£…é…æ¨¡å¼ï¼Œé»˜è®¤æ˜¯æ ¹æ®åç§°è‡ªåŠ¨è£…é…(BY_NAME)
 	 * 
 	 * @return
 	 */
 	Autowire autowire() default Autowire.BY_NAME;
 
 	/**
-	 * beanÊµÀı»¯ºóµÄ³õÊ¼»¯·½·¨µÄÃû³Æ
+	 * beanå®ä¾‹åŒ–åçš„åˆå§‹åŒ–æ–¹æ³•çš„åç§°
 	 * 
 	 * @return
 	 */
 	String initMethod() default "";
 
 	/**
-	 * beanÏú»Ù·½·¨µÄÃû³Æ
+	 * beané”€æ¯æ–¹æ³•çš„åç§°
 	 * 
 	 * @return
 	 */

@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * cron±í´ïÊ½
+ * cronè¡¨è¾¾å¼
  * 
  * @author velna
  * 
@@ -34,13 +34,13 @@ public class Cron {
 	}
 
 	/**
-	 * ½«Ò»¸öcron±í´ïÊ½±àÒëÎªCron¶ÔÏó
+	 * å°†ä¸€ä¸ªcronè¡¨è¾¾å¼ç¼–è¯‘ä¸ºCronå¯¹è±¡
 	 * 
 	 * @param cronExpression
 	 * @throws CronSyntaxException
-	 *             Èç¹û±àÒë³ö´í
+	 *             å¦‚æœç¼–è¯‘å‡ºé”™
 	 * @throws IllegalArgumentException
-	 *             Èç¹ûcronExpressionÎªnull
+	 *             å¦‚æœcronExpressionä¸ºnull
 	 * @return
 	 */
 	public static Cron compile(String cronExpression) {
@@ -81,10 +81,10 @@ public class Cron {
 	}
 
 	/**
-	 * ÅĞ¶Ïµ±Ç°µÄcron±í´ïÊ½ÊÇ·ñÆ¥ÅäÒ»¸öÊ±¼ä
+	 * åˆ¤æ–­å½“å‰çš„cronè¡¨è¾¾å¼æ˜¯å¦åŒ¹é…ä¸€ä¸ªæ—¶é—´
 	 * 
 	 * @param date
-	 * @return trueÎªÆ¥Åä£¬falseÎª²»Æ¥Åä
+	 * @return trueä¸ºåŒ¹é…ï¼Œfalseä¸ºä¸åŒ¹é…
 	 */
 	public boolean matches(Date date) {
 		Calendar calendar = Calendar.getInstance();
@@ -99,7 +99,7 @@ public class Cron {
 	}
 
 	/**
-	 * µÃµ½ÏÂÒ»¸öÆ¥ÅäµÄÊ±¼ä£¬·µ»ØµÄÊ±¼ä×ÜÊÇÔÚÌá¹©µÄdateÖ®ºó
+	 * å¾—åˆ°ä¸‹ä¸€ä¸ªåŒ¹é…çš„æ—¶é—´ï¼Œè¿”å›çš„æ—¶é—´æ€»æ˜¯åœ¨æä¾›çš„dateä¹‹å
 	 * 
 	 * @param date
 	 * @return
@@ -131,7 +131,7 @@ public class Cron {
 	}
 
 	/**
-	 * Ô­Ê¼µÄ±í´ïÊ½
+	 * åŸå§‹çš„è¡¨è¾¾å¼
 	 * 
 	 * @return
 	 */
@@ -140,7 +140,7 @@ public class Cron {
 	}
 
 	/**
-	 * µÃµ½±àÒëºóµÄ¸÷¸ö×Ö¶Î
+	 * å¾—åˆ°ç¼–è¯‘åçš„å„ä¸ªå­—æ®µ
 	 * 
 	 * @return
 	 */

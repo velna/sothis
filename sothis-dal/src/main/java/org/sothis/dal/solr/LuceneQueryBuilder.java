@@ -22,7 +22,7 @@ public class LuceneQueryBuilder {
 	public final static FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
 			TimeZone.getTimeZone("UTC"));
 	/**
-	 * Ô¼¶¨£ºÒÔ$$¿ªÍ·µÄ×Ö·û´®²»ĞèÒªÌØÊâ×Ö·û×ªÒå
+	 * çº¦å®šï¼šä»¥$$å¼€å¤´çš„å­—ç¬¦ä¸²ä¸éœ€è¦ç‰¹æ®Šå­—ç¬¦è½¬ä¹‰
 	 */
 	public final static String NO_ESCAPSE = "$$";
 
@@ -149,9 +149,9 @@ public class LuceneQueryBuilder {
 	}
 
 	/**
-	 * »ñÈ¡ÕæÊµvalue<br/>
-	 * Èç¹ûÊÇ·ÇstringµÄvalue£¬·µ»Ø×ªÒåºóµÄÔ­Öµ<br/>
-	 * Èç¹ûÊÇstringĞÍ£¬Èç¹ûÒÔ$$¿ªÍ·£¬Ôò½ØÈ¡$$ºóÃæµÄ×Ö·ûÇÒ²»ĞèÒª×ªÒå
+	 * è·å–çœŸå®value<br/>
+	 * å¦‚æœæ˜¯éstringçš„valueï¼Œè¿”å›è½¬ä¹‰åçš„åŸå€¼<br/>
+	 * å¦‚æœæ˜¯stringå‹ï¼Œå¦‚æœä»¥$$å¼€å¤´ï¼Œåˆ™æˆªå–$$åé¢çš„å­—ç¬¦ä¸”ä¸éœ€è¦è½¬ä¹‰
 	 * 
 	 * @param value
 	 * @return

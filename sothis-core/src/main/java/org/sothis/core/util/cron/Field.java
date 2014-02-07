@@ -5,51 +5,51 @@ import java.util.Calendar;
 public interface Field {
 
 	/**
-	 * ÅĞ¶Ï±¾×Ö¶ÎºÍÒ»¸öÈÕÆÚÊÇ·ñÆ¥Åä
+	 * åˆ¤æ–­æœ¬å­—æ®µå’Œä¸€ä¸ªæ—¥æœŸæ˜¯å¦åŒ¹é…
 	 * 
 	 * @param calendar
-	 * @return trueÎªÆ¥Åä£¬falseÎª²»Æ¥Åä
+	 * @return trueä¸ºåŒ¹é…ï¼Œfalseä¸ºä¸åŒ¹é…
 	 */
 	boolean matches(Calendar calendar);
 
 	/**
-	 * ½«calendarµÄµ±Ç°×Ö¶ÎÉèÖÃÎªÏÂÒ»¸öÆ¥ÅäµÄÊ±¼ä
+	 * å°†calendarçš„å½“å‰å­—æ®µè®¾ç½®ä¸ºä¸‹ä¸€ä¸ªåŒ¹é…çš„æ—¶é—´
 	 * 
 	 * @param calendar
-	 * @return ·µ»Ø¸üĞÂµÄÁ¿
+	 * @return è¿”å›æ›´æ–°çš„é‡
 	 */
 	int next(Calendar calendar);
 
 	/**
-	 * ±¾×Ö¶ÎÊÇ·ñÎ´ÉèÖÃ
+	 * æœ¬å­—æ®µæ˜¯å¦æœªè®¾ç½®
 	 * 
 	 * @return
 	 */
 	boolean isBlank();
 
 	/**
-	 * ±¾×Ö¶ÎµÄ±í´ïÊ½
+	 * æœ¬å­—æ®µçš„è¡¨è¾¾å¼
 	 * 
 	 * @return
 	 */
 	String getExpression();
 
 	/**
-	 * ±¾×Ö¶Î×îĞ¡Öµ
+	 * æœ¬å­—æ®µæœ€å°å€¼
 	 * 
 	 * @return
 	 */
 	int getMin();
 
 	/**
-	 * ±¾×Ö¶Î×î´óÖµ
+	 * æœ¬å­—æ®µæœ€å¤§å€¼
 	 * 
 	 * @return
 	 */
 	int getMax();
 
 	/**
-	 * µÃµ½CalendarµÄfieldÖµ
+	 * å¾—åˆ°Calendarçš„fieldå€¼
 	 * 
 	 * @return
 	 */

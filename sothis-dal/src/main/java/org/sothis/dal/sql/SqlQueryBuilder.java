@@ -16,7 +16,7 @@ import org.sothis.dal.query.OrderBy;
 import org.sothis.dal.query.Sort;
 
 /**
- * sql的查询生成器，基本JPA
+ * sql鐨勬煡璇㈢敓鎴愬櫒锛屽熀鏈琂PA
  * 
  * @author velna
  * 

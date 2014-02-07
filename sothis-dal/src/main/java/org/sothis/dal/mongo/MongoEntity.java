@@ -3,7 +3,7 @@ package org.sothis.dal.mongo;
 import org.sothis.dal.Entity;
 
 /**
- * mongodb的实体类接口
+ * mongodb鐨勫疄浣撶被鎺ュ彛
  * 
  * @author velna
  * 

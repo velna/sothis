@@ -3,8 +3,8 @@ package org.sothis.web.mvc;
 import java.io.Serializable;
 
 /**
- * 存在Flash中的对象生命周期只有一次flash，在第二次flash后被删除<br>
- * 在sothis中，每一次http请求相当于一次flash
+ * 瀛樺湪Flash涓殑瀵硅薄鐢熷懡鍛ㄦ湡鍙湁涓�娆lash锛屽湪绗簩娆lash鍚庤鍒犻櫎<br>
+ * 鍦╯othis涓紝姣忎竴娆ttp璇锋眰鐩稿綋浜庝竴娆lash
  * 
  * @author velna
  * 
@@ -19,7 +19,7 @@ public interface Flash extends Serializable, Iterable<String> {
 	boolean containsAttribute(String key);
 
 	/**
-	 * 执行一次flash
+	 * 鎵ц涓�娆lash
 	 */
 	void flash();
 }

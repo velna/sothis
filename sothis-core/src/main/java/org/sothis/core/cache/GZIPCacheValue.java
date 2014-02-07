@@ -11,7 +11,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * 经过gzip压缩的缓存值类
+ * 缁忚繃gzip鍘嬬缉鐨勭紦瀛樺�肩被
  * 
  * @author velna
  * 

@@ -21,18 +21,18 @@ import freemarker.template.TemplateModel;
 import freemarker.template.utility.DeepUnwrap;
 
 /**
- * ÓÃÓÚÉú³Éa±êÇ©£¬»òurl<br>
- * ¿ÉÑ¡²ÎÊı£º<br>
- * action: ÓÃÓÚÉú³ÉÁ´½ÓµÄactionÃû³Æ£¬Ä¬ÈÏÎªµ±Ç°actionµÄÃû³Æ<br>
- * controller: ÓÃÓÚÉú³ÉÁ´½ÓµÄcontrollerÃû³Æ£¬Ä¬ÈÏÎªµ±Ç°controllerµÄÃû³Æ<br>
- * package: ÓÃÓÚÉú³ÉÁ´½ÓµÄpacakgeÃû³Æ£¬Ä¬ÈÏÎªµ±Ç°packageµÄÃû³Æ<br>
- * params: ÓÃÓÚÉú³ÉÁ´½ÓµÄ²ÎÊı£¬¿ÉÒÔÊÇÒ»¸öfreemaker hash£¬Ò²¿ÉÒÔÊÇÒ»¸ö×Ö·û´®<br>
- * anchor: ÓÃÓÚÉú³ÉÁ´½ÓµÄÃªµã<br>
+ * ç”¨äºç”Ÿæˆaæ ‡ç­¾ï¼Œæˆ–url<br>
+ * å¯é€‰å‚æ•°ï¼š<br>
+ * action: ç”¨äºç”Ÿæˆé“¾æ¥çš„actionåç§°ï¼Œé»˜è®¤ä¸ºå½“å‰actionçš„åç§°<br>
+ * controller: ç”¨äºç”Ÿæˆé“¾æ¥çš„controlleråç§°ï¼Œé»˜è®¤ä¸ºå½“å‰controllerçš„åç§°<br>
+ * package: ç”¨äºç”Ÿæˆé“¾æ¥çš„pacakgeåç§°ï¼Œé»˜è®¤ä¸ºå½“å‰packageçš„åç§°<br>
+ * params: ç”¨äºç”Ÿæˆé“¾æ¥çš„å‚æ•°ï¼Œå¯ä»¥æ˜¯ä¸€ä¸ªfreemaker hashï¼Œä¹Ÿå¯ä»¥æ˜¯ä¸€ä¸ªå­—ç¬¦ä¸²<br>
+ * anchor: ç”¨äºç”Ÿæˆé“¾æ¥çš„é”šç‚¹<br>
  * absolute:
- * Èç¹ûÎªtrue£¬Ôò½«sothis.serverURL²ÎÊıµÄÖµ×öÎªÇ°×º¼Óµ½Á´½ÓÉÏ£¬Èç¹ûsothis.serverURLÃ»ÓĞÖ¸¶¨ÔòÊ¹ÓÃhttp
+ * å¦‚æœä¸ºtrueï¼Œåˆ™å°†sothis.serverURLå‚æ•°çš„å€¼åšä¸ºå‰ç¼€åŠ åˆ°é“¾æ¥ä¸Šï¼Œå¦‚æœsothis.serverURLæ²¡æœ‰æŒ‡å®šåˆ™ä½¿ç”¨http
  * ://localhost:${port}<br>
- * base: ÉèÖÃÓÃÓÚ×öÎªÁ´½ÓÇ°×ºµÄ×Ö·û´®£¬ÉèÖÃÕâ¸öÖµºó»áºöÂÔabsoluteÖµ<br>
- * notag: Ö»Éú³ÉÁ´½Ó£¬²»°üÀ¨a±êÇ©±¾Éí
+ * base: è®¾ç½®ç”¨äºåšä¸ºé“¾æ¥å‰ç¼€çš„å­—ç¬¦ä¸²ï¼Œè®¾ç½®è¿™ä¸ªå€¼åä¼šå¿½ç•¥absoluteå€¼<br>
+ * notag: åªç”Ÿæˆé“¾æ¥ï¼Œä¸åŒ…æ‹¬aæ ‡ç­¾æœ¬èº«
  * 
  * @author velna
  * 

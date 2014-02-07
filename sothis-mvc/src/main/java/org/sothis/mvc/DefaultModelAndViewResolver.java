@@ -8,7 +8,7 @@ import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
 
 /**
- * ModelAndViewResolver½Ó¿ÚµÄÄ¬ÈÏÊµÏÖ
+ * ModelAndViewResolveræ¥å£çš„é»˜è®¤å®ç°
  * 
  * @author velna
  * 

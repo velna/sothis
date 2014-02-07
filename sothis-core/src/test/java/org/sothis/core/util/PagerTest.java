@@ -4,13 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * ²âÊÔPagerÀà
+ * æµ‹è¯•Pagerç±»
  * 
  * @author liupei
  */
 public class PagerTest {
 	/**
-	 * ²âÊÔÎŞ²Î¹¹Ôìº¯Êı
+	 * æµ‹è¯•æ— å‚æ„é€ å‡½æ•°
 	 */
 	@Test
 	public void testPagerNoArg() {
@@ -23,7 +23,7 @@ public class PagerTest {
 	}
 
 	/**
-	 * ²âÊÔÓĞ²Î¹¹Ôìº¯Êı
+	 * æµ‹è¯•æœ‰å‚æ„é€ å‡½æ•°
 	 */
 	@Test
 	public void testPagerWithArg() {
@@ -36,7 +36,7 @@ public class PagerTest {
 	}
 
 	/**
-	 * ²âÊÔ¸÷ÖÖset·½·¨
+	 * æµ‹è¯•å„ç§setæ–¹æ³•
 	 */
 	@Test
 	public void testSets() {
