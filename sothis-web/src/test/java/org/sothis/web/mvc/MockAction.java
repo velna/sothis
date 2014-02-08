@@ -60,11 +60,6 @@ public class MockAction extends AbstractActionBase implements Action {
 	}
 
 	@Override
-	public Annotation[] getDeclaredAnnotations() {
-		return new Annotation[0];
-	}
-
-	@Override
 	public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
 		return false;
 	}

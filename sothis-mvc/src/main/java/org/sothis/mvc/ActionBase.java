@@ -25,7 +25,6 @@ public interface ActionBase {
 
 	<T extends Annotation> T[] getAnnotation(Class<T> annotationClass);
 
-	Annotation[] getAnnotations();
+	Annotation[][] getAnnotations();
 
-	Annotation[] getDeclaredAnnotations();
 }

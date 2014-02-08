@@ -71,7 +71,8 @@ public class SothisFilter implements Filter {
 				InputStream input = WebConfiguration.class.getClassLoader().getResourceAsStream(configLocation);
 				if (null == input) {
 					if (LOGGER.isWarnEnabled()) {
-						LOGGER.warn("can not find sothi config file : {}, using sothis.default.properties as default.", configLocation);
+						LOGGER.warn("can not find sothi config file : {}, using sothis.default.properties as default.",
+								configLocation);
 					}
 					input = WebConfiguration.class.getClassLoader().getResourceAsStream("sothis.default.properties");
 				}
@@ -97,7 +98,8 @@ public class SothisFilter implements Filter {
 		}
 	}
 
-	private BeanFactory createBeanFactory(Class<BeanFactory> beanFactoryClass) throws InstantiationException, IllegalAccessException {
+	private BeanFactory createBeanFactory(Class<BeanFactory> beanFactoryClass) throws InstantiationException,
+			IllegalAccessException {
 		BeanFactory beanFactory = beanFactoryClass.newInstance();
 		if (beanFactory instanceof ServletBeanFactory) {
 			((ServletBeanFactory) beanFactory).init(servletContext);
@@ -124,13 +126,14 @@ public class SothisFilter implements Filter {
 			if (null != flash) {
 				flash.flash();
 			}
-			ActionInvocationHelper.invoke(context);
+			if (!ActionInvocationHelper.invoke(context) && !resp.isCommitted()) {
+				chain.doFilter(req, resp);
+			}
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
 			context.clear();
 		}
-		chain.doFilter(req, resp);
 	}
 
 	public void destroy() {

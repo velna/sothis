@@ -13,23 +13,29 @@ import org.apache.commons.lang.StringUtils;
 public abstract class AbstractActionBase implements ActionBase {
 
 	private final List<Class<Interceptor>> interceptors;
-	private final Map<Class<?>, List<Annotation>> annotations;
+	private final Map<Class<?>, Annotation[]> annotations;
 
 	public AbstractActionBase(Configuration config, AnnotatedElement... parents) {
-		this.annotations = new HashMap<Class<?>, List<Annotation>>(4);
+		Map<Class<?>, List<Annotation>> aMap = new HashMap<Class<?>, List<Annotation>>(4);
 		if (null != parents) {
 			for (AnnotatedElement ae : parents) {
 				if (null != ae) {
 					for (Annotation a : ae.getAnnotations()) {
-						List<Annotation> as = this.annotations.get(a.annotationType());
+						List<Annotation> as = aMap.get(a.annotationType());
 						if (null == as) {
 							as = new ArrayList<Annotation>();
-							this.annotations.put(a.annotationType(), as);
+							aMap.put(a.annotationType(), as);
 						}
 						as.add(a);
 					}
 				}
 			}
+		}
+		annotations = new HashMap<Class<?>, Annotation[]>(4);
+		for (Map.Entry<Class<?>, List<Annotation>> entry : aMap.entrySet()) {
+			Annotation[] as = new Annotation[entry.getValue().size()];
+			entry.getValue().toArray(as);
+			annotations.put(entry.getKey(), as);
 		}
 
 		Sothis[] ss = getAnnotation(Sothis.class);
@@ -54,25 +60,18 @@ public abstract class AbstractActionBase implements ActionBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Annotation> T[] getAnnotation(Class<T> annotationClass) {
-		List<Annotation> as = this.annotations.get(annotationClass);
+		Annotation[] as = this.annotations.get(annotationClass);
 		if (null == as) {
 			return (T[]) Array.newInstance(annotationClass, 0);
 		}
-		Annotation[] ret = new Annotation[as.size()];
-		this.annotations.values().toArray(ret);
-		return (T[]) ret;
+		return (T[]) as;
 	}
 
 	@Override
-	public Annotation[] getAnnotations() {
-		Annotation[] ret = new Annotation[this.annotations.size()];
+	public Annotation[][] getAnnotations() {
+		Annotation[][] ret = new Annotation[this.annotations.size()][];
 		this.annotations.values().toArray(ret);
 		return ret;
-	}
-
-	@Override
-	public Annotation[] getDeclaredAnnotations() {
-		return getAnnotations();
 	}
 
 	@Override

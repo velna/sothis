@@ -56,11 +56,6 @@ public interface Action extends ActionBase {
 	 * 得到所有在action method、controller class和controller package中声明的注解<br>
 	 * {@inheritDoc}
 	 */
-	Annotation[] getAnnotations();
+	Annotation[][] getAnnotations();
 
-	/**
-	 * 同 {@link Action#getAnnotations()}<br>
-	 * {@inheritDoc}
-	 */
-	Annotation[] getDeclaredAnnotations();
 }

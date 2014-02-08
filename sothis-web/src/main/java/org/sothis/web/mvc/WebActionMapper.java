@@ -45,7 +45,7 @@ public class WebActionMapper implements ActionMapper {
 			Method[] ms = action.getAnnotation(Method.class);
 			String method = null;
 			for (Method m : ms) {
-				if (null != m.value() && StringUtils.isNotEmpty(m.value())) {
+				if (StringUtils.isNotEmpty(m.value())) {
 					method = m.value();
 					break;
 				}
