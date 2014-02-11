@@ -19,6 +19,6 @@
 		</property>
 	</bean>
 
-	<import resource="classpath:spring-dal-sql.xml" />
+	<!-- <import resource="classpath:spring-dal-sql.xml" /> -->
 
 </beans>

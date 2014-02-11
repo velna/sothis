@@ -36,4 +36,11 @@ public interface ActionInvocation {
 	 * @return
 	 */
 	Object getControllerInstance();
+
+	/**
+	 * 判断action方法是否已经被调用
+	 * 
+	 * @return
+	 */
+	boolean isActionInvoked();
 }

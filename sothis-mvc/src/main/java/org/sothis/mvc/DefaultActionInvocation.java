@@ -16,6 +16,9 @@ public class DefaultActionInvocation implements ActionInvocation {
 	private final Object controllerInstance;
 	private final Iterator<Class<Interceptor>> interceptors;
 
+	private Object result;
+	private boolean actionInvoked;
+
 	public DefaultActionInvocation(final Object controllerInstance, final ActionContext context) {
 		this.controllerInstance = controllerInstance;
 		this.context = context;
@@ -31,12 +34,12 @@ public class DefaultActionInvocation implements ActionInvocation {
 	}
 
 	public Object invoke() throws ActionInvocationException {
-		Object result = null;
 		try {
 			if (interceptors.hasNext()) {
 				Interceptor interceptor = context.getApplicationContext().getBeanFactory().getBean(interceptors.next());
 				result = interceptor.intercept(this);
-			} else {
+			} else if (!actionInvoked) {
+				actionInvoked = true;
 				Method method = context.getAction().getActionMethod();
 				if (null != method) {
 					result = method.invoke(controllerInstance, (Object[]) context.get(ActionContext.ACTION_PARAMS));
@@ -52,6 +55,10 @@ public class DefaultActionInvocation implements ActionInvocation {
 
 	public Object getControllerInstance() {
 		return controllerInstance;
+	}
+
+	public boolean isActionInvoked() {
+		return actionInvoked;
 	}
 
 }

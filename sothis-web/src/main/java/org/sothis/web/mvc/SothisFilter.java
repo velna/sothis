@@ -107,7 +107,6 @@ public class SothisFilter implements Filter {
 		return beanFactory;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		WebActionContext context = WebActionContext.getContext();
 		try {

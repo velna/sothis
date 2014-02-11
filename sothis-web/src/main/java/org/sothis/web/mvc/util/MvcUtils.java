@@ -51,7 +51,7 @@ public class MvcUtils {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void addRequestModels(HttpServletRequest request, Map attrMap) {
 		// request params
 		attrMap.put("params", request.getParameterMap());

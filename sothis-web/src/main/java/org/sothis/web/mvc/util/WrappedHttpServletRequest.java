@@ -13,9 +13,8 @@ public class WrappedHttpServletRequest extends HttpServletRequestWrapper {
 		this.parameterMap = parameterMap;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Map getParameterMap() {
+	public Map<String, String[]> getParameterMap() {
 		return this.parameterMap;
 	}
 
