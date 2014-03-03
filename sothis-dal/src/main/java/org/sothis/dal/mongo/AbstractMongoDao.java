@@ -71,8 +71,8 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 		DBObject fields = queryBuilder.chainToFields(chain);
 		DBObject sorts = queryBuilder.orderByToSorts(cnd);
 
-		List<DBObject> dbObjects = this.getDbCollection().find(query, fields).sort(sorts).limit(pager.getPageSize()).skip(pager.getStartRow())
-				.batchSize(pager.getPageSize()).toArray();
+		List<DBObject> dbObjects = this.getDbCollection().find(query, fields).sort(sorts).limit(pager.getPageSize())
+				.skip(pager.getStartRow()).batchSize(pager.getPageSize()).toArray();
 		List<E> ret = new ArrayList<E>(dbObjects.size());
 		for (DBObject object : dbObjects) {
 			ret.add(this.dbObjectToEntity(object));
@@ -117,6 +117,19 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 	}
 
 	@Override
+	public List<E> insert(List<E> entityList) {
+		List<DBObject> objects = new ArrayList<DBObject>(entityList.size());
+		for (E e : entityList) {
+			objects.add(this.entityToDBObject(e));
+		}
+		this.getDbCollection().insert(objects, WriteConcern.SAFE);
+		for (int i = 0; i < objects.size(); i++) {
+			entityList.get(i).setId(this.toEntityId(objects.get(i)));
+		}
+		return entityList;
+	}
+
+	@Override
 	public int count(Cnd cnd) {
 		DBObject query = queryBuilder.cndToQuery(cnd);
 		return (int) this.getDbCollection().count(query);
@@ -145,8 +158,8 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 				try {
 					writeMethod.invoke(entity, value);
 				} catch (IllegalArgumentException e) {
-					throw new RuntimeException("Error set value to " + value + "[" + value.getClass() + "] of field " + descriptor.getName() + "["
-							+ descriptor.getPropertyType() + "]", e);
+					throw new RuntimeException("Error set value to " + value + "[" + value.getClass() + "] of field "
+							+ descriptor.getName() + "[" + descriptor.getPropertyType() + "]", e);
 				}
 			}
 			return entity;
@@ -206,8 +219,8 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 			return idObjectList;
 		}
 		if (!(id instanceof String)) {
-			throw new IllegalArgumentException("id must be instanceof " + String.class.getName() + ", but was " + id.getClass().getName() + " of class "
-					+ this.getEntityClass().getName());
+			throw new IllegalArgumentException("id must be instanceof " + String.class.getName() + ", but was "
+					+ id.getClass().getName() + " of class " + this.getEntityClass().getName());
 		}
 		if (this.isIdGeneratedValue()) {
 			return new ObjectId((String) id);

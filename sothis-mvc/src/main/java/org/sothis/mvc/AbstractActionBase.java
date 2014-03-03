@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 public abstract class AbstractActionBase implements ActionBase {
 
 	private final List<Class<Interceptor>> interceptors;
-	private final Map<Class<?>, Annotation[]> annotations;
+	private final Map<Class<?>, Object> annotations;
 
 	public AbstractActionBase(Configuration config, AnnotatedElement... parents) {
 		Map<Class<?>, List<Annotation>> aMap = new HashMap<Class<?>, List<Annotation>>(4);
@@ -31,10 +31,10 @@ public abstract class AbstractActionBase implements ActionBase {
 				}
 			}
 		}
-		annotations = new HashMap<Class<?>, Annotation[]>(4);
+		annotations = new HashMap<Class<?>, Object>(4);
 		for (Map.Entry<Class<?>, List<Annotation>> entry : aMap.entrySet()) {
-			Annotation[] as = new Annotation[entry.getValue().size()];
-			entry.getValue().toArray(as);
+			Object as = Array.newInstance(entry.getKey(), entry.getValue().size());
+			entry.getValue().toArray((Annotation[]) as);
 			annotations.put(entry.getKey(), as);
 		}
 
@@ -60,11 +60,11 @@ public abstract class AbstractActionBase implements ActionBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Annotation> T[] getAnnotation(Class<T> annotationClass) {
-		Annotation[] as = this.annotations.get(annotationClass);
+		T[] as = (T[]) this.annotations.get(annotationClass);
 		if (null == as) {
-			return (T[]) Array.newInstance(annotationClass, 0);
+			as = (T[]) Array.newInstance(annotationClass, 0);
 		}
-		return (T[]) as;
+		return as;
 	}
 
 	@Override

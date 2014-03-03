@@ -145,4 +145,12 @@ public abstract class AbstractDao<E extends Entity, K extends Serializable> impl
 		return new DaoCursor<E, K>(this, cnd, chain);
 	}
 
+	@Override
+	public List<E> insert(List<E> entityList) {
+		for (E e : entityList) {
+			insert(e);
+		}
+		return entityList;
+	}
+
 }
