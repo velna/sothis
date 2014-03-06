@@ -14,8 +14,8 @@ public class DefaultApplicationContext implements ApplicationContext {
 	private final BeanFactory beanFactory;
 	private final Configuration configuration;
 
-	public DefaultApplicationContext(BeanFactory beanFactory, Configuration configuration) throws BeanInstantiationException, ClassNotFoundException, IOException,
-			ConfigurationException {
+	public DefaultApplicationContext(BeanFactory beanFactory, Configuration configuration) throws BeanInstantiationException,
+			ClassNotFoundException, IOException, ConfigurationException {
 		this.beanFactory = beanFactory;
 		this.configuration = configuration;
 		initActions();
@@ -56,9 +56,10 @@ public class DefaultApplicationContext implements ApplicationContext {
 				for (String actionName : controllerActions.keySet()) {
 					Action action = controllerActions.get(actionName);
 					ActionMapper actionMapper = beanFactory.getBean(configuration.getActionMapper());
-					Object actionKey = actionMapper.map(action);
+					Object actionKey = actionMapper.map(this, action);
 					if (actions.containsKey(actionKey)) {
-						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as " + actions.get(actionKey));
+						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as "
+								+ actions.get(actionKey));
 					}
 					actions.put(actionKey, action);
 				}
