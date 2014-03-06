@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 public class SimpleBeanFactory implements BeanFactory {
 	private final Map<String, Object> beans = new HashMap<String, Object>();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getBean(Class<T> beanClass) throws BeanInstantiationException {
 		String simpleName = StringUtils.uncapitalize(beanClass.getSimpleName());

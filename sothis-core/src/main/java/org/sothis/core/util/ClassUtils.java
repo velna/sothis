@@ -37,7 +37,6 @@ public class ClassUtils {
 			if (p.startsWith("file:/"))
 				p = p.substring(5);
 			if (p.toLowerCase().endsWith(".jar")) {
-
 				JarFile jarFile = new JarFile(p);
 				Enumeration<JarEntry> enums = jarFile.entries();
 				while (enums.hasMoreElements()) {
@@ -52,8 +51,8 @@ public class ClassUtils {
 
 						}
 					}
-
 				}
+				jarFile.close();
 			} else {
 				dirs.add(new File(p));
 			}

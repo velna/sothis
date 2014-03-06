@@ -145,7 +145,7 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 	 * @param map
 	 *            the target Map to merge the properties into
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void mergePropertiesIntoMap(Properties props, Map map) {
 		if (map == null) {
 			throw new IllegalArgumentException("Map must not be null");
