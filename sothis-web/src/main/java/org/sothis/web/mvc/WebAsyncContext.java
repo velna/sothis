@@ -31,7 +31,7 @@ public class WebAsyncContext implements AsyncContext {
 		ActionInvocation invocation = (ActionInvocation) this.actionContext.get(ActionContext.ACTION_INVOCATION);
 		ActionInvocationHelper.render(invocation, result);
 		asyncContext.complete();
-		WebActionContext.setContext(old);
+		old.clear();
 	}
 
 	@Override

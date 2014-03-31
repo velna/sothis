@@ -14,10 +14,12 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sothis.core.util.CollectionUtils;
+import org.springframework.util.ClassUtils;
 
 public class ConfigurationSupport extends PropertiesConfiguration {
 
 	private final static String CLASSPATH_PREFIX = "classpath:";
+	private final static String IMPORT_KEY = "import";
 
 	protected final static Logger LOGGER = LoggerFactory.getLogger(ConfigurationSupport.class);
 
@@ -33,38 +35,17 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 	 * @throws URISyntaxException
 	 */
 	protected static Properties mergeProperties(String overridePropertiesLocation) throws IOException, URISyntaxException {
-		Properties allProperties = getClasspathProperties();
 		Properties overrideProperties = getOverrideProperties(overridePropertiesLocation);
+		Properties classpathProperties = getClasspathProperties();
+
+		Properties allProperties = loadImportedProperties(new Properties(), overrideProperties.getProperty(IMPORT_KEY));
+		allProperties = loadImportedProperties(allProperties, classpathProperties.getProperty(IMPORT_KEY));
+
+		CollectionUtils.mergePropertiesIntoMap(classpathProperties, allProperties);
 		CollectionUtils.mergePropertiesIntoMap(overrideProperties, allProperties);
-		loadImportedProperties(allProperties);
+
 		allProperties = resolvePlaceHolders(allProperties);
 		return allProperties;
-	}
-
-	private static void loadImportedProperties(Properties allProperties) throws IOException {
-		String imports = allProperties.getProperty("import");
-		if (null == imports) {
-			return;
-		}
-		String[] files = imports.split(",");
-		for (String f : files) {
-			InputStream input;
-			if (f.startsWith(CLASSPATH_PREFIX)) {
-				f = f.substring(CLASSPATH_PREFIX.length());
-				input = ConfigurationSupport.class.getClassLoader().getResourceAsStream(f.trim());
-			} else {
-				input = new FileInputStream(f);
-			}
-			if (null != input) {
-				Properties properties = new Properties();
-				properties.load(new InputStreamReader(input, "UTF-8"));
-				CollectionUtils.mergePropertiesIntoMap(properties, allProperties);
-			} else {
-				if (LOGGER.isErrorEnabled()) {
-					LOGGER.error("can not load imported config file: {}", f);
-				}
-			}
-		}
 	}
 
 	protected static Properties resolvePlaceHolders(Properties properties) {
@@ -78,28 +59,16 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 	}
 
 	protected static Properties getOverrideProperties(String overridePropertiesLocation) throws IOException {
-		Properties properties = new Properties();
 		if (StringUtils.isEmpty(overridePropertiesLocation)) {
-			return properties;
+			throw new IllegalArgumentException("overridePropertiesLocation can not be null");
 		}
 		File file = new File(overridePropertiesLocation);
-		if (!file.exists() || file.isDirectory()) {
-			if (LOGGER.isWarnEnabled()) {
-				LOGGER.warn("overried properties file is not exit or is a directory: {}", overridePropertiesLocation);
-			}
-			return properties;
-		}
-		if (overridePropertiesLocation.endsWith(".xml")) {
-			properties.loadFromXML(new FileInputStream(overridePropertiesLocation));
-		} else {
-			properties.load(new InputStreamReader(new FileInputStream(overridePropertiesLocation), "UTF-8"));
-		}
-		return properties;
+		return loadProperties(file);
 	}
 
 	protected static Properties getClasspathProperties() throws IOException, URISyntaxException {
 		Properties allProperties = new Properties();
-		URL url = ConfigurationSupport.class.getClassLoader().getResource("");
+		URL url = ClassUtils.getDefaultClassLoader().getResource("/");
 		if (null == url) {
 			return allProperties;
 		}
@@ -116,11 +85,55 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 			}
 		});
 		for (File pFile : propertiesFiles) {
-			Properties properties = new Properties();
-			properties.load(new InputStreamReader(new FileInputStream(pFile), "UTF-8"));
+			Properties properties = loadProperties(pFile);
 			CollectionUtils.mergePropertiesIntoMap(properties, allProperties);
 		}
 		return allProperties;
+	}
+
+	private static Properties loadImportedProperties(Properties allProperties, String imports) throws IOException,
+			URISyntaxException {
+		if (StringUtils.isEmpty(imports)) {
+			return allProperties;
+		}
+		String[] files = imports.split("[, ]");
+		Properties properties = new Properties();
+		for (String f : files) {
+			InputStream input = null;
+			if (f.startsWith(CLASSPATH_PREFIX)) {
+				f = f.substring(CLASSPATH_PREFIX.length());
+				input = ConfigurationSupport.class.getClassLoader().getResourceAsStream(f.trim());
+			} else {
+				input = new FileInputStream(f);
+			}
+			if (null != input) {
+				properties.load(input);
+			} else {
+				if (LOGGER.isErrorEnabled()) {
+					LOGGER.error("can not load imported config file: {}", f);
+				}
+			}
+		}
+
+		CollectionUtils.mergePropertiesIntoMap(allProperties, properties);
+		return properties;
+	}
+
+	private static Properties loadProperties(File file) throws IOException {
+		Properties properties = new Properties();
+
+		if (!file.exists() || file.isDirectory()) {
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("properties file is not exit or is a directory: {}", file);
+			}
+		} else {
+			if (file.getName().endsWith(".xml")) {
+				properties.loadFromXML(new FileInputStream(file));
+			} else {
+				properties.load(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			}
+		}
+		return properties;
 	}
 
 }

@@ -29,9 +29,12 @@ public class FreemarkerView implements View {
 
 	public void init() throws ClassNotFoundException, BeanInstantiationException, ConfigurationException {
 		WebActionContext context = WebActionContext.getContext();
-		Class<? extends ConfigurationFactory> configurationFactoryClass = context.getConfiguration().getClass("freemarker.configurationFactory.class",
-				DefaultConfigurationFactory.class);
-		ConfigurationFactory configurationFactory = context.getApplicationContext().getBeanFactory().getBean(configurationFactoryClass);
+		Class<? extends ConfigurationFactory> configurationFactoryClass = context.getConfiguration().getClass(
+				"freemarker.configurationFactory.class", DefaultConfigurationFactory.class);
+		context.getApplicationContext().getBeanFactory()
+				.registerBean(configurationFactoryClass.getName(), configurationFactoryClass);
+		ConfigurationFactory configurationFactory = context.getApplicationContext().getBeanFactory()
+				.getBean(configurationFactoryClass);
 		configuration = configurationFactory.createConfiguration(WebActionContext.getContext());
 	}
 

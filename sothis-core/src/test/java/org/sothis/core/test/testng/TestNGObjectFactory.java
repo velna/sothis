@@ -36,4 +36,9 @@ public class TestNGObjectFactory extends AbstractSpringBeanFactory implements IO
 	protected BeanDefinitionRegistry getBeanDefinitionRegistry() {
 		return beanDefinitionRegistry;
 	}
+
+	@Override
+	public void registerBean(String beanName, Class<?> beanClass) {
+
+	}
 }

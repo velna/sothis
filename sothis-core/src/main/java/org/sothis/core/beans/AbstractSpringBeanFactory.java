@@ -17,44 +17,14 @@ public abstract class AbstractSpringBeanFactory implements BeanFactory {
 
 	protected abstract BeanDefinitionRegistry getBeanDefinitionRegistry();
 
-	@SuppressWarnings("unchecked")
 	public <T> T getBean(Class<T> beanClass) throws BeanInstantiationException {
-		try {
-			ApplicationContext appContext = this.getApplicationContext();
-			BeanDefinitionRegistry beanDefinitionRegistry = getBeanDefinitionRegistry();
-			String simpleName = StringUtils.uncapitalize(beanClass.getSimpleName());
-			Object bean = null;
-			if (appContext.containsBean(simpleName)) {
-				bean = doGetBean(simpleName);
-			} else if (appContext.containsBean(beanClass.getName())) {
-				bean = doGetBean(beanClass.getName());
-			}
-			if (null == bean) {
-				if (!beanDefinitionRegistry.containsBeanDefinition(beanClass.getName())) {
-					BeanDefinition definition = createBeanDefinition(beanClass);
-					beanRegisterLock.lock();
-					try {
-						beanDefinitionRegistry.registerBeanDefinition(beanClass.getName(), definition);
-					} finally {
-						beanRegisterLock.unlock();
-					}
-					bean = doGetBean(beanClass.getName());
-				}
-			}
-			return (T) bean;
-		} catch (Exception e) {
-			throw new BeanInstantiationException(e);
-		}
-	}
-
-	private Object doGetBean(String beanName) {
-		return this.getApplicationContext().getBean(beanName);
+		return getBean(beanClass.getName());
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T getBean(String beanName) throws BeanInstantiationException {
 		try {
-			return (T) doGetBean(beanName);
+			return (T) this.getApplicationContext().getBean(beanName);
 		} catch (Exception e) {
 			throw new BeanInstantiationException(e);
 		}
@@ -92,6 +62,24 @@ public abstract class AbstractSpringBeanFactory implements BeanFactory {
 			definition.setScope(AbstractBeanDefinition.SCOPE_SINGLETON);
 		}
 		return definition;
+	}
+
+	@Override
+	public void registerBean(String beanName, Class<?> beanClass) {
+		try {
+			beanRegisterLock.lock();
+			try {
+				BeanDefinitionRegistry beanDefinitionRegistry = getBeanDefinitionRegistry();
+				if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
+					BeanDefinition definition = createBeanDefinition(beanClass);
+					beanDefinitionRegistry.registerBeanDefinition(beanName, definition);
+				}
+			} finally {
+				beanRegisterLock.unlock();
+			}
+		} catch (Exception e) {
+			throw new BeanInstantiationException(e);
+		}
 	}
 
 }

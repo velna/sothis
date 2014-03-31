@@ -61,4 +61,9 @@ public class SimpleBeanFactory implements BeanFactory {
 		return (T) beans.get(beanName);
 	}
 
+	@Override
+	public void registerBean(String beanName, Class<?> beanClass) {
+		throw new UnsupportedOperationException();
+	}
+
 }

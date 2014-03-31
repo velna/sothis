@@ -17,4 +17,9 @@ public class MockBeanFactory implements BeanFactory {
 		throw new AbstractMethodError("getBean(String beanName)");
 	}
 
+	@Override
+	public void registerBean(String beanName, Class<?> beanClass) {
+
+	}
+
 }

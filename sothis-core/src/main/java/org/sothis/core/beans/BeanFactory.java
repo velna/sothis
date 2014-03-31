@@ -34,4 +34,6 @@ public interface BeanFactory {
 	 *             如果在bean创建过程发生任何异常
 	 */
 	<T> T getBean(String beanName) throws BeanInstantiationException;
+
+	void registerBean(String beanName, Class<?> beanClass);
 }
