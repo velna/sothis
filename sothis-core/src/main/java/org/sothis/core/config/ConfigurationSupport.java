@@ -68,7 +68,7 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 
 	protected static Properties getClasspathProperties() throws IOException, URISyntaxException {
 		Properties allProperties = new Properties();
-		URL url = ClassUtils.getDefaultClassLoader().getResource("/");
+		URL url = ClassUtils.getDefaultClassLoader().getResource("");
 		if (null == url) {
 			return allProperties;
 		}

@@ -3,6 +3,7 @@ package org.sothis.web.mvc;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,7 @@ public class WebActionContext implements ActionContext {
 	private WebActionContext() {
 	}
 
-	protected final Map<String, Object> context = new HashMap<String, Object>();
+	protected final Map<String, Object> context = new ConcurrentHashMap<String, Object>();
 	private AsyncContext asyncContext;
 
 	/**

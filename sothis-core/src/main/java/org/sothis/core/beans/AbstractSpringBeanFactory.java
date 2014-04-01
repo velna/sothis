@@ -7,13 +7,12 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
-import org.springframework.context.ApplicationContext;
 
 public abstract class AbstractSpringBeanFactory implements BeanFactory {
 
 	private final ReentrantLock beanRegisterLock = new ReentrantLock();
 
-	protected abstract ApplicationContext getApplicationContext();
+	protected abstract org.springframework.beans.factory.BeanFactory getBeanFactory();
 
 	protected abstract BeanDefinitionRegistry getBeanDefinitionRegistry();
 
@@ -24,7 +23,7 @@ public abstract class AbstractSpringBeanFactory implements BeanFactory {
 	@SuppressWarnings("unchecked")
 	public <T> T getBean(String beanName) throws BeanInstantiationException {
 		try {
-			return (T) this.getApplicationContext().getBean(beanName);
+			return (T) this.getBeanFactory().getBean(beanName);
 		} catch (Exception e) {
 			throw new BeanInstantiationException(e);
 		}
