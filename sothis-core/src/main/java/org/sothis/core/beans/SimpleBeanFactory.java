@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.sothis.core.util.StringUtils;
 
 public class SimpleBeanFactory implements BeanFactory {
 	private final Map<String, Object> beans = new HashMap<String, Object>();

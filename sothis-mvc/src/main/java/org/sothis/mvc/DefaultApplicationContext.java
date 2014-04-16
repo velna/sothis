@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.util.ClassUtils;
+import org.sothis.core.util.StringUtils;
 
 public class DefaultApplicationContext implements ApplicationContext {
 	private final Map<Object, Action> actions = new HashMap<Object, Action>();

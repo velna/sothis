@@ -10,8 +10,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * <p>
  * url工具类

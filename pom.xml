@@ -74,9 +74,9 @@
 				<version>3.2.1</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>2.5</version>
+				<groupId>org.apache.commons</groupId>
+  				<artifactId>commons-lang3</artifactId>
+  				<version>3.3.1</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-beanutils</groupId>
@@ -141,12 +141,12 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.6.1</version>
+				<version>1.7.6</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.6.1</version>
+				<version>1.7.6</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.json-lib</groupId>
@@ -162,7 +162,7 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>13.0.1</version>
+				<version>16.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.persistence</groupId>
@@ -211,6 +211,11 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-buffer</artifactId>
+				<version>4.0.18.Final</version>
+			</dependency>
+			<dependency>
 				<groupId>org.testng</groupId>
 				<artifactId>testng</artifactId>
 				<version>5.14.6</version>
@@ -220,6 +225,7 @@
 	</dependencyManagement>
 	<modules>
 		<module>sothis-core</module>
+		<module>sothis-nios</module>
 		<module>sothis-mvc</module>
 		<module>sothis-dal</module>
 		<module>sothis-web</module>

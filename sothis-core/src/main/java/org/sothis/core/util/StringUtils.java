@@ -1,6 +1,6 @@
 package org.sothis.core.util;
 
-public class StringUtils extends org.apache.commons.lang.StringUtils {
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
 	public static String underlined(String str) {
 		int strLen;

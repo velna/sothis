@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.sothis.core.util.StringUtils;
 
 public abstract class AbstractActionBase implements ActionBase {
 

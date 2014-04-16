@@ -10,10 +10,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sothis.core.util.CollectionUtils;
+import org.sothis.core.util.StringUtils;
 import org.springframework.util.ClassUtils;
 
 public class ConfigurationSupport extends PropertiesConfiguration {
