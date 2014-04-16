@@ -32,15 +32,15 @@ public class DiscardServer {
 		ServerSocketChannel serverChannel = new ServerSocketChannel(worker, new ChannelInitializer<SocketChannel>() {
 			@Override
 			public void initialize(SocketChannel channel) throws IOException {
-				channel.underlying().setOption(StandardSocketOptions.TCP_NODELAY, true);
-				channel.underlying().setOption(StandardSocketOptions.SO_RCVBUF, 8192);
-				channel.underlying().setOption(StandardSocketOptions.SO_SNDBUF, 8192);
-				channel.underlying().setOption(StandardSocketOptions.SO_KEEPALIVE, true);
+				channel.setOption(StandardSocketOptions.TCP_NODELAY, true);
+				channel.setOption(StandardSocketOptions.SO_RCVBUF, 8192);
+				channel.setOption(StandardSocketOptions.SO_SNDBUF, 8192);
+				channel.setOption(StandardSocketOptions.SO_KEEPALIVE, true);
 				channel.handlers().addLast(new DiscardIoHandler(TOTAL_READ));
 			}
 		});
-		serverChannel.underlying().setOption(StandardSocketOptions.SO_REUSEADDR, true);
-		serverChannel.underlying().setOption(StandardSocketOptions.SO_RCVBUF, 8192);
+		serverChannel.setOption(StandardSocketOptions.SO_REUSEADDR, true);
+		serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, 8192);
 		serverChannel.bind(new InetSocketAddress(12345));
 		acceptor.register(serverChannel, Events.OP_ACCEPT);
 

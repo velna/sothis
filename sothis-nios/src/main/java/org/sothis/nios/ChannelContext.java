@@ -1,5 +1,7 @@
 package org.sothis.nios;
 
+import java.io.IOException;
+
 public interface ChannelContext {
 	Channel channel();
 
@@ -11,7 +13,11 @@ public interface ChannelContext {
 
 	void flush();
 
+	void close() throws IOException;
+
 	void reset();
+
+	void fireChannelClosed(ChannelContext ctx);
 
 	void fireMessageReceived(ChannelContext ctx, Object message);
 

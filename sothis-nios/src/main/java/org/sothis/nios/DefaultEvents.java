@@ -161,7 +161,7 @@ public class DefaultEvents implements Events {
 					try {
 						Long n = ctx.channel().readBuffer().channelRead();
 						if (n == null || n < 0) {
-							// TODO: end of stream
+							ctx.close();
 						} else if (n > 0) {
 							ctx.reset();
 							ctx.fireMessageReceived(ctx, ctx.channel().readBuffer());

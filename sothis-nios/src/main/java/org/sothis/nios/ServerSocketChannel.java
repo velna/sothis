@@ -2,6 +2,7 @@ package org.sothis.nios;
 
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.net.SocketOption;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +20,26 @@ public class ServerSocketChannel extends AbstractChannel<java.nio.channels.Serve
 		this.readBuffer = new ServerSocketChannelReadBuffer();
 	}
 
-	public void bind(SocketAddress local) throws IOException {
-		this.channel.bind(local);
+	@Override
+	public ServerSocketChannel bind(SocketAddress local) throws IOException {
+		channel.bind(local);
+		return this;
+	}
+
+	public ServerSocketChannel bind(SocketAddress local, int backlog) throws IOException {
+		channel.bind(local, backlog);
+		return this;
+	}
+
+	@Override
+	public <T> ServerSocketChannel setOption(SocketOption<T> name, T value) throws IOException {
+		channel.setOption(name, value);
+		return this;
+	}
+
+	@Override
+	public <T> T getOption(SocketOption<T> name) throws IOException {
+		return channel.getOption(name);
 	}
 
 	@Override
@@ -31,6 +50,11 @@ public class ServerSocketChannel extends AbstractChannel<java.nio.channels.Serve
 	@Override
 	public WriteBuffer writeBuffer() {
 		throw new UnsupportedOperationException("write buffer is not supported for server sockets.");
+	}
+
+	@Override
+	public SocketAddress localAddress() throws IOException {
+		return channel.getLocalAddress();
 	}
 
 	private class ServerSocketChannelReadBuffer extends ReadBuffer {
@@ -56,4 +80,5 @@ public class ServerSocketChannel extends AbstractChannel<java.nio.channels.Serve
 		}
 
 	}
+
 }

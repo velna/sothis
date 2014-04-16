@@ -1,6 +1,8 @@
 package org.sothis.nios;
 
 import java.io.IOException;
+import java.net.SocketAddress;
+import java.net.SocketOption;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -24,6 +26,32 @@ public class SocketChannel extends AbstractChannel<java.nio.channels.SocketChann
 
 	public WriteBuffer writeBuffer() {
 		return this.writeBuffer;
+	}
+
+	@Override
+	public SocketAddress localAddress() throws IOException {
+		return channel.getLocalAddress();
+	}
+
+	public SocketAddress remoteAddress() throws IOException {
+		return channel.getRemoteAddress();
+	}
+
+	@Override
+	public SocketChannel bind(SocketAddress local) throws IOException {
+		channel.bind(local);
+		return this;
+	}
+
+	@Override
+	public <T> SocketChannel setOption(SocketOption<T> name, T value) throws IOException {
+		channel.setOption(name, value);
+		return this;
+	}
+
+	@Override
+	public <T> T getOption(SocketOption<T> name) throws IOException {
+		return channel.getOption(name);
 	}
 
 	private class SocketChannelWriteBuffer extends WriteBuffer {
@@ -175,4 +203,5 @@ public class SocketChannel extends AbstractChannel<java.nio.channels.SocketChann
 			}
 		}
 	}
+
 }
