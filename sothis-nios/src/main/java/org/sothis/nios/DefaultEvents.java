@@ -1,6 +1,7 @@
 package org.sothis.nios;
 
 import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ public class DefaultEvents implements Events {
 	private final Selector selector;
 	private final TreeMap<Long, Set<Runnable>> tasks = new TreeMap<Long, Set<Runnable>>();
 	private final Map<Runnable, Set<Runnable>> taskMap = new ConcurrentHashMap<Runnable, Set<Runnable>>();
+	private final ConcurrentLinkedQueue<Object[]> pendingChannels = new ConcurrentLinkedQueue<Object[]>();
 	private final AtomicBoolean running = new AtomicBoolean(false);
 
 	public DefaultEvents() throws IOException {
@@ -46,7 +49,7 @@ public class DefaultEvents implements Events {
 		long lastProcessTime = System.currentTimeMillis();
 		while (this.running.get()) {
 			try {
-				long t = 500;
+				long t = 0;
 				int n;
 				Map.Entry<Long, Set<Runnable>> task = tasks.firstEntry();
 				if (null != task) {
@@ -60,6 +63,7 @@ public class DefaultEvents implements Events {
 					n = selector.select(t);
 				}
 				LOGGER.debug("wait {} ms, found {} events", t, n);
+				registerPenndingChannels();
 				if (n > 0) {
 					runEvents();
 				}
@@ -72,56 +76,9 @@ public class DefaultEvents implements Events {
 	}
 
 	@Override
-	public ChannelContext register(Channel channel, int ops) throws IOException {
-		ChannelContext context;
-		SelectionKey key = channel.underlying().keyFor(selector);
-		if (null == key) {
-			if (channel instanceof SocketChannel) {
-				context = new SocketChannelContext((SocketChannel) channel, this);
-			} else if (channel instanceof ServerSocketChannel) {
-				context = new ServerSocketChannelContext((ServerSocketChannel) channel, this);
-			} else {
-				throw new IllegalArgumentException("unknown channel type: " + channel.getClass());
-			}
-			channel.underlying().register(selector, ops, context);
-		} else {
-			context = (ChannelContext) key.attachment();
-		}
-		return context;
-	}
-
-	@Override
-	public void suspend(Channel channel, int op) {
-		SelectionKey key = channel.underlying().keyFor(selector);
-		if (null != key && key.isValid()) {
-			key.interestOps(key.interestOps() ^ op);
-		}
-	}
-
-	@Override
-	public void resume(Channel channel, int op) {
-		SelectionKey key = channel.underlying().keyFor(selector);
-		if (null != key && key.isValid()) {
-			key.interestOps(key.interestOps() | op);
-		}
-	}
-
-	@Override
-	public void cancel(Channel channel) {
-		SelectionKey key = channel.underlying().keyFor(selector);
-		if (null != key && key.isValid()) {
-			key.cancel();
-		}
-	}
-
-	@Override
-	public ChannelContext context(Channel channel) {
-		SelectionKey key = channel.underlying().keyFor(selector);
-		if (null != key) {
-			return (ChannelContext) key.attachment();
-		} else {
-			return null;
-		}
+	public void register(Channel channel, int ops) throws IOException {
+		pendingChannels.add(new Object[] { channel, ops });
+		selector.wakeup();
 	}
 
 	@Override
@@ -139,6 +96,28 @@ public class DefaultEvents implements Events {
 		rs.add(r);
 	}
 
+	private void registerPenndingChannels() {
+		Object[] pair;
+		while ((pair = this.pendingChannels.poll()) != null) {
+			Channel channel = (Channel) pair[0];
+			int ops = (Integer) pair[1];
+			ChannelContext context;
+			try {
+				SelectionKey key = channel.underlying().register(selector, ops);
+				if (channel instanceof SocketChannel) {
+					context = new SocketChannelContext((SocketChannel) channel, key, this);
+				} else if (channel instanceof ServerSocketChannel) {
+					context = new ServerSocketChannelContext((ServerSocketChannel) channel, key, this);
+				} else {
+					throw new IllegalArgumentException("unknown channel type: " + channel.getClass());
+				}
+				key.attach(context);
+			} catch (ClosedChannelException e) {
+				LOGGER.error("error register channel: ", e);
+			}
+		}
+	}
+
 	private void runTasks() {
 		long now = System.currentTimeMillis();
 		while (!tasks.isEmpty() && tasks.firstKey() <= now) {
@@ -154,6 +133,7 @@ public class DefaultEvents implements Events {
 		Iterator<SelectionKey> i = selector.selectedKeys().iterator();
 		while (i.hasNext()) {
 			SelectionKey key = i.next();
+			i.remove();
 			LOGGER.debug("readyOps: {}", key.readyOps());
 			if (key.isValid()) {
 				ChannelContext ctx = (ChannelContext) key.attachment();
@@ -162,30 +142,36 @@ public class DefaultEvents implements Events {
 						Long n = ctx.channel().readBuffer().channelRead();
 						if (n == null || n < 0) {
 							ctx.close();
+							continue;
 						} else if (n > 0) {
-							ctx.reset();
-							ctx.fireMessageReceived(ctx, ctx.channel().readBuffer());
+							ctx.fireMessageReceived(ctx, ctx.channel().readBuffer(), true);
 						}
 					} catch (IOException e) {
-						ctx.reset();
-						ctx.fireExceptionCaught(ctx, e);
+						ctx.fireExceptionCaught(ctx, e, true);
 					}
 				}
 				if (key.isWritable()) {
 					try {
 						if (ctx.channel().writeBuffer().channelWrite() >= MAX_EMPTY_FLUSH) {
-							this.suspend(ctx.channel(), OP_WRITE);
+							ctx.suspend(OP_WRITE);
 						}
 					} catch (IOException e) {
-						ctx.reset();
-						ctx.fireExceptionCaught(ctx, e);
+						ctx.fireExceptionCaught(ctx, e, true);
 					}
 				}
 				if (key.isConnectable()) {
-					// TODO:
+					SocketChannelContext context = (SocketChannelContext) ctx;
+					try {
+						if (context.channel().underlying().finishConnect()) {
+							ctx.fireChannelOpened(ctx, true);
+						} else {
+							ctx.close();
+						}
+					} catch (IOException e) {
+						ctx.close();
+					}
 				}
 			}
-			i.remove();
 		}
 	}
 }

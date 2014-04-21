@@ -1,5 +1,7 @@
 package org.sothis.nios;
 
+import java.nio.channels.SelectionKey;
+
 import org.sothis.nios.Handlers.HandlerChain;
 
 public class ServerSocketChannelContext extends AbstractChannelContext {
@@ -11,8 +13,8 @@ public class ServerSocketChannelContext extends AbstractChannelContext {
 		this.messageReceivedHandlerChain = ctx.messageReceivedHandlerChain.fork();
 	}
 
-	ServerSocketChannelContext(ServerSocketChannel channel, Events events) {
-		super(channel, events);
+	ServerSocketChannelContext(ServerSocketChannel channel, SelectionKey key, Events events) {
+		super(channel, key, events);
 		this.messageReceivedHandlerChain = channel.handlers().chain(MessageReceivedHandler.class);
 	}
 
@@ -21,15 +23,18 @@ public class ServerSocketChannelContext extends AbstractChannelContext {
 		return new ServerSocketChannelContext(this);
 	}
 
-	public void fireMessageReceived(ChannelContext ctx, Object message) {
+	public void fireMessageReceived(ChannelContext ctx, Object message, boolean reset) {
+		if (reset) {
+			this.messageReceivedHandlerChain.reset();
+		}
 		if (this.messageReceivedHandlerChain.hasNext()) {
 			this.messageReceivedHandlerChain.next().messageReceived(ctx, message);
 		}
 	}
 
-	public void reset() {
-		super.reset();
-		this.messageReceivedHandlerChain.reset();
+	@Override
+	public ServerSocketChannel channel() {
+		return (ServerSocketChannel) super.channel();
 	}
 
 }

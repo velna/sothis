@@ -70,28 +70,8 @@ public class EventsGroup implements Events {
 	}
 
 	@Override
-	public ChannelContext register(Channel channel, int ops) throws IOException {
-		return findEvents(channel).register(channel, ops);
-	}
-
-	@Override
-	public void suspend(Channel channel, int op) {
-		findEvents(channel).suspend(channel, op);
-	}
-
-	@Override
-	public void resume(Channel channel, int op) {
-		findEvents(channel).resume(channel, op);
-	}
-
-	@Override
-	public void cancel(Channel channel) {
-		findEvents(channel).cancel(channel);
-	}
-
-	@Override
-	public ChannelContext context(Channel channel) {
-		return findEvents(channel).context(channel);
+	public void register(Channel channel, int ops) throws IOException {
+		findEvents(channel).register(channel, ops);
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package org.sothis.nios;
 
-import java.io.IOException;
-
 public interface ChannelContext {
 	Channel channel();
 
@@ -13,15 +11,19 @@ public interface ChannelContext {
 
 	void flush();
 
-	void close() throws IOException;
+	void suspend(int op);
 
-	void reset();
+	void resume(int op);
 
-	void fireChannelClosed(ChannelContext ctx);
+	void close();
 
-	void fireMessageReceived(ChannelContext ctx, Object message);
+	void fireChannelOpened(ChannelContext ctx, boolean reset);
 
-	void fireMessageSent(ChannelContext ctx, Object message);
+	void fireChannelClosed(ChannelContext ctx, boolean reset);
 
-	void fireExceptionCaught(ChannelContext ctx, Throwable e);
+	void fireMessageReceived(ChannelContext ctx, Object message, boolean reset);
+
+	void fireMessageSent(ChannelContext ctx, Object message, boolean reset);
+
+	void fireExceptionCaught(ChannelContext ctx, Throwable e, boolean reset);
 }

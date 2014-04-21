@@ -10,15 +10,7 @@ public interface Events extends Runnable {
 	public final static int OP_READ = SelectionKey.OP_READ;
 	public final static int OP_WRITE = SelectionKey.OP_WRITE;
 
-	ChannelContext register(Channel channel, int ops) throws IOException;
-
-	void suspend(Channel channel, int op);
-
-	void resume(Channel channel, int op);
-
-	void cancel(Channel channel);
-
-	ChannelContext context(Channel channel);
+	void register(Channel channel, int ops) throws IOException;
 
 	void submit(long timeout, Runnable r);
 

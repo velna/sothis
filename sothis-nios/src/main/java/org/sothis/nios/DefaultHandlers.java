@@ -47,15 +47,14 @@ public class DefaultHandlers implements Handlers {
 		}
 
 		private Handler findNext() {
-			Handler h = null;
 			while (i < handlers.size()) {
-				h = handlers.get(i);
+				Handler h = handlers.get(i);
 				if (c.isAssignableFrom(h.getClass())) {
-					break;
+					return h;
 				}
 				i++;
 			}
-			return h;
+			return null;
 		}
 
 		@Override

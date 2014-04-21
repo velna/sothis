@@ -5,11 +5,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sothis.nios.ChannelClosedHandler;
 import org.sothis.nios.ChannelContext;
 import org.sothis.nios.MessageReceivedHandler;
 import org.sothis.nios.ReadBuffer;
 
-public class DiscardIoHandler implements MessageReceivedHandler {
+public class DiscardIoHandler implements MessageReceivedHandler, ChannelClosedHandler {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(DiscardIoHandler.class);
 
@@ -33,5 +34,10 @@ public class DiscardIoHandler implements MessageReceivedHandler {
 		}
 		this.totalRead.addAndGet(n);
 		LOGGER.info("read {}/{} bytes", n, this.totalRead.get());
+	}
+
+	@Override
+	public void channelClosed(ChannelContext ctx) {
+		LOGGER.info("channel closed");
 	}
 }

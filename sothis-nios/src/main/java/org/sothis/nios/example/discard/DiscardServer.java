@@ -28,6 +28,8 @@ public class DiscardServer {
 				.namingPattern("acceptor-%d").build());
 		worker = new EventsGroup(DefaultEvents.class, 1, new BasicThreadFactory.Builder().daemon(false)
 				.namingPattern("worker-%d").build());
+		worker.run();
+		acceptor.run();
 
 		ServerSocketChannel serverChannel = new ServerSocketChannel(worker, new ChannelInitializer<SocketChannel>() {
 			@Override
@@ -44,8 +46,6 @@ public class DiscardServer {
 		serverChannel.bind(new InetSocketAddress(12345));
 		acceptor.register(serverChannel, Events.OP_ACCEPT);
 
-		worker.run();
-		acceptor.run();
 		LOGGER.info("bind at 12345");
 	}
 

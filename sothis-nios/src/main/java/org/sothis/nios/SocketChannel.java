@@ -173,7 +173,15 @@ public class SocketChannel extends AbstractChannel<java.nio.channels.SocketChann
 				}
 			} while (n == buf.capacity());
 
-			return n < 0 ? (read == 0 ? null : -read) : read;
+			if (n < 0) {
+				if (read == 0) {
+					return null;
+				} else {
+					return -read;
+				}
+			} else {
+				return read;
+			}
 		}
 
 		@Override

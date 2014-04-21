@@ -11,7 +11,7 @@ public abstract class Encoder implements MessageSentHandler {
 	@Override
 	public void messageSent(ChannelContext ctx, Object message) {
 		encode(ctx, message, ctx.channel().writeBuffer());
-		ctx.fireMessageSent(ctx, message);
+		ctx.fireMessageSent(ctx, message, false);
 	}
 
 }

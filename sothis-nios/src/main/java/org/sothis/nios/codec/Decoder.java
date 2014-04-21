@@ -17,8 +17,7 @@ public abstract class Decoder implements MessageReceivedHandler {
 	private void fireNext(final ChannelContext ctx) {
 		if (out.size() > 0) {
 			for (Iterator<Object> i = out.iterator(); i.hasNext();) {
-				ctx.fireMessageReceived(ctx, i.next());
-				ctx.reset();
+				ctx.fireMessageReceived(ctx, i.next(), true);
 				i.remove();
 			}
 		}
