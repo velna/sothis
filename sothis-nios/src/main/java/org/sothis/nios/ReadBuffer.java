@@ -17,4 +17,7 @@ public abstract class ReadBuffer implements Iterable<Object> {
 	@Override
 	public abstract Iterator<Object> iterator();
 
+	abstract public long remaining();
+
+	abstract public boolean read(byte[] buf, int offset, int length);
 }

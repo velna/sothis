@@ -17,13 +17,12 @@ public class BufferPool {
 	};
 
 	private final static int MAX_BUF_SIZE = 16;
-	private final static int MIN_BUF_SIZE = 8;
 
-	private List<LinkedList<ByteBuffer>> buffers = new ArrayList<LinkedList<ByteBuffer>>(MAX_BUF_SIZE - MIN_BUF_SIZE);
-	private List<LinkedList<ByteBuffer>> directBuffers = new ArrayList<LinkedList<ByteBuffer>>(MAX_BUF_SIZE - MIN_BUF_SIZE);
+	private List<LinkedList<ByteBuffer>> buffers = new ArrayList<LinkedList<ByteBuffer>>(MAX_BUF_SIZE);
+	private List<LinkedList<ByteBuffer>> directBuffers = new ArrayList<LinkedList<ByteBuffer>>(MAX_BUF_SIZE);
 
 	private BufferPool() {
-		for (int i = 0; i < MAX_BUF_SIZE - MIN_BUF_SIZE; i++) {
+		for (int i = 0; i < MAX_BUF_SIZE; i++) {
 			buffers.add(new LinkedList<ByteBuffer>());
 			directBuffers.add(new LinkedList<ByteBuffer>());
 		}
@@ -41,10 +40,7 @@ public class BufferPool {
 		if (i > MAX_BUF_SIZE) {
 			throw new IllegalArgumentException("size out of range");
 		}
-		if (i < MIN_BUF_SIZE) {
-			i = MIN_BUF_SIZE;
-		}
-		LinkedList<ByteBuffer> pool = direct ? directBuffers.get(i - MIN_BUF_SIZE) : buffers.get(i - MIN_BUF_SIZE);
+		LinkedList<ByteBuffer> pool = direct ? directBuffers.get(i) : buffers.get(i);
 		if (pool.isEmpty()) {
 			return direct ? ByteBuffer.allocateDirect(1 << i) : ByteBuffer.allocate(1 << i);
 		} else {
@@ -69,10 +65,7 @@ public class BufferPool {
 		if (i > MAX_BUF_SIZE) {
 			throw new IllegalArgumentException("size out of range");
 		}
-		if (i < MIN_BUF_SIZE) {
-			i = MIN_BUF_SIZE;
-		}
-		LinkedList<ByteBuffer> pool = buf.isDirect() ? directBuffers.get(i - MIN_BUF_SIZE) : buffers.get(i - MIN_BUF_SIZE);
+		LinkedList<ByteBuffer> pool = buf.isDirect() ? directBuffers.get(i) : buffers.get(i);
 		buf.clear();
 		pool.addLast(buf);
 	}

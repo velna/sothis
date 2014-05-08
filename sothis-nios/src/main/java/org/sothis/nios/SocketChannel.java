@@ -210,6 +210,33 @@ public class SocketChannel extends AbstractChannel<java.nio.channels.SocketChann
 				next = null;
 			}
 		}
+
+		@Override
+		public long remaining() {
+			Iterator<Object> i = this.iterator();
+			long ret = 0;
+			while (i.hasNext()) {
+				ByteBuffer buf = (ByteBuffer) i.next();
+				ret += buf.remaining();
+			}
+			return ret;
+		}
+
+		@Override
+		public boolean read(byte[] buf, int offset, int length) {
+			if (this.remaining() < length) {
+				return false;
+			}
+			Iterator<Object> i = this.iterator();
+			int o = offset;
+			int n = length;
+			while (i.hasNext() && n > 0) {
+				ByteBuffer buffer = (ByteBuffer) i.next();
+				n -= buffer.remaining() < n ? buffer.remaining() : n;
+				buffer.get(buf, o, n);
+			}
+			return true;
+		}
 	}
 
 }

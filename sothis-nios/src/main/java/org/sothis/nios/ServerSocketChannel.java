@@ -79,6 +79,16 @@ public class ServerSocketChannel extends AbstractChannel<java.nio.channels.Serve
 			return socketChannels.iterator();
 		}
 
+		@Override
+		public long remaining() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean read(byte[] buf, int offset, int length) {
+			throw new UnsupportedOperationException();
+		}
+
 	}
 
 }

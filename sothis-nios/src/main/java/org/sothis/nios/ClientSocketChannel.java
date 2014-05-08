@@ -9,7 +9,11 @@ public class ClientSocketChannel extends SocketChannel {
 		super(java.nio.channels.SocketChannel.open());
 	}
 
-	public void connect(SocketAddress remote) throws IOException {
-		this.underlying().connect(remote);
+	public boolean connect(SocketAddress remote) throws IOException {
+		return this.underlying().connect(remote);
+	}
+
+	public boolean finishConnect() throws IOException {
+		return this.underlying().finishConnect();
 	}
 }
