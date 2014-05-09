@@ -1,6 +1,7 @@
 package org.sothis.core.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -9,7 +10,7 @@ import org.sothis.core.util.LoggerFactory;
 
 public class PerformanceStats {
 	private final static Logger PERFORMANCE_LOGGER = LoggerFactory.getPerformanceLogger(PerformanceStats.class);
-	private final static List<PerformanceStats> STATS = new ArrayList<PerformanceStats>();
+	private final static List<PerformanceStats> STATS = Collections.synchronizedList(new ArrayList<PerformanceStats>());
 	private static Thread STAT_THREAD;
 
 	private final AtomicLong[] counters = new AtomicLong[21];
@@ -21,6 +22,18 @@ public class PerformanceStats {
 		this.name = name;
 		for (int i = 0; i < counters.length; i++) {
 			counters[i] = new AtomicLong(0);
+		}
+	}
+
+	public static void clear() {
+		synchronized (STATS) {
+			for (PerformanceStats stats : STATS) {
+				stats.totalCount.set(0);
+				stats.totalTime.set(0);
+				for (AtomicLong c : stats.counters) {
+					c.set(0);
+				}
+			}
 		}
 	}
 

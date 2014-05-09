@@ -17,33 +17,27 @@
  * under the License.
  */
 
-package org.sothis.thrift;
+package org.sothis.thrift.protocol;
 
 
 /**
- * Helper class that encapsulates field metadata.
+ * Helper class that encapsulates set metadata.
  *
  */
-public class TField {
-  public TField() {
-    this("", TType.STOP, (short)0);
+public final class TSet {
+  public TSet() {
+    this(TType.STOP, 0);
   }
 
-  public TField(String n, byte t, short i) {
-    name = n;
-    type = t;
-    id = i;
+  public TSet(byte t, int s) {
+    elemType = t;
+    size = s;
   }
 
-  public final String name;
-  public final byte   type;
-  public final short  id;
-
-  public String toString() {
-    return "<TField name:'" + name + "' type:" + type + " field-id:" + id + ">";
+  public TSet(TList list) {
+    this(list.elemType, list.size);
   }
 
-  public boolean equals(TField otherField) {
-    return type == otherField.type && id == otherField.id;
-  }
+  public final byte elemType;
+  public final int  size;
 }

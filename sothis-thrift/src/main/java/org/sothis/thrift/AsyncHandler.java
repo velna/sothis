@@ -1,7 +1,10 @@
 package org.sothis.thrift;
 
-public interface AsyncHandler<R> {
-	void operationCompleted(R result);
+import org.sothis.thrift.protocol.TCall;
+import org.sothis.thrift.protocol.TEntity;
 
-	void operationFailed(Exception e);
+public interface AsyncHandler<C extends TCall<? extends TEntity, ? extends TEntity>> {
+	void operationCompleted(C call);
+
+	void operationFailed(C call, TException e);
 }

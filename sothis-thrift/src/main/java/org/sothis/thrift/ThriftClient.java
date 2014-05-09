@@ -14,13 +14,15 @@ import java.util.concurrent.ThreadFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sothis.thrift.protocol.TAsyncCall;
+import org.sothis.thrift.protocol.TEntity;
+import org.sothis.thrift.protocol.TProtocolFactory;
 
 public class ThriftClient {
 	private final static Logger LOGGER = LoggerFactory.getLogger(ThriftClient.class);
 
-	private final ConcurrentLinkedQueue<TAsyncRequest<? extends TResponse>> penddingRequests = new ConcurrentLinkedQueue<TAsyncRequest<? extends TResponse>>();
+	private final ConcurrentLinkedQueue<TAsyncCall<? extends TEntity, ? extends TEntity>> penddingCalls = new ConcurrentLinkedQueue<>();
 	private final SelectWorker[] selectThreads;
-	private int callIdx = 0;
 	private int regIdx = 0;
 
 	public ThriftClient(int nThreads, ThreadFactory threadFactory) throws IOException {
@@ -32,15 +34,12 @@ public class ThriftClient {
 		}
 	}
 
-	public void call(TAsyncRequest<? extends TResponse> request) {
-		this.penddingRequests.add(request);
+	public void call(TAsyncCall<? extends TEntity, ? extends TEntity> call) {
+		this.penddingCalls.add(call);
 		for (int i = 0; i < this.selectThreads.length; i++) {
 			if (this.selectThreads[i].tryWakeup()) {
 				break;
 			}
-			// int next = Math.abs(callIdx % this.selectThreads.length);
-			// this.selectThreads[next].selector.wakeup();
-			// callIdx++;
 		}
 	}
 
@@ -48,23 +47,22 @@ public class ThriftClient {
 
 	}
 
-	public void connect(SocketAddress remote) throws IOException {
+	public void connect(SocketAddress remote, boolean async, TProtocolFactory factory) throws IOException {
 		SocketChannel channel = SocketChannel.open();
 		channel.setOption(StandardSocketOptions.TCP_NODELAY, true);
 		initChannel(channel);
-		// channel.setOption(StandardSocketOptions.SO_RCVBUF, 65535);
-		// channel.setOption(StandardSocketOptions.SO_SNDBUF, 512);
 		channel.connect(remote);
 		LOGGER.info("connection established: {}{}", channel.getLocalAddress(), channel.getRemoteAddress());
 		channel.configureBlocking(false);
 
 		int i = Math.abs(regIdx % this.selectThreads.length);
-		this.selectThreads[i].addPenddingConnection(new Connection(channel));
+		this.selectThreads[i].addPenddingConnection(async ? new AsyncConnection(channel, factory) : new SyncConnection(channel,
+				factory));
 		regIdx++;
 	}
 
-	TAsyncRequest<? extends TResponse> pollRequest() {
-		return this.penddingRequests.poll();
+	TAsyncCall<? extends TEntity, ? extends TEntity> pollCall() {
+		return this.penddingCalls.poll();
 	}
 
 	protected interface Worker {
@@ -77,7 +75,6 @@ public class ThriftClient {
 		private final Selector selector;
 		private final LinkedList<SelectionKey> idleKeys = new LinkedList<SelectionKey>();
 		private final LinkedList<Connection> penddingConnections = new LinkedList<Connection>();
-		private int keyCount;
 
 		public SelectWorker() throws IOException {
 			this.selector = Selector.open();
@@ -109,7 +106,7 @@ public class ThriftClient {
 		}
 
 		private void wakeupConnections() {
-			if (!penddingRequests.isEmpty()) {
+			if (!penddingCalls.isEmpty()) {
 				SelectionKey key = this.idleKeys.pollFirst();
 				if (null != key) {
 					key.interestOps(SelectionKey.OP_WRITE | SelectionKey.OP_READ);
@@ -131,7 +128,6 @@ public class ThriftClient {
 				while ((connection = penddingConnections.poll()) != null) {
 					try {
 						connection.getChannel().register(selector, SelectionKey.OP_WRITE | SelectionKey.OP_READ, connection);
-						keyCount++;
 					} catch (ClosedChannelException e) {
 						LOGGER.error("", e);
 					}
@@ -159,7 +155,7 @@ public class ThriftClient {
 
 		@Override
 		public void deactive(SelectionKey key) {
-			key.interestOps(0);
+			key.interestOps(SelectionKey.OP_READ);
 			idleKeys.add(key);
 		}
 	}

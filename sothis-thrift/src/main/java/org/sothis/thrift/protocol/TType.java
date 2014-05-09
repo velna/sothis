@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.sothis.thrift;
+package org.sothis.thrift.protocol;
 
 /**
  * Type constants in the Thrift protocol.

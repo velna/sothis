@@ -17,15 +17,25 @@
  * under the License.
  */
 
-package org.sothis.thrift;
+package org.sothis.thrift.protocol;
+
 
 /**
- * Message type constants in the Thrift protocol.
+ * Helper class that encapsulates map metadata.
  *
  */
-public final class TMessageType {
-  public static final byte CALL  = 1;
-  public static final byte REPLY = 2;
-  public static final byte EXCEPTION = 3;
-  public static final byte ONEWAY = 4;
+public final class TMap {
+  public TMap() {
+    this(TType.STOP, TType.STOP, 0);
+  }
+
+  public TMap(byte k, byte v, int s) {
+    keyType = k;
+    valueType = v;
+    size = s;
+  }
+
+  public final byte  keyType;
+  public final byte  valueType;
+  public final int   size;
 }
