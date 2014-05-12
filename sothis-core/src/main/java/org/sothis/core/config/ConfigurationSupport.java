@@ -107,6 +107,7 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 				input = new FileInputStream(f);
 			}
 			if (null != input) {
+				LOGGER.info("load imported properties from {}", f);
 				properties.load(input);
 			} else {
 				if (LOGGER.isErrorEnabled()) {
@@ -132,6 +133,7 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 			} else {
 				properties.load(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 			}
+			LOGGER.info("load properties from file {}", file);
 		}
 		return properties;
 	}

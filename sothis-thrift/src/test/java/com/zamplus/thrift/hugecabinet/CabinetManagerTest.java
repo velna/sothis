@@ -24,12 +24,12 @@ public class CabinetManagerTest implements Runnable {
 	private final AtomicInteger ok = new AtomicInteger(0);
 	private final AtomicInteger error = new AtomicInteger(0);
 
-	private final CabinetManager client;
+	private final CabinetManager.Client client;
 	private final int n;
 	private final CountDownLatch countDownLatch;
 	private final int sleep;
 
-	public CabinetManagerTest(CabinetManager client, int n, int sleep, CountDownLatch countDownLatch) {
+	public CabinetManagerTest(CabinetManager.Client client, int n, int sleep, CountDownLatch countDownLatch) {
 		super();
 		this.client = client;
 		this.n = n;
@@ -89,7 +89,7 @@ public class CabinetManagerTest implements Runnable {
 			return;
 		}
 
-		CabinetManagerImpl client = new CabinetManagerImpl(options.getEventThreads(), Executors.defaultThreadFactory());
+		CabinetManager.Client client = new CabinetManager.Client(options.getEventThreads(), Executors.defaultThreadFactory());
 		SocketAddress remote = new InetSocketAddress(options.getHost(), options.getPort());
 		for (int i = 0; i < options.getConnections(); i++) {
 			client.connect(remote, false, TBinaryProtocol.FACTORY);
