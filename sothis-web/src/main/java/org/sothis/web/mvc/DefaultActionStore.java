@@ -20,4 +20,9 @@ public class DefaultActionStore implements ActionStore {
 		return this.actions.containsKey(key);
 	}
 
+	@Override
+	public Map<Object, Action> getActions() {
+		return this.actions;
+	}
+
 }
