@@ -16,11 +16,13 @@ public class BenchMarkOptions {
 	private int sleep;
 	private int delay;
 	private int eventThreads;
+	private boolean async;
 
 	private final static Options options = new Options();
 	static {
 		options.addOption(new Option("h", true, "the host to perform the benchmark."));
 		options.addOption(new Option("d", true, "initial delay in seconds, default to 0."));
+		options.addOption(new Option("a", false, "use async."));
 		options.addOption(new Option("p", true, "the host port to perform the benchmark, default to 12001."));
 		options.addOption(new Option("c", true, "concurrent connections to use, default to 1."));
 		options.addOption(new Option("n", true, "request to perform on every single connection, default to 1."));
@@ -75,6 +77,8 @@ public class BenchMarkOptions {
 			options.eventThreads = Integer.parseInt(cmdLine.getOptionValue("e"));
 		}
 
+		options.async = cmdLine.hasOption("a");
+
 		return options;
 	}
 
@@ -109,4 +113,9 @@ public class BenchMarkOptions {
 	public int getEventThreads() {
 		return eventThreads;
 	}
+
+	public boolean isAsync() {
+		return async;
+	}
+
 }

@@ -7,14 +7,32 @@ import java.nio.channels.SocketChannel;
 import org.sothis.thrift.TException;
 
 public class TFramedProtocol extends TProtocol {
-	public final static int MAX_MESSAGE_SIZE = 65535;
 
 	private final TProtocol protocol;
 	private int frameIndex;
+	private int maxMessageSize;
 
-	public TFramedProtocol(TProtocolFactory factory) {
-		super(ByteBuffer.allocateDirect(MAX_MESSAGE_SIZE + 4));
+	private TFramedProtocol(int maxMessageSize, TProtocolFactory factory) {
+		super(ByteBuffer.allocateDirect(maxMessageSize + 4));
+		this.maxMessageSize = maxMessageSize;
 		this.protocol = factory.newProtocol(buffer);
+	}
+
+	public static class Factory implements TProtocolFactory {
+		private final int maxMessageSize;
+		private final TProtocolFactory factory;
+
+		public Factory(int maxMessageSize, TProtocolFactory factory) {
+			super();
+			this.maxMessageSize = maxMessageSize;
+			this.factory = factory;
+		}
+
+		@Override
+		public TFramedProtocol newProtocol(ByteBuffer buffer) {
+			return new TFramedProtocol(maxMessageSize, factory);
+		}
+
 	}
 
 	public int read(SocketChannel channel) throws IOException {
@@ -153,7 +171,7 @@ public class TFramedProtocol extends TProtocol {
 		if (buffer.remaining() >= 4) {
 			buffer.mark();
 			int size = buffer.getInt();
-			if (size > MAX_MESSAGE_SIZE) {
+			if (size > maxMessageSize) {
 				throw new TProtocolException(TProtocolException.SIZE_LIMIT, "invalid message size: " + size);
 			}
 			if (buffer.remaining() < size) {

@@ -1,13 +1,12 @@
 package org.sothis.thrift;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
-import java.nio.channels.SocketChannel;
 
 import org.sothis.thrift.protocol.TAsyncCall;
 import org.sothis.thrift.protocol.TFramedProtocol;
 import org.sothis.thrift.protocol.TMessage;
-import org.sothis.thrift.protocol.TProtocolFactory;
 
 public class SyncConnection extends Connection {
 	private final TFramedProtocol protocol;
@@ -20,9 +19,9 @@ public class SyncConnection extends Connection {
 		WRITE, READ
 	}
 
-	public SyncConnection(SocketChannel channel, TProtocolFactory factory) {
-		super(channel);
-		this.protocol = new TFramedProtocol(factory);
+	public SyncConnection(SocketAddress remoteAddress, TFramedProtocol.Factory factory) throws IOException {
+		super(remoteAddress, factory);
+		this.protocol = factory.newProtocol(null);
 	}
 
 	@Override
@@ -100,4 +99,8 @@ public class SyncConnection extends Connection {
 		}
 	}
 
+	@Override
+	public Connection duplicate(SocketAddress remoteAddress) throws IOException {
+		return new SyncConnection(remoteAddress, factory);
+	}
 }

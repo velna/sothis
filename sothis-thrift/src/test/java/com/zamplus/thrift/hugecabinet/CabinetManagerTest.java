@@ -68,19 +68,23 @@ public class CabinetManagerTest implements Runnable {
 								if (total.incrementAndGet() == n) {
 									countDownLatch.countDown();
 								}
+								LOGGER.error("", e);
 							}
 
 						});
 				if (sleep > 0 && i % sleep == 0) {
 					sync.sync();
 				}
+				Thread.sleep(1000);
+				System.out.println(i);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private final static String[] DEFAULT_ARGS = "-h 61.152.223.3 -n 100 -s 1".split(" ");
+	private final static String[] DEFAULT_ARGS = "-h 61.152.223.3 -n 10000 -s 1 -a".split(" ");
+	private final static int MAX_MESSAGE_SIZE = 65535;
 
 	public static void main(String[] args) throws Exception {
 		BenchMarkOptions options = BenchMarkOptions.parse(args.length > 0 ? args : DEFAULT_ARGS);
@@ -92,7 +96,7 @@ public class CabinetManagerTest implements Runnable {
 		CabinetManager.Client client = new CabinetManager.Client(options.getEventThreads(), Executors.defaultThreadFactory());
 		SocketAddress remote = new InetSocketAddress(options.getHost(), options.getPort());
 		for (int i = 0; i < options.getConnections(); i++) {
-			client.connect(remote, false, TBinaryProtocol.FACTORY);
+			client.connect(remote, options.isAsync(), MAX_MESSAGE_SIZE, TBinaryProtocol.FACTORY);
 		}
 
 		if (options.getDelay() > 0) {
@@ -100,7 +104,7 @@ public class CabinetManagerTest implements Runnable {
 		}
 
 		CountDownLatch countDownLatch = new CountDownLatch(options.getThreads());
-		PerformanceStats.startLoggingThread();
+		// PerformanceStats.startLoggingThread();
 		final long start = System.currentTimeMillis();
 		CabinetManagerTest[] tests = new CabinetManagerTest[options.getThreads()];
 		for (int i = 0; i < options.getThreads(); i++) {

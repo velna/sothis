@@ -1,8 +1,8 @@
 package org.sothis.thrift;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
-import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +10,6 @@ import org.sothis.thrift.ThriftClient.Worker;
 import org.sothis.thrift.protocol.TAsyncCall;
 import org.sothis.thrift.protocol.TFramedProtocol;
 import org.sothis.thrift.protocol.TMessage;
-import org.sothis.thrift.protocol.TProtocolFactory;
 
 public class AsyncConnection extends Connection {
 
@@ -19,10 +18,10 @@ public class AsyncConnection extends Connection {
 	private final TFramedProtocol writeProtocol;
 	private int emptyPoll;
 
-	public AsyncConnection(SocketChannel channel, TProtocolFactory factory) {
-		super(channel);
-		this.readProtocol = new TFramedProtocol(factory);
-		this.writeProtocol = new TFramedProtocol(factory);
+	public AsyncConnection(SocketAddress remoteAddress, TFramedProtocol.Factory factory) throws IOException {
+		super(remoteAddress, factory);
+		this.readProtocol = factory.newProtocol(null);
+		this.writeProtocol = factory.newProtocol(null);
 	}
 
 	@Override
@@ -59,6 +58,7 @@ public class AsyncConnection extends Connection {
 				return;
 			}
 			emptyPoll = 0;
+			this.requests.put(call.getMessage().seqid, call);
 			this.writeProtocol.reset();
 			writeProtocol.writeMessageBegin(call.getMessage());
 			call.getRequest().write(writeProtocol);
@@ -84,5 +84,10 @@ public class AsyncConnection extends Connection {
 		for (Map.Entry<Integer, TAsyncCall<?, ?>> entry : requests.entrySet()) {
 			entry.getValue().signal(e);
 		}
+	}
+
+	@Override
+	public Connection duplicate(SocketAddress remoteAddress) throws IOException {
+		return new AsyncConnection(remoteAddress, factory);
 	}
 }
