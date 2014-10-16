@@ -4,3 +4,4 @@
 .pmd
 target
 test-output
+/bin
