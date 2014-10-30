@@ -5,8 +5,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.sothis.core.util.MapUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.sothis.core.util.StringUtils;
 import org.sothis.core.util.UrlUtils;
 import org.sothis.mvc.Action;
 import org.sothis.web.mvc.WebActionContext;
@@ -40,7 +40,8 @@ import freemarker.template.utility.DeepUnwrap;
 public class LinkDirective implements TemplateDirectiveModel {
 
 	@Override
-	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
+	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
+			throws TemplateException, IOException {
 		Map<String, Object> directiveParams = new HashMap<String, Object>(params);
 		WebActionContext context = WebActionContext.getContext();
 		Action action = context.getAction();

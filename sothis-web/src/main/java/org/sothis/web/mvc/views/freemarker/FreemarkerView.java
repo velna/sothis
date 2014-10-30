@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.MapUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.beans.Scope;
-import org.sothis.core.util.MapUtils;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.ModelAndView;

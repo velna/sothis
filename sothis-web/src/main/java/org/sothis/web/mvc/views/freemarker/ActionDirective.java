@@ -6,8 +6,8 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.sothis.core.util.MapUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.sothis.core.util.StringUtils;
 import org.sothis.mvc.ActionInvocationHelper;
 import org.sothis.web.mvc.WebActionContext;
 import org.sothis.web.mvc.util.WrappedHttpServletRequest;
@@ -21,7 +21,7 @@ import freemarker.template.TemplateModel;
 
 public class ActionDirective implements TemplateDirectiveModel {
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {
 

@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
-import org.sothis.core.util.MapUtils;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ModelAndView;
 import org.sothis.mvc.View;
@@ -41,7 +41,8 @@ public class JspView implements View {
 		}
 		String path = MvcUtils.resolvePath(MapUtils.getString(params, "path"), invocation) + ".jsp";
 		try {
-			request.getRequestDispatcher(path).forward(request, (HttpServletResponse) invocation.getActionContext().getResponse());
+			request.getRequestDispatcher(path)
+					.forward(request, (HttpServletResponse) invocation.getActionContext().getResponse());
 		} catch (ServletException e) {
 			throw new ViewRenderException(e);
 		}

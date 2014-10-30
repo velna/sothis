@@ -11,11 +11,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.sothis.web.mvc.WebActionContext;
 
 public class MultipartHttpServletRequest extends HttpServletRequestWrapper {
@@ -33,17 +34,16 @@ public class MultipartHttpServletRequest extends HttpServletRequestWrapper {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void init(HttpServletRequest request) throws FileUploadException, IOException {
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			return;
 		}
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
-		List<DiskFileItem> items = upload.parseRequest(request);
+		List<FileItem> items = upload.parseRequest(request);
 		String encoding = request.getCharacterEncoding();
-		for (Iterator<DiskFileItem> i = items.iterator(); i.hasNext();) {
-			DiskFileItem item = i.next();
+		for (Iterator<FileItem> i = items.iterator(); i.hasNext();) {
+			FileItem item = i.next();
 			String fieldName = item.getFieldName();
 			if (item.isFormField()) {
 				if (paramMap.containsKey(fieldName)) {
@@ -61,7 +61,7 @@ public class MultipartHttpServletRequest extends HttpServletRequestWrapper {
 						throw new IOException("error write upload file:" + file, e);
 					}
 				} else {
-					file = item.getStoreLocation();
+					file = ((DiskFileItem) item).getStoreLocation();
 				}
 				append(paramMap, fieldName, file);
 				append(paramMap, fieldName + "FileName", item.getName());

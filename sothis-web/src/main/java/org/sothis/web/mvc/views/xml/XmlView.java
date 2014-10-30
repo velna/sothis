@@ -5,9 +5,9 @@ import java.io.Writer;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.MapUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
-import org.sothis.core.util.MapUtils;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ModelAndView;
 import org.sothis.mvc.View;
@@ -22,7 +22,8 @@ public class XmlView implements View {
 		XmlSerializable serializ = new XmlSerializable(new XmlConverterImpl());
 		WebActionContext context = (WebActionContext) invocation.getActionContext();
 		HttpServletResponse response = context.getResponse();
-		response.setContentType(MapUtils.getString(mav.viewParams(), "contentType", "text/xml;charset=" + context.getConfiguration().getCharacterEncoding()));
+		response.setContentType(MapUtils.getString(mav.viewParams(), "contentType", "text/xml;charset="
+				+ context.getConfiguration().getCharacterEncoding()));
 		Writer writer = response.getWriter();
 		writer.write("<?xml version=\"1.0\" encoding=\"" + context.getConfiguration().getCharacterEncoding() + "\" ?>");
 		serializ.objectToXml(object, response.getWriter());

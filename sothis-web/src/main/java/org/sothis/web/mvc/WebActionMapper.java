@@ -2,10 +2,10 @@ package org.sothis.web.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.sothis.core.beans.Autowire;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
+import org.sothis.core.util.StringUtils;
 import org.sothis.mvc.Action;
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ActionMapper;

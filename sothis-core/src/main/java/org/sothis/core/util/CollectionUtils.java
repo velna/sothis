@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-public class CollectionUtils extends org.apache.commons.collections.CollectionUtils {
+public class CollectionUtils {
 
 	/**
 	 * 对一个列表进行分组

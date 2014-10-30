@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.sothis.web.mvc.views.xml.Attribute;
 import org.sothis.web.mvc.views.xml.XmlNode;
 public class DateConverter implements TypeConverter<Date> {
