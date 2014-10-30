@@ -111,4 +111,9 @@ public class DefaultApplicationContext implements ApplicationContext {
 		return beanFactory;
 	}
 
+	@Override
+	public Map<Object, Action> getActions() {
+		return this.actions;
+	}
+
 }

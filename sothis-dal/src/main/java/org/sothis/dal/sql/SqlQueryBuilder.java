@@ -176,9 +176,26 @@ public class SqlQueryBuilder {
 			if (cnd.isNot()) {
 				sql.append(" not (");
 			}
-			appendCndToSql((Cnd) cnd.getLeft(), sql, paramIndex);
+			Cnd left = (Cnd) cnd.getLeft();
+			if (left.getOp() instanceof Logic) {
+				sql.append(" (");
+			}
+			appendCndToSql(left, sql, paramIndex);
+			if (left.getOp() instanceof Logic) {
+				sql.append(") ");
+			}
 			sql.append(LOGIC_MAP[((Logic) op).ordinal()]);
-			appendCndToSql((Cnd) cnd.getRight(), sql, paramIndex);
+			Cnd right = (Cnd) cnd.getRight();
+			if (right.getOp() instanceof Logic) {
+				sql.append(" (");
+			}
+			appendCndToSql(right, sql, paramIndex);
+			if (right.getOp() instanceof Logic) {
+				sql.append(") ");
+			}
+			if (cnd.isNot()) {
+				sql.append(") ");
+			}
 		} else {
 			throw new RuntimeException("unknown op: " + op);
 		}
@@ -199,8 +216,7 @@ public class SqlQueryBuilder {
 					}
 				} else if (cnd.getRight().getClass().isArray()) {
 					for (int i = 0; i < Array.getLength(cnd.getRight()); i++) {
-						query.setParameter(WHERE_PARAM_PREFIX + paramIndex.getAndIncrease(),
-								Array.get(cnd.getRight(), i));
+						query.setParameter(WHERE_PARAM_PREFIX + paramIndex.getAndIncrease(), Array.get(cnd.getRight(), i));
 					}
 				}
 			} else {

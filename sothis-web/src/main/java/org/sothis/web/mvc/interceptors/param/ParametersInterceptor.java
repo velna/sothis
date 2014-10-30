@@ -194,6 +194,13 @@ public class ParametersInterceptor implements Interceptor {
 					break;
 				}
 				Type[] types = writeMethod.getGenericParameterTypes();
+				Annotation[] as = writeMethod.getParameterAnnotations()[0];
+				Param parameter = null;
+				for (Annotation a : as) {
+					if (a.annotationType() == Param.class) {
+						parameter = (Param) a;
+					}
+				}
 				// 如果是泛型，则尽量找到泛型对应的实际类型
 				if (types != null && types.length > 0 && types[0] instanceof TypeVariable) {
 					TypeVariable typeVariable = (TypeVariable) types[0];
@@ -222,7 +229,7 @@ public class ParametersInterceptor implements Interceptor {
 					}
 					bean = propertyValue;
 				} else {
-					Object propertyValue = convert(entry.getValue(), propertyType, p);
+					Object propertyValue = convert(entry.getValue(), propertyType, parameter != null ? parameter.pattern() : p);
 					if (null != propertyValue) {
 						writeMethod.invoke(bean, propertyValue);
 					}
