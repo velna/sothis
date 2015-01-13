@@ -17,23 +17,33 @@ public class GZIPUtils {
 	 * @return 返回压缩后的数据
 	 * @throws IOException
 	 */
-	public static byte[] makeAsByteArray(byte[] data) throws IOException {
+	public static byte[] deflate(byte[] data) throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream(data.length);
-		GZIPOutputStream zipOut = new GZIPOutputStream(out, Math.max(data.length / 10, 512));
+		GZIPOutputStream zipOut = new GZIPOutputStream(out, 8192);
 		zipOut.write(data);
 		zipOut.close();
 		return out.toByteArray();
 	}
 
 	/**
-	 * 将data以gzip方式压缩，并返回一个可读取的InputStream
+	 * 将data以gzip方式解压缩并返回
 	 * 
 	 * @param data
-	 * @return 返回可读的InputStream
+	 * @return 返回解压缩后的数据
 	 * @throws IOException
 	 */
-	public static InputStream makeAsInputStream(byte[] data) throws IOException {
-		return new ByteArrayInputStream(makeAsByteArray(data));
+	public static byte[] inflate(byte[] data) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream(data.length);
+		ByteArrayInputStream input = new ByteArrayInputStream(data);
+		GZIPInputStream zipIn = new GZIPInputStream(input, 8192);
+		byte[] buf = new byte[8192];
+		int n;
+		while ((n = zipIn.read(buf)) != -1) {
+			out.write(buf, 0, n);
+		}
+		zipIn.close();
+		out.close();
+		return out.toByteArray();
 	}
 
 	/**
@@ -43,7 +53,7 @@ public class GZIPUtils {
 	 * @return 返回解压后的输入
 	 * @throws IOException
 	 */
-	public static InputStream wrap(InputStream in) throws IOException {
+	public static InputStream deflate(InputStream in) throws IOException {
 		return new GZIPInputStream(in);
 	}
 
@@ -54,7 +64,8 @@ public class GZIPUtils {
 	 * @return 返回gzip压缩后的输出
 	 * @throws IOException
 	 */
-	public static OutputStream wrap(OutputStream out) throws IOException {
+	public static OutputStream inflate(OutputStream out) throws IOException {
 		return new GZIPOutputStream(out);
 	}
+
 }
