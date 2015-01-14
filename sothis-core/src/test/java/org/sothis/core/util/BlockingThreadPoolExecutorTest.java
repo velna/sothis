@@ -3,8 +3,7 @@ package org.sothis.core.util;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.Assert;
-
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class BlockingThreadPoolExecutorTest {
