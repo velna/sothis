@@ -18,7 +18,7 @@ public class WebActionMapperTest {
 	public void mapErr(Action action, Object expected) {
 
 		WebActionMapper dam = new WebActionMapper();
-		Assert.assertEquals(dam.map(action), expected);
+		Assert.assertEquals(dam.map(null, action), expected);
 
 	}
 
@@ -26,23 +26,25 @@ public class WebActionMapperTest {
 	public void mapOk(Action action, Object expected) {
 
 		WebActionMapper dam = new WebActionMapper();
-		Assert.assertEquals(dam.map(action), expected);
+		Assert.assertEquals(dam.map(null, action), expected);
 
 	}
 
 	@Test(dataProvider = "resolveErr", expectedExceptions = { IllegalArgumentException.class }, expectedExceptionsMessageRegExp = "null request or response.")
-	public void resolveErr(MockHttpServletRequest request, MockHttpServletResponse response, ApplicationContext store, Action expected) {
+	public void resolveErr(MockHttpServletRequest request, MockHttpServletResponse response, ApplicationContext store,
+			Action expected) {
 
 		WebActionMapper dam = new WebActionMapper();
-//		Assert.assertEquals(dam.resolve(request, response, store), expected);
+		// Assert.assertEquals(dam.resolve(request, response, store), expected);
 
 	}
 
 	@Test(dataProvider = "resolveOk")
-	public void resolveOk(MockHttpServletRequest request, MockHttpServletResponse response, ApplicationContext store, Action expected) {
+	public void resolveOk(MockHttpServletRequest request, MockHttpServletResponse response, ApplicationContext store,
+			Action expected) {
 
 		WebActionMapper dam = new WebActionMapper();
-//		Assert.assertEquals(dam.resolve(request, response, store), expected);
+		// Assert.assertEquals(dam.resolve(request, response, store), expected);
 
 	}
 

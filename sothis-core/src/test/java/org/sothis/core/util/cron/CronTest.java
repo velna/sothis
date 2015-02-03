@@ -75,6 +75,9 @@ public class CronTest {
 		paramList.add(new Object[] { "0 0 0 1 0 1 2011", "2012-01-01 00:00:00", false, false });
 
 		// others
+		paramList.add(new Object[] { "0 0 0 * * *", "2012-03-20 12:00:00", false, false });
+		paramList.add(new Object[] { "0 0 0 * * *", "2012-03-20 00:00:00", true, false });
+		paramList.add(new Object[] { "0 0 0 * * *", "2012-03-20 24:00:00", true, false });
 		paramList.add(new Object[] { "12 34 9 20 2 ? 2012", "2012-03-20 09:34:12", true, false });
 		paramList.add(new Object[] { "7/5 30/4 3/3 17/3 2 ? 2012", "2012-03-20 09:34:12", true, false });
 		paramList.add(new Object[] { "7/5 30/4 */3 LW 2 ? 2012", "2012-03-20 09:34:12", false, false });

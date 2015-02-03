@@ -11,7 +11,8 @@ import org.sothis.dal.AbstractJpaCompatibleDao;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
 
-public abstract class AbstractSqlDao<E extends SqlEntity, K extends Serializable> extends AbstractJpaCompatibleDao<E, K> implements SqlDao<E, K> {
+public abstract class AbstractSqlDao<E extends SqlEntity, K extends Serializable> extends AbstractJpaCompatibleDao<E, K>
+		implements SqlDao<E, K> {
 
 	protected abstract EntityManager getEntityManager();
 
@@ -57,6 +58,14 @@ public abstract class AbstractSqlDao<E extends SqlEntity, K extends Serializable
 	public E insert(E entity) {
 		this.getEntityManager().persist(entity);
 		return entity;
+	}
+
+	@Override
+	public List<E> insert(List<E> entityList) {
+		for (E e : entityList) {
+			this.getEntityManager().persist(e);
+		}
+		return entityList;
 	}
 
 	@Override

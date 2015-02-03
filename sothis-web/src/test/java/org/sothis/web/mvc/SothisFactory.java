@@ -8,7 +8,8 @@ import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.DefaultApplicationContext;
 
 public class SothisFactory {
-	public static WebActionContext initActionContext() throws ConfigurationException, IOException, BeanInstantiationException, ClassNotFoundException {
+	public static WebActionContext initActionContext() throws ConfigurationException, IOException, BeanInstantiationException,
+			ClassNotFoundException {
 		WebActionContext context = WebActionContext.getContext();
 		WebConfiguration config = WebConfiguration.create("sothis.default.properties");
 		context.put(WebActionContext.APPLICATION_CONTEXT, new DefaultApplicationContext(getBeanFactory(), config));
@@ -32,6 +33,11 @@ public class SothisFactory {
 			@Override
 			public <T> T getBean(String beanName) throws BeanInstantiationException {
 				return null;
+			}
+
+			@Override
+			public void registerBean(String beanName, Class<?> beanClass) {
+
 			}
 		};
 	}

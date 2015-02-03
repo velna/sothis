@@ -4,11 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.sothis.core.util.StringUtils;
 
 public class SimpleBeanFactory implements BeanFactory {
 	private final Map<String, Object> beans = new HashMap<String, Object>();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getBean(Class<T> beanClass) throws BeanInstantiationException {
 		String simpleName = StringUtils.uncapitalize(beanClass.getSimpleName());
@@ -58,6 +59,11 @@ public class SimpleBeanFactory implements BeanFactory {
 	@SuppressWarnings("unchecked")
 	public <T> T getBean(String beanName) throws BeanInstantiationException {
 		return (T) beans.get(beanName);
+	}
+
+	@Override
+	public void registerBean(String beanName, Class<?> beanClass) {
+		throw new UnsupportedOperationException();
 	}
 
 }

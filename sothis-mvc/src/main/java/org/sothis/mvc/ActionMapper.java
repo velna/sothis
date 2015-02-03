@@ -11,12 +11,14 @@ public interface ActionMapper {
 	/**
 	 * 根据action生成action的唯一ID
 	 * 
+	 * @param appContext
+	 * 
 	 * @param action
 	 *            需要映射的action
 	 * 
 	 * @return 返回action的唯一ID，返回null将导致NullPointerException
 	 */
-	Object map(Action action);
+	Object map(ApplicationContext appContext, Action action);
 
 	/**
 	 * 根据请求找到对应的action

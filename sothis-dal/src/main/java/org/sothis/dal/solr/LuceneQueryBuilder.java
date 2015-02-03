@@ -5,16 +5,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
+import org.apache.lucene.util.BytesRef;
+import org.sothis.core.util.StringUtils;
 
 public class LuceneQueryBuilder {
 
@@ -40,11 +41,12 @@ public class LuceneQueryBuilder {
 			} else if (Float.class.isInstance(obj)) {
 				query = NumericRangeQuery.newFloatRange(field, (Float) min, (Float) max, minInclusive, maxInclusive);
 			} else if (Date.class.isInstance(obj)) {
-				query = new TermRangeQuery(field, null == min ? null : DATE_FORMAT.format((Date) min),
-						null == max ? null : DATE_FORMAT.format((Date) max), minInclusive, maxInclusive);
+				query = new TermRangeQuery(field, null == min ? new BytesRef() : new BytesRef(DATE_FORMAT.format((Date) min)
+						.getBytes()), null == max ? new BytesRef() : new BytesRef(DATE_FORMAT.format((Date) max).getBytes()),
+						minInclusive, maxInclusive);
 			} else {
-				query = new TermRangeQuery(field, null == min ? (String) min : min.toString(),
-						null == max ? (String) max : max.toString(), minInclusive, maxInclusive);
+				query = new TermRangeQuery(field, null == min ? new BytesRef() : new BytesRef(min.toString().getBytes()),
+						null == max ? new BytesRef() : new BytesRef(max.toString().getBytes()), minInclusive, maxInclusive);
 			}
 			booleanQuery.add(query, occur);
 		}

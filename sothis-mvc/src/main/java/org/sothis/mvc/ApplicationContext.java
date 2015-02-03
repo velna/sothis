@@ -1,5 +1,7 @@
 package org.sothis.mvc;
 
+import java.util.Map;
+
 import org.sothis.core.beans.BeanFactory;
 
 public interface ApplicationContext {
@@ -11,4 +13,7 @@ public interface ApplicationContext {
 	boolean containsAction(Object key);
 
 	Action getAction(Object key);
+
+	Map<Object, Action> getActions();
+
 }

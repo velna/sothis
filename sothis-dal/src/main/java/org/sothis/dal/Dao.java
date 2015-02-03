@@ -183,6 +183,14 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	E insert(E entity);
 
 	/**
+	 * 批量插入
+	 * 
+	 * @param entityList
+	 * @return
+	 */
+	List<E> insert(List<E> entityList);
+
+	/**
 	 * 得到数据表的所有记录条数。
 	 * 
 	 * @return

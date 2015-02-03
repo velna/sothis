@@ -6,8 +6,8 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.sothis.core.util.MapUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.sothis.core.util.StringUtils;
 import org.sothis.mvc.ActionInvocationHelper;
 import org.sothis.web.mvc.WebActionContext;
 import org.sothis.web.mvc.util.WrappedHttpServletRequest;
@@ -21,7 +21,9 @@ import freemarker.template.TemplateModel;
 
 public class ActionDirective implements TemplateDirectiveModel {
 
-	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
+			throws TemplateException, IOException {
 
 		WebActionContext actionContext = WebActionContext.getContext();
 		if (StringUtils.isBlank(actionContext.getAction().getName())) {
@@ -41,7 +43,8 @@ public class ActionDirective implements TemplateDirectiveModel {
 		String[] attrs = env.getCustomAttributeNames();
 		if (attrs != null) {
 			for (int i = 0; i < attrs.length; i++) {
-				myParams.put(attrs[i], new String[] { URLDecoder.decode(String.valueOf(env.getCustomAttribute(attrs[i])), "UTF-8") });
+				myParams.put(attrs[i],
+						new String[] { URLDecoder.decode(String.valueOf(env.getCustomAttribute(attrs[i])), "UTF-8") });
 				env.removeCustomAttribute(attrs[i]);
 			}
 		}

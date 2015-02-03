@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
+import org.sothis.core.util.StringUtils;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
 import org.sothis.dal.query.Op;

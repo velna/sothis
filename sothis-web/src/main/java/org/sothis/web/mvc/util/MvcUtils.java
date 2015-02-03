@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
+import org.sothis.core.util.StringUtils;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.web.mvc.Flash;
 import org.sothis.web.mvc.WebActionContext;
@@ -51,7 +51,7 @@ public class MvcUtils {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void addRequestModels(HttpServletRequest request, Map attrMap) {
 		// request params
 		attrMap.put("params", request.getParameterMap());

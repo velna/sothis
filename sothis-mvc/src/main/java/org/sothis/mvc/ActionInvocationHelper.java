@@ -6,13 +6,20 @@ public class ActionInvocationHelper {
 		ActionInvocation invocation = prepareActionInvocation(context);
 		if (null != invocation) {
 			Object result = invocation.invoke();
-			ModelAndViewResolver mavResolver = (ModelAndViewResolver) context.get(ActionContext.MODEL_AND_VIEW_RESOLVER);
-			ResolvedModelAndView mav = mavResolver.resolve(result, invocation);
-			mav.getView().render(mav.getModelAndView(), invocation);
+			if (!context.isAsyncStarted()) {
+				render(invocation, result);
+			}
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public static void render(ActionInvocation invocation, Object result) throws Exception {
+		ModelAndViewResolver mavResolver = (ModelAndViewResolver) invocation.getActionContext().get(
+				ActionContext.MODEL_AND_VIEW_RESOLVER);
+		ResolvedModelAndView mav = mavResolver.resolve(result, invocation);
+		mav.getView().render(mav.getModelAndView(), invocation);
 	}
 
 	private static void actionContextCheck(ActionContext context) {
@@ -30,17 +37,23 @@ public class ActionInvocationHelper {
 	}
 
 	private static ActionInvocation prepareActionInvocation(ActionContext context) {
-		ActionMapper actionMapper = (ActionMapper) context.get(ActionContext.ACTION_MAPPER);
+		ActionInvocation invocation = (ActionInvocation) context.get(ActionContext.ACTION_INVOCATION);
+		if (null == invocation) {
+			ActionMapper actionMapper = (ActionMapper) context.get(ActionContext.ACTION_MAPPER);
 
-		Action action = actionMapper.resolve(context);
-		if (null == action) {
-			return null;
+			Action action = actionMapper.resolve(context);
+			if (null == action) {
+				return null;
+			}
+
+			context.put(ActionContext.ACTION, action);
+
+			Object controllerInstance = context.getApplicationContext().getBeanFactory()
+					.getBean(action.getController().getControllerClass());
+			invocation = new DefaultActionInvocation(controllerInstance, context);
+			context.put(ActionContext.ACTION_INVOCATION, invocation);
 		}
-
-		context.put(ActionContext.ACTION, action);
-
-		Object controllerInstance = context.getApplicationContext().getBeanFactory().getBean(action.getController().getControllerClass());
-		return new DefaultActionInvocation(controllerInstance, context);
+		return invocation;
 	}
 
 }

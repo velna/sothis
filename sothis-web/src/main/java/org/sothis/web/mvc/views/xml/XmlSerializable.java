@@ -2,7 +2,8 @@ package org.sothis.web.mvc.views.xml;
 
 import java.io.IOException;
 import java.io.Writer;
-import org.apache.commons.lang.StringUtils;
+
+import org.sothis.core.util.StringUtils;
 import org.sothis.web.mvc.views.xml.converter.TypeConverter;
 import org.sothis.web.mvc.views.xml.converter.XmlConverter;
 

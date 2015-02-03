@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.sothis.core.util.Closure;
 
 /**
@@ -75,7 +75,8 @@ public class BasicCache implements Cache {
 	}
 
 	@Override
-	public <V> Map<String, V> get(String extraKey, Collection<String> keyList, Closure<Map<String, CacheValue>, Collection<String>> closure) {
+	public <V> Map<String, V> get(String extraKey, Collection<String> keyList,
+			Closure<Map<String, CacheValue>, Collection<String>> closure) {
 		if (null == closure) {
 			throw new IllegalArgumentException("null closure");
 		}

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class MapUtils extends org.apache.commons.collections.MapUtils {
+public class MapUtils {
 	public static boolean containsKey(Map<?, ?> map, Object key) {
 		if (null == map) {
 			return false;
@@ -28,10 +28,10 @@ public class MapUtils extends org.apache.commons.collections.MapUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Set<String> getKeys(Map<String, Object> map, Set<String> keys) {
-		if (org.apache.commons.collections.MapUtils.isEmpty(map)) {
+		if (org.apache.commons.collections4.MapUtils.isEmpty(map)) {
 			throw new IllegalArgumentException("map can not be null");
 		}
-		if (CollectionUtils.isEmpty(keys)) {
+		if (org.apache.commons.collections4.CollectionUtils.isEmpty(keys)) {
 			keys = new HashSet<String>();
 		}
 		for (String key : map.keySet()) {

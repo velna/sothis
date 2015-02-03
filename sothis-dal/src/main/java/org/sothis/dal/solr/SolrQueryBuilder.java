@@ -53,6 +53,7 @@ public class SolrQueryBuilder {
 		return query;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Query buildLuceneQuery(Cnd cnd) {
 		if (null == cnd) {
 			return null;

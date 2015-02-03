@@ -26,7 +26,8 @@ public class MockActionInvocation implements ActionInvocation {
 	public Object invoke() throws ActionInvocationException {
 		if (null != action.getActionMethod()) {
 			try {
-				return action.getActionMethod().invoke(controllerInstance, (Object[]) actionContext.get(ActionContext.ACTION_PARAMS));
+				return action.getActionMethod().invoke(controllerInstance,
+						(Object[]) actionContext.get(ActionContext.ACTION_PARAMS));
 			} catch (Exception e) {
 				throw new ActionInvocationException(e);
 			}
@@ -48,6 +49,11 @@ public class MockActionInvocation implements ActionInvocation {
 
 	public void setControllerInstance(Object controllerInstance) {
 		this.controllerInstance = controllerInstance;
+	}
+
+	@Override
+	public boolean isActionInvoked() {
+		return false;
 	}
 
 }

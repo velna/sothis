@@ -3,9 +3,9 @@ package org.sothis.mvc;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
+import org.sothis.core.util.StringUtils;
 
 /**
  * ModelAndViewResolver接口的默认实现

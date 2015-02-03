@@ -13,8 +13,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.Controller;

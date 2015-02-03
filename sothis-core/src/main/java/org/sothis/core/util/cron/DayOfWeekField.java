@@ -2,7 +2,7 @@ package org.sothis.core.util.cron;
 
 import java.util.Calendar;
 
-import org.apache.commons.lang.StringUtils;
+import org.sothis.core.util.StringUtils;
 
 public class DayOfWeekField extends AbstractField {
 

@@ -2,7 +2,7 @@ package org.sothis.core.util;
 
 import java.util.Map;
 
-import org.apache.commons.collections.map.ListOrderedMap;
+import org.apache.commons.collections4.map.ListOrderedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

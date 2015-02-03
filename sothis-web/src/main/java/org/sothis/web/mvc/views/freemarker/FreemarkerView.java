@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.MapUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.beans.Scope;
-import org.sothis.core.util.MapUtils;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.ModelAndView;
@@ -29,9 +29,12 @@ public class FreemarkerView implements View {
 
 	public void init() throws ClassNotFoundException, BeanInstantiationException, ConfigurationException {
 		WebActionContext context = WebActionContext.getContext();
-		Class<? extends ConfigurationFactory> configurationFactoryClass = context.getConfiguration().getClass("freemarker.configurationFactory.class",
-				DefaultConfigurationFactory.class);
-		ConfigurationFactory configurationFactory = context.getApplicationContext().getBeanFactory().getBean(configurationFactoryClass);
+		Class<? extends ConfigurationFactory> configurationFactoryClass = context.getConfiguration().getClass(
+				"freemarker.configurationFactory.class", DefaultConfigurationFactory.class);
+		context.getApplicationContext().getBeanFactory()
+				.registerBean(configurationFactoryClass.getName(), configurationFactoryClass);
+		ConfigurationFactory configurationFactory = context.getApplicationContext().getBeanFactory()
+				.getBean(configurationFactoryClass);
 		configuration = configurationFactory.createConfiguration(WebActionContext.getContext());
 	}
 

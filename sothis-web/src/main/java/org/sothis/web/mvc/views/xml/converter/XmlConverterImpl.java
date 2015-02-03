@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sothis.web.mvc.views.xml.Attribute;
@@ -76,13 +76,13 @@ public class XmlConverterImpl extends XmlConverter {
 
 			String val = annotation.value();
 			if (val != null && !"".equals(val)) {
-				attrs.add(new Attribute(fields[i].getName(), StringEscapeUtils.escapeXml(val)));
+				attrs.add(new Attribute(fields[i].getName(), StringEscapeUtils.escapeXml10(val)));
 			} else {
 				Object result = getFieldValue(fieldName, object);
 				if (result == null) {
 					continue;
 				}
-				attrs.add(new Attribute(fields[i].getName(), StringEscapeUtils.escapeXml(result.toString())));
+				attrs.add(new Attribute(fields[i].getName(), StringEscapeUtils.escapeXml10(result.toString())));
 			}
 
 		}

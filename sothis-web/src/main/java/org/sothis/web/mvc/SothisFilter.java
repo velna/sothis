@@ -90,12 +90,18 @@ public class SothisFilter implements Filter {
 
 			applicationContext = new DefaultApplicationContext(beanFactory, config);
 
+			registerBeans(config, beanFactory);
+
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("Sothis: initialization completed");
 			}
 		} catch (Exception e) {
 			throw new ServletException("sothis init failed: ", e);
 		}
+	}
+
+	private void registerBeans(WebConfiguration config, BeanFactory beanFactory) {
+		beanFactory.registerBean(config.getFlash().getName(), config.getFlash());
 	}
 
 	private BeanFactory createBeanFactory(Class<BeanFactory> beanFactoryClass) throws InstantiationException,
@@ -107,7 +113,6 @@ public class SothisFilter implements Filter {
 		return beanFactory;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		WebActionContext context = WebActionContext.getContext();
 		try {

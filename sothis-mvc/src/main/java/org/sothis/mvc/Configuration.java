@@ -119,4 +119,12 @@ public class Configuration extends PropertiesConfiguration {
 		return initializeControllerOnStartup;
 	}
 
+	public Map<String, Class<Interceptor>> getInterceptors() {
+		return interceptors;
+	}
+
+	public Map<String, Class<View>> getViews() {
+		return views;
+	}
+
 }

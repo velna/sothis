@@ -11,8 +11,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.sothis.core.util.MapUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.sothis.core.util.StringUtils;
 import org.sothis.core.util.UrlUtils;
 import org.sothis.web.mvc.WebActionContext;
 
@@ -30,7 +30,8 @@ import freemarker.template.TemplateModel;
  */
 public class PagerDirective implements TemplateDirectiveModel {
 
-	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
+	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
+			throws TemplateException, IOException {
 		WebActionContext actionContext = WebActionContext.getContext();
 		// name
 		String name = MapUtils.getString(params, "name", "pager");
@@ -116,8 +117,8 @@ public class PagerDirective implements TemplateDirectiveModel {
 		template.process(templateContext, env.getOut());
 	}
 
-	private String buildPagerUrl(WebActionContext actionContext, String name, String uri, Map<String, Object[]> allParams, int pageIndex, String anchor)
-			throws IOException {
+	private String buildPagerUrl(WebActionContext actionContext, String name, String uri, Map<String, Object[]> allParams,
+			int pageIndex, String anchor) throws IOException {
 		allParams.put(name + ".currentPage", new String[] { String.valueOf(pageIndex) });
 		String params = UrlUtils.appendParams("", allParams);
 		HttpServletResponse httpResponse = actionContext.getResponse();

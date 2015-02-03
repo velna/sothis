@@ -3,7 +3,7 @@ package org.sothis.core.util;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtils extends org.apache.commons.lang.time.DateUtils {
+public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	public static Date getSunday(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);

@@ -4,25 +4,46 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.util.ClassUtils;
+import org.sothis.core.util.StringUtils;
 
 public class DefaultApplicationContext implements ApplicationContext {
 	private final Map<Object, Action> actions = new HashMap<Object, Action>();
 	private final BeanFactory beanFactory;
 	private final Configuration configuration;
 
-	public DefaultApplicationContext(BeanFactory beanFactory, Configuration configuration) throws BeanInstantiationException, ClassNotFoundException, IOException,
-			ConfigurationException {
+	public DefaultApplicationContext(BeanFactory beanFactory, Configuration configuration) throws BeanInstantiationException,
+			ClassNotFoundException, IOException, ConfigurationException {
 		this.beanFactory = beanFactory;
 		this.configuration = configuration;
+		regBeans();
 		initActions();
+	}
+
+	private void regBean(Class<?> c) {
+		this.beanFactory.registerBean(c.getName(), c);
+	}
+
+	private void regBeans() {
+		regBean(this.configuration.getActionMapper());
+		regBean(this.configuration.getModelAndViewResolver());
+
+		Map<String, Class<View>> views = this.configuration.getViews();
+		for (Map.Entry<String, Class<View>> entry : views.entrySet()) {
+			regBean(entry.getValue());
+		}
+
+		Map<String, Class<Interceptor>> interceptors = this.configuration.getInterceptors();
+		for (Map.Entry<String, Class<Interceptor>> entry : interceptors.entrySet()) {
+			regBean(entry.getValue());
+		}
 	}
 
 	private void initActions() throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
 		final String[] packageNames = configuration.getControllerPackages();
+		ActionMapper actionMapper = beanFactory.getBean(configuration.getActionMapper());
 		for (String packageName : packageNames) {
 			if (StringUtils.isEmpty(packageName)) {
 				continue;
@@ -52,13 +73,14 @@ public class DefaultApplicationContext implements ApplicationContext {
 					continue;
 				}
 				Controller controller = new DefaultController(this.configuration, subPackageName, name, c);
+				beanFactory.registerBean(c.getName(), c);
 				Map<String, Action> controllerActions = controller.getActions();
 				for (String actionName : controllerActions.keySet()) {
 					Action action = controllerActions.get(actionName);
-					ActionMapper actionMapper = beanFactory.getBean(configuration.getActionMapper());
-					Object actionKey = actionMapper.map(action);
+					Object actionKey = actionMapper.map(this, action);
 					if (actions.containsKey(actionKey)) {
-						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as " + actions.get(actionKey));
+						throw new ConfigurationException("duplicated action key:" + actionKey + ", which already registered as "
+								+ actions.get(actionKey));
 					}
 					actions.put(actionKey, action);
 				}
@@ -87,6 +109,11 @@ public class DefaultApplicationContext implements ApplicationContext {
 	@Override
 	public BeanFactory getBeanFactory() {
 		return beanFactory;
+	}
+
+	@Override
+	public Map<Object, Action> getActions() {
+		return this.actions;
 	}
 
 }

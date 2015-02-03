@@ -3,6 +3,7 @@ package org.sothis.web.mvc;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.sothis.mvc.Action;
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ApplicationContext;
+import org.sothis.mvc.AsyncContext;
 
 public class WebActionContext implements ActionContext {
 
@@ -30,7 +32,8 @@ public class WebActionContext implements ActionContext {
 	private WebActionContext() {
 	}
 
-	protected final Map<String, Object> context = new HashMap<String, Object>();
+	protected final Map<String, Object> context = new ConcurrentHashMap<String, Object>();
+	private AsyncContext asyncContext;
 
 	/**
 	 * 得到当前的上下文
@@ -39,6 +42,18 @@ public class WebActionContext implements ActionContext {
 	 */
 	public static WebActionContext getContext() {
 		return ACTION_CONTEXT.get();
+	}
+
+	/**
+	 * 设置当前线程的上下文
+	 * 
+	 * @param context
+	 * @return 返回原始的上下文
+	 */
+	public static WebActionContext setContext(WebActionContext context) {
+		WebActionContext ret = ACTION_CONTEXT.get();
+		ACTION_CONTEXT.set(context);
+		return ret;
 	}
 
 	/**
@@ -196,5 +211,21 @@ public class WebActionContext implements ActionContext {
 	@Override
 	public ApplicationContext getApplicationContext() {
 		return (ApplicationContext) get(APPLICATION_CONTEXT);
+	}
+
+	public boolean isAsyncStarted() {
+		return asyncContext != null;
+	}
+
+	public AsyncContext getAsyncContext() {
+		if (asyncContext == null) {
+			throw new IllegalStateException("async context is not started yet.");
+		}
+		return asyncContext;
+	}
+
+	public AsyncContext startAsync() {
+		asyncContext = new WebAsyncContext(this);
+		return asyncContext;
 	}
 }

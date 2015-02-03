@@ -1,7 +1,8 @@
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
- http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="2.5" metadata-complete="true">
 	<display-name>sothis-example</display-name>
 
 	<context-param>
@@ -20,6 +21,7 @@
 	<filter>
 		<filter-name>EncodeFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<async-supported>true</async-supported>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
@@ -29,6 +31,7 @@
 	<filter>
 		<filter-name>sothis</filter-name>
 		<filter-class>org.sothis.web.mvc.SothisFilter</filter-class>
+		<async-supported>true</async-supported>
 		<init-param>
 			<param-name>beanFactoryClass</param-name>
 			<param-value>org.sothis.web.mvc.support.SpringBeanFactory</param-value>
