@@ -4,9 +4,11 @@
 	<groupId>org.sothis</groupId>
 	<artifactId>sothis-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>3.0.1</version>
+	<version>3.1.0-SNAPSHOT</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sothis.version>3.1.0-SNAPSHOT</sothis.version>
+		<springframework.version>4.1.4.RELEASE</springframework.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -57,22 +59,22 @@
 			<dependency>
 				<groupId>org.sothis</groupId>
 				<artifactId>sothis-core</artifactId>
-				<version>3.0.1</version>
+				<version>${sothis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.sothis</groupId>
 				<artifactId>sothis-mvc</artifactId>
-				<version>3.0.1</version>
+				<version>${sothis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.sothis</groupId>
 				<artifactId>sothis-dal</artifactId>
-				<version>3.0.1</version>
+				<version>${sothis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.sothis</groupId>
 				<artifactId>sothis-web</artifactId>
-				<version>3.0.1</version>
+				<version>${sothis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -117,27 +119,27 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
-				<version>4.1.4.RELEASE </version>
+				<version>${springframework.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>4.1.4.RELEASE </version>
+				<version>${springframework.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
-				<version>4.1.4.RELEASE </version>
+				<version>${springframework.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
-				<version>4.1.4.RELEASE </version>
+				<version>${springframework.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
-				<version>4.1.4.RELEASE </version>
+				<version>${springframework.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>log4j</groupId>
@@ -236,6 +238,7 @@
 	<modules>
 		<module>sothis-core</module>
 		<module>sothis-dal</module>
+		<module>sothis-mvc</module>
 		<module>sothis-web</module>
 		<module>sothis-example</module>
 		<module>sothis-web-start</module>
