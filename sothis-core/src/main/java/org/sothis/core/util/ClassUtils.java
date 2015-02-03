@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -52,8 +54,8 @@ public class ClassUtils {
 
 						}
 					}
-
 				}
+				jarFile.close();
 			} else {
 				dirs.add(new File(p));
 			}
@@ -93,4 +95,25 @@ public class ClassUtils {
 		return classes;
 	}
 
+	public static URL[] getResource(String resourceName, Class callingClass) throws IOException {
+		Set<URL> urls = new HashSet<URL>();
+
+		Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(resourceName);
+		while (e.hasMoreElements()) {
+			urls.add(e.nextElement());
+		}
+		e = ClassUtils.class.getClassLoader().getResources(resourceName);
+		while (e.hasMoreElements()) {
+			urls.add(e.nextElement());
+		}
+
+		e = callingClass.getClassLoader().getResources(resourceName);
+		while (e.hasMoreElements()) {
+			urls.add(e.nextElement());
+		}
+
+		URL[] ret = new URL[urls.size()];
+		urls.toArray(ret);
+		return ret;
+	}
 }

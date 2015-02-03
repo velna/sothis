@@ -36,7 +36,7 @@ import org.sothis.mvc.Interceptor;
 import org.sothis.web.mvc.WebActionContext;
 
 /**
- * å‚æ•°æ³¨å…¥æ‹¦æˆªå™¨
+ * ²ÎÊý×¢ÈëÀ¹½ØÆ÷
  * 
  * @author velna
  * 
@@ -193,7 +193,14 @@ public class ParametersInterceptor implements Interceptor {
 					break;
 				}
 				Type[] types = writeMethod.getGenericParameterTypes();
-				// å¦‚æžœæ˜¯æ³›åž‹ï¼Œåˆ™å°½é‡æ‰¾åˆ°æ³›åž‹å¯¹åº”çš„å®žé™…ç±»åž‹
+				Annotation[] as = writeMethod.getParameterAnnotations()[0];
+				Param parameter = null;
+				for (Annotation a : as) {
+					if (a.annotationType() == Param.class) {
+						parameter = (Param) a;
+					}
+				}
+				// Èç¹ûÊÇ·ºÐÍ£¬Ôò¾¡Á¿ÕÒµ½·ºÐÍ¶ÔÓ¦µÄÊµ¼ÊÀàÐÍ
 				if (types != null && types.length > 0 && types[0] instanceof TypeVariable) {
 					TypeVariable typeVariable = (TypeVariable) types[0];
 					Type type = bean.getClass().getGenericSuperclass();
@@ -221,7 +228,7 @@ public class ParametersInterceptor implements Interceptor {
 					}
 					bean = propertyValue;
 				} else {
-					Object propertyValue = convert(entry.getValue(), propertyType, p);
+					Object propertyValue = convert(entry.getValue(), propertyType, parameter != null ? parameter.pattern() : p);
 					if (null != propertyValue) {
 						writeMethod.invoke(bean, propertyValue);
 					}

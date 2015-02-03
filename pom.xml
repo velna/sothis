@@ -220,7 +220,6 @@
 	</dependencyManagement>
 	<modules>
 		<module>sothis-core</module>
-		<module>sothis-mvc</module>
 		<module>sothis-dal</module>
 		<module>sothis-web</module>
 		<module>sothis-example</module>

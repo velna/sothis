@@ -104,6 +104,7 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 			return allProperties;
 		}
 		File rootFolder = new File(url.toURI());
+		LOGGER.info("load property files from {}", rootFolder.getAbsolutePath());
 		File[] propertiesFiles = rootFolder.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				if (null == pathname) {
@@ -115,10 +116,13 @@ public class ConfigurationSupport extends PropertiesConfiguration {
 				return pathname.getName().endsWith(".properties");
 			}
 		});
-		for (File pFile : propertiesFiles) {
-			Properties properties = new Properties();
-			properties.load(new InputStreamReader(new FileInputStream(pFile), "UTF-8"));
-			CollectionUtils.mergePropertiesIntoMap(properties, allProperties);
+		if (null != propertiesFiles) {
+			for (File pFile : propertiesFiles) {
+				LOGGER.info("load properties from {}", pFile.getAbsolutePath());
+				Properties properties = new Properties();
+				properties.load(new InputStreamReader(new FileInputStream(pFile), "UTF-8"));
+				CollectionUtils.mergePropertiesIntoMap(properties, allProperties);
+			}
 		}
 		return allProperties;
 	}
