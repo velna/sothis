@@ -24,9 +24,9 @@ public interface ActionContext {
 
 	void setAction(Action action);
 
-	Object put(String key, Object value);
+	<T> T put(String key, T value);
 
-	Object get(String key);
+	<T> T get(String key);
 
 	public Map<String, Object> getContextMap();
 

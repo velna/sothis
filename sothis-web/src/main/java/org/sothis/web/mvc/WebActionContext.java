@@ -173,14 +173,16 @@ public class WebActionContext implements ActionContext {
 		put(ACTION, action);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object put(String key, Object value) {
-		return context.put(key, value);
+	public <T> T put(String key, T value) {
+		return (T) context.put(key, value);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object get(String key) {
-		return context.get(key);
+	public <T> T get(String key) {
+		return (T) context.get(key);
 	}
 
 	@Override

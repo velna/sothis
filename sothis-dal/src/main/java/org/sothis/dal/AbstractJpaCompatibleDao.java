@@ -2,7 +2,10 @@ package org.sothis.dal;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -54,7 +57,8 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 			throw new RuntimeException("name of Table annotation is empty of entity class " + this.getEntityClass().getName());
 		}
 		if (!tableName.toLowerCase().equals(tableName)) {
-			throw new IllegalArgumentException("table name of class  [" + this.getEntityClass().getName() + "] must be lower cased, current is [" + tableName + "]");
+			throw new IllegalArgumentException("table name of class  [" + this.getEntityClass().getName()
+					+ "] must be lower cased, current is [" + tableName + "]");
 		}
 
 		// fields annotation
@@ -63,31 +67,46 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 		Map<String, PropertyInfo> _propertyMap = new HashMap<String, PropertyInfo>(propertyDescriptors.length);
 		boolean idFind = false;
 		for (PropertyDescriptor descriptor : propertyDescriptors) {
-			Method readMethod = descriptor.getReadMethod();
-			if (null != readMethod) {
-				Column column = readMethod.getAnnotation(Column.class);
-				if (null == column) {
-					continue;
-				}
-				Id id = readMethod.getAnnotation(Id.class);
-				if (null != id) {
-					if (idFind) {
-						throw new RuntimeException("multi Id annotation found of entity class " + this.getEntityClass().getName());
-					}
-					idFind = true;
-					idColumnName = descriptor.getName();
-					GeneratedValue generatedValue = readMethod.getAnnotation(GeneratedValue.class);
-					idGeneratedValue = generatedValue != null;
-				}
-				Transient aTransient = readMethod.getAnnotation(Transient.class);
-				PropertyInfo info = new PropertyInfo(descriptor, column, null != id, null != aTransient, this.getEntityClass());
-				_propertyMap.put(descriptor.getName(), info);
-				_fieldMap.put(column.name(), info);
+			Column column = getAnnotation(this.getEntityClass(), descriptor, Column.class);
+			if (null == column) {
+				continue;
 			}
+			Id id = getAnnotation(this.getEntityClass(), descriptor, Id.class);
+			if (null != id) {
+				if (idFind) {
+					throw new RuntimeException("multi Id annotation found of entity class " + this.getEntityClass().getName());
+				}
+				idFind = true;
+				idColumnName = descriptor.getName();
+				GeneratedValue generatedValue = getAnnotation(this.getEntityClass(), descriptor, GeneratedValue.class);
+				idGeneratedValue = generatedValue != null;
+			}
+			Transient aTransient = getAnnotation(this.getEntityClass(), descriptor, Transient.class);
+			PropertyInfo info = new PropertyInfo(descriptor, column, null != id, null != aTransient, this.getEntityClass());
+			_propertyMap.put(descriptor.getName(), info);
+			_fieldMap.put(column.name(), info);
 		}
 		propertyMap = Collections.unmodifiableMap(_propertyMap);
 		fieldMap = Collections.unmodifiableMap(_fieldMap);
 
+	}
+
+	private static <T extends Annotation> T getAnnotation(Class<?> entityClass, PropertyDescriptor descriptor,
+			Class<T> annotationClass) {
+		T a = null;
+		try {
+			Field f = entityClass.getDeclaredField(descriptor.getName());
+			a = f.getAnnotation(annotationClass);
+		} catch (NoSuchFieldException e) {
+		} catch (SecurityException e) {
+		}
+		if (null == a) {
+			Method readMethod = descriptor.getReadMethod();
+			if (null != readMethod) {
+				a = readMethod.getAnnotation(annotationClass);
+			}
+		}
+		return a;
 	}
 
 	/**
@@ -117,7 +136,8 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	public PropertyInfo getPropertyInfoByProperty(String property) {
 		PropertyInfo ret = propertyMap.get(property);
 		if (null == ret) {
-			throw new IllegalArgumentException("no property named [" + property + "] found of entity class " + this.getEntityClass().getName());
+			throw new IllegalArgumentException("no property named [" + property + "] found of entity class "
+					+ this.getEntityClass().getName());
 		}
 		return ret;
 	}
@@ -224,7 +244,7 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	}
 
 	@Override
-	public List<E> findByIds(List<K> idList) {
+	public List<E> findByIds(Collection<K> idList) {
 		assertIdColumnNameNotNull();
 		return find(Cnd.make(this.getIdColumnName(), Op.IN, idList), null, null);
 	}
@@ -262,8 +282,8 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 
 		public PropertyInfo(PropertyDescriptor propertyDescriptor, Column column, boolean isId, boolean transients, Class<?> clazz) {
 			if (!column.name().toLowerCase().equals(column.name())) {
-				throw new IllegalArgumentException("name of column [" + propertyDescriptor.getName() + "] must be lower cased of class " + clazz.getName() + ", current is ["
-						+ column.name() + "]");
+				throw new IllegalArgumentException("name of column [" + propertyDescriptor.getName()
+						+ "] must be lower cased of class " + clazz.getName() + ", current is [" + column.name() + "]");
 			}
 			this.isId = isId;
 			this.propertyDescriptor = propertyDescriptor;

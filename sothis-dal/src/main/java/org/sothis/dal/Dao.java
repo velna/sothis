@@ -1,6 +1,7 @@
 package org.sothis.dal;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.sothis.core.util.Cursor;
@@ -120,7 +121,7 @@ public interface Dao<E extends Entity, K extends Serializable> {
 	 * @param idList
 	 * @return
 	 */
-	List<E> findByIds(List<K> idList);
+	List<E> findByIds(Collection<K> idList);
 
 	/**
 	 * 根据查询条件{@code cnd}更新数据库。<br>

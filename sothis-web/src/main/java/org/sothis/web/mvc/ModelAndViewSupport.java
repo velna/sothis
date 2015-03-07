@@ -69,6 +69,10 @@ public class ModelAndViewSupport extends BaseModelAndView {
 		return (this.fieldErrors != null && this.fieldErrors.size() > 0);
 	}
 
+	public final boolean hasFieldError(String field) {
+		return (this.fieldErrors != null && this.fieldErrors.containsKey(field));
+	}
+
 	public final boolean hasErrors() {
 		return hasActionErrors() || hasFieldErrors();
 	}
@@ -118,6 +122,10 @@ public class ModelAndViewSupport extends BaseModelAndView {
 
 	public final boolean hasFieldMessages() {
 		return (this.fieldMessages != null && this.fieldMessages.size() > 0);
+	}
+
+	public final boolean hasFieldMessage(String field) {
+		return (this.fieldMessages != null && this.fieldMessages.containsKey(field));
 	}
 
 	public final boolean hasMessages() {

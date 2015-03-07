@@ -206,7 +206,7 @@ public class SqlQueryBuilder {
 	}
 
 	private static void setParamValues(Query query, Cnd cnd, IntegerHolder paramIndex) {
-		if (null == cnd) {
+		if (null == cnd || null == cnd.getOp()) {
 			return;
 		}
 		Object op = cnd.getOp();

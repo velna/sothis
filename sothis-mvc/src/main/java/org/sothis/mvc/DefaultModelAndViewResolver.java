@@ -26,8 +26,8 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 		Sothis[] ss = invocation.getAction().getAnnotation(Sothis.class);
 		String viewType = DEFAULT_VIEW_TYPE;
 		for (Sothis sothis : ss) {
-			if (null != sothis && StringUtils.isNotEmpty(sothis.defaultView())) {
-				viewType = sothis.defaultView();
+			if (null != sothis && StringUtils.isNotEmpty(sothis.view())) {
+				viewType = sothis.view();
 				break;
 			}
 		}

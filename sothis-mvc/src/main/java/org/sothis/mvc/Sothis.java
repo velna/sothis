@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.TYPE, ElementType.PACKAGE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Sothis {
-	String defaultView() default "";
+	String view() default "";
 
 	String stack() default "";
 }
