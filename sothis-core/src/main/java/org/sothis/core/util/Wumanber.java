@@ -96,7 +96,7 @@ public class Wumanber {
 	}
 
 	private int hash(String s, int i) {
-		return (s.charAt(i) << 8) | s.charAt(i + 1);
+		return ((s.charAt(i) << 8) | s.charAt(i + 1)) & 0xffff;
 	}
 
 	private void sort() {

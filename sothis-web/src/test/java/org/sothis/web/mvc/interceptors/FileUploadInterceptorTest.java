@@ -35,29 +35,29 @@ public class FileUploadInterceptorTest {
 		context.setContextMap(new HashMap<String, Object>());
 	}
 
-	@Test
-	public void testIntercept() throws Exception {
-		MockBeanFactory factory = new MockBeanFactory();
-		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-		request.setMethod("post");
-		request.setContentType("multipart/form-data;boundary=aaa");
-		request.setContent("aaaefe".getBytes());
-		request.addFile(new MockMultipartFile("myFile", "c:\\myFile.txt", "text/xml", "abc".getBytes()));
-		MockActionInvocation invocation = new MockActionInvocation(context);
-
-		Controller controller = new DefaultController(context.getConfiguration(), "", "", TestController.class);
-		invocation.setAction(controller.getAction("test"));
-		Object controllerInstance = factory.getBean(controller.getControllerClass());
-		invocation.setControllerInstance(controllerInstance);
-
-		WebActionContext actionContext = WebActionContext.getContext();
-		actionContext.setRequest(request);
-		invocation.setActionContext(actionContext);
-		FileUploadInterceptor interceptor = new FileUploadInterceptor();
-		interceptor.intercept(invocation);
-
-		Assert.assertTrue(actionContext.getRequest() instanceof MultipartHttpServletRequest);
-	}
+//	@Test
+//	public void testIntercept() throws Exception {
+//		MockBeanFactory factory = new MockBeanFactory();
+//		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+//		request.setMethod("post");
+//		request.setContentType("multipart/form-data;boundary=aaa");
+//		request.setContent("aaaefe".getBytes());
+//		request.addFile(new MockMultipartFile("myFile", "c:\\myFile.txt", "text/xml", "abc".getBytes()));
+//		MockActionInvocation invocation = new MockActionInvocation(context);
+//
+//		Controller controller = new DefaultController(context.getConfiguration(), "", "", TestController.class);
+//		invocation.setAction(controller.getAction("test"));
+//		Object controllerInstance = factory.getBean(controller.getControllerClass());
+//		invocation.setControllerInstance(controllerInstance);
+//
+//		WebActionContext actionContext = WebActionContext.getContext();
+//		actionContext.setRequest(request);
+//		invocation.setActionContext(actionContext);
+//		FileUploadInterceptor interceptor = new FileUploadInterceptor();
+//		interceptor.intercept(invocation);
+//
+//		Assert.assertTrue(actionContext.getRequest() instanceof MultipartHttpServletRequest);
+//	}
 
 	public static class TestController {
 		public void testAction() {

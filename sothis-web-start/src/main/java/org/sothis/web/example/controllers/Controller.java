@@ -3,16 +3,19 @@ package org.sothis.web.example.controllers;
 import java.util.List;
 
 import org.sothis.dal.query.Cnd;
+import org.sothis.mvc.Request;
+import org.sothis.mvc.Response;
 import org.sothis.web.example.dao.sql.UsersDao;
 import org.sothis.web.example.domains.Users;
 import org.sothis.web.example.models.HelloWorldModel;
-import org.sothis.web.mvc.interceptors.param.Param;
 
 public class Controller {
 
 	private UsersDao usersDao;
 
-	public Object indexAction(HelloWorldModel model, @Param(name = "message") String message) {
+	public Object indexAction(Request request, Response response) {
+		HelloWorldModel model = new HelloWorldModel();
+		model.setMessage(request.getString("message"));
 		List<Users> users = usersDao.find(Cnd.make("username", "sothis"));
 		for (Users user : users) {
 			System.out.println(user.getUsername());

@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -122,8 +123,8 @@ public class SothisFilter implements Filter {
 			context.put(WebActionContext.ACTION_MAPPER, beanFactory.getBean(config.getActionMapper()));
 			context.put(WebActionContext.MODEL_AND_VIEW_RESOLVER, beanFactory.getBean(config.getModelAndViewResolver()));
 			context.put(WebActionContext.APPLICATION_CONTEXT, applicationContext);
-			context.setRequest(req);
-			context.setResponse((HttpServletResponse) resp);
+			context.setRequest(new WebRequest((HttpServletRequest) req));
+			context.setResponse(new WebResponse((HttpServletResponse) resp));
 			context.setServletContext(servletContext);
 			context.setParameters(new HashMap<String, Object[]>(req.getParameterMap()));
 

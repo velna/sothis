@@ -48,6 +48,8 @@ public class ActionInvocationHelper {
 
 			context.put(ActionContext.ACTION, action);
 
+			context.put(ActionContext.ACTION_PARAMS, new Object[] { context.getRequest(), context.getResponse() });
+
 			Object controllerInstance = context.getApplicationContext().getBeanFactory()
 					.getBean(action.getController().getControllerClass());
 			invocation = new DefaultActionInvocation(controllerInstance, context);

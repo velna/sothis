@@ -12,13 +12,13 @@ public interface ActionContext {
 	public final static String ACTION_MAPPER = "org.sothis.mvc.ACTION_MAPPER";
 	public final static String APPLICATION_CONTEXT = "org.sothis.mvc.APPLICATION_CONTEXT";
 
-	Object getRequest();
+	Request getRequest();
 
-	void setRequest(Object request);
+	void setRequest(Request request);
 
-	Object getResponse();
+	Response getResponse();
 
-	void setResponse(Object response);
+	void setResponse(Response response);
 
 	Action getAction();
 

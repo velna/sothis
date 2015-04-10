@@ -19,9 +19,13 @@ import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.Controller;
 import org.sothis.mvc.DefaultController;
+import org.sothis.mvc.Request;
+import org.sothis.mvc.Response;
 import org.sothis.web.mvc.MockActionInvocation;
 import org.sothis.web.mvc.SothisFactory;
 import org.sothis.web.mvc.WebActionContext;
+import org.sothis.web.mvc.WebRequest;
+import org.sothis.web.mvc.WebResponse;
 import org.sothis.web.mvc.interceptors.param.HttpServletRequestAware;
 import org.sothis.web.mvc.interceptors.param.HttpServletResponseAware;
 import org.sothis.web.mvc.interceptors.param.Param;
@@ -71,9 +75,9 @@ public class ParametersInterceptorTest {
 
 	@Test
 	public void testRequestAndResponse() throws Exception {
-		HttpServletRequest request = new MockHttpServletRequest();
+		final Request request = new WebRequest(new MockHttpServletRequest());
 		context.setRequest(request);
-		HttpServletResponse response = new MockHttpServletResponse();
+		Response response = new WebResponse(new MockHttpServletResponse());
 		context.setResponse(response);
 
 		MockActionInvocation invocation = new MockActionInvocation(context);
@@ -98,9 +102,9 @@ public class ParametersInterceptorTest {
 
 	@Test
 	public void testRequestAndResponseAware() throws Exception {
-		HttpServletRequest request = new MockHttpServletRequest();
+		final Request request = new WebRequest(new MockHttpServletRequest());
 		context.setRequest(request);
-		HttpServletResponse response = new MockHttpServletResponse();
+		Response response = new WebResponse(new MockHttpServletResponse());
 		context.setResponse(response);
 
 		MockActionInvocation invocation = new MockActionInvocation(context);
@@ -121,8 +125,8 @@ public class ParametersInterceptorTest {
 		Object[] actionParams = (Object[]) invocation.getActionContext().get(WebActionContext.ACTION_PARAMS);
 		Assert.assertNotNull(actionParams);
 		ParamModel2 model = new ParamModel2();
-		model.request = request;
-		model.response = response;
+//		model.request = request;
+//		model.response = response;
 		Assert.assertEquals(actionParams, new Object[] { model });
 	}
 

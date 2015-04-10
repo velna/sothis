@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.Assert;
 
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.mvc.Action;
 import org.sothis.mvc.ConfigurationException;
+import org.sothis.mvc.Request;
+import org.sothis.mvc.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
@@ -61,7 +61,7 @@ public class WebActionContextTest {
 	@Test
 	public void testGetAndSetRequest() {
 		Assert.assertNull(context.getRequest());
-		final HttpServletRequest request = new MockHttpServletRequest();
+		final Request request = new WebRequest(new MockHttpServletRequest());
 		context.setRequest(request);
 		Assert.assertSame(request, context.getRequest());
 	}
@@ -69,7 +69,7 @@ public class WebActionContextTest {
 	@Test
 	public void testGetAndSetResponse() {
 		Assert.assertNull(context.getResponse());
-		final HttpServletResponse response = new MockHttpServletResponse();
+		final Response response = new WebResponse(new MockHttpServletResponse());
 		context.setResponse(response);
 		Assert.assertSame(response, context.getResponse());
 	}
@@ -92,7 +92,7 @@ public class WebActionContextTest {
 
 	@Test
 	public void testGetFlash() {
-		final HttpServletRequest request = new MockHttpServletRequest();
+		final Request request = new WebRequest(new MockHttpServletRequest());
 		context.setRequest(request);
 		Assert.assertNull(context.getFlash(false));
 		Flash flash = context.getFlash(true);

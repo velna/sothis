@@ -10,6 +10,8 @@ import org.apache.commons.collections4.MapUtils;
 import org.sothis.core.util.StringUtils;
 import org.sothis.mvc.ActionInvocationHelper;
 import org.sothis.web.mvc.WebActionContext;
+import org.sothis.web.mvc.WebRequest;
+import org.sothis.web.mvc.WebResponse;
 import org.sothis.web.mvc.util.WrappedHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -51,10 +53,10 @@ public class ActionDirective implements TemplateDirectiveModel {
 		Map<String, Object> orgContext = actionContext.getContextMap();
 		String orgActionUri = (String) actionContext.getRequest().getAttribute(WebActionContext.ACTION_URI);
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		actionContext.setResponse(response);
+		actionContext.setResponse(new WebResponse(response));
 		WrappedHttpServletRequest myRequest = new WrappedHttpServletRequest(actionContext.getRequest(), myParams);
 		myRequest.setAttribute(WebActionContext.ACTION_URI, controller + "/" + action);
-		actionContext.setRequest(myRequest);
+		actionContext.setRequest(new WebRequest(myRequest));
 		try {
 			ActionInvocationHelper.invoke(actionContext);
 			env.getOut().write(response.getContentAsString());

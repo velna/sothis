@@ -6,14 +6,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.sothis.mvc.Action;
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ApplicationContext;
 import org.sothis.mvc.AsyncContext;
+import org.sothis.mvc.Request;
+import org.sothis.mvc.Response;
 
 public class WebActionContext implements ActionContext {
 
@@ -61,8 +61,8 @@ public class WebActionContext implements ActionContext {
 	 * 
 	 * @return
 	 */
-	public HttpServletRequest getRequest() {
-		return (HttpServletRequest) get(REQUEST);
+	public WebRequest getRequest() {
+		return (WebRequest) get(REQUEST);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class WebActionContext implements ActionContext {
 	 * @param request
 	 * @return 返回原始值，没有则返回null
 	 */
-	public void setRequest(Object request) {
+	public void setRequest(Request request) {
 		context.put(REQUEST, request);
 	}
 
@@ -80,8 +80,8 @@ public class WebActionContext implements ActionContext {
 	 * 
 	 * @return
 	 */
-	public HttpServletResponse getResponse() {
-		return (HttpServletResponse) get(RESPONSE);
+	public WebResponse getResponse() {
+		return (WebResponse) get(RESPONSE);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class WebActionContext implements ActionContext {
 	 * @param response
 	 * @return 返回原始值，没有则返回null
 	 */
-	public void setResponse(Object response) {
+	public void setResponse(Response response) {
 		context.put(RESPONSE, response);
 	}
 

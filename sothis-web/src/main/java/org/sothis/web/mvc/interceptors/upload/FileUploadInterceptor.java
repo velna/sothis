@@ -23,11 +23,11 @@ public class FileUploadInterceptor implements Interceptor {
 		ActionContext context = invocation.getActionContext();
 		HttpServletRequest request = (HttpServletRequest) context.getRequest();
 		if (ServletFileUpload.isMultipartContent(request)) {
-			try {
-				context.setRequest(new MultipartHttpServletRequest(request));
-			} catch (HttpMultipartException e) {
-				throw new ActionInvocationException("error process multipart reqeust: ", e);
-			}
+//			try {
+//				context.setRequest(new MultipartHttpServletRequest(request));
+//			} catch (HttpMultipartException e) {
+//				throw new ActionInvocationException("error process multipart reqeust: ", e);
+//			}
 		}
 		return invocation.invoke();
 	}
