@@ -1,23 +1,41 @@
 package org.sothis.mvc;
 
+import org.sothis.core.beans.BeanFactory;
+
 public class ActionInvocationHelper {
-	public static boolean invoke(ActionContext context) throws Exception {
-		actionContextCheck(context);
-		ActionInvocation invocation = prepareActionInvocation(context);
-		if (null != invocation) {
-			Object result = invocation.invoke();
-			if (!context.isAsyncStarted()) {
-				render(invocation, result);
+	public static boolean invoke(ApplicationContext appContext, Request req, Response resp) throws Exception {
+		BeanFactory beanFactory = appContext.getBeanFactory();
+		Configuration config = appContext.getConfiguration();
+		ActionContext context = ActionContext.getContext();
+		try {
+			context.setApplicationContext(appContext);
+			context.setRequest(req);
+			context.setResponse(resp);
+			context.setActionMapper(beanFactory.getBean(config.getActionMapper()));
+			context.setModelAndViewResolver(beanFactory.getBean(config.getModelAndViewResolver()));
+
+			Flash flash = context.getFlash(false);
+			if (null != flash) {
+				flash.flash();
 			}
-			return true;
-		} else {
-			return false;
+			actionContextCheck(context);
+			ActionInvocation invocation = prepareActionInvocation(context);
+			if (null != invocation) {
+				Object result = invocation.invoke();
+				if (!context.isAsyncStarted()) {
+					render(invocation, result);
+				}
+				return true;
+			} else {
+				return false;
+			}
+		} finally {
+			context.clear();
 		}
 	}
 
 	public static void render(ActionInvocation invocation, Object result) throws Exception {
-		ModelAndViewResolver mavResolver = (ModelAndViewResolver) invocation.getActionContext().get(
-				ActionContext.MODEL_AND_VIEW_RESOLVER);
+		ModelAndViewResolver mavResolver = invocation.getActionContext().getModelAndViewResolver();
 		ResolvedModelAndView mav = mavResolver.resolve(result, invocation);
 		mav.getView().render(mav.getModelAndView(), invocation);
 	}
@@ -26,34 +44,32 @@ public class ActionInvocationHelper {
 		if (null == context) {
 			throw new IllegalArgumentException("context can not be null!");
 		}
-		checkContextKeyValue(context, ActionContext.MODEL_AND_VIEW_RESOLVER, ModelAndViewResolver.class);
-		checkContextKeyValue(context, ActionContext.ACTION_MAPPER, ActionMapper.class);
-	}
-
-	private static void checkContextKeyValue(ActionContext context, String key, Class<?> valueClass) {
-		if (!valueClass.isInstance(context.get(key))) {
-			throw new IllegalArgumentException("context.get(" + key + ") is not a valid instance of " + valueClass);
+		if (null == context.getModelAndViewResolver()) {
+			throw new IllegalArgumentException("ModelAndViewResolver can not be null!");
+		}
+		if (null == context.getActionMapper()) {
+			throw new IllegalArgumentException("ActionMapper can not be null!");
 		}
 	}
 
 	private static ActionInvocation prepareActionInvocation(ActionContext context) {
-		ActionInvocation invocation = (ActionInvocation) context.get(ActionContext.ACTION_INVOCATION);
+		ActionInvocation invocation = context.getActionInvocation();
 		if (null == invocation) {
-			ActionMapper actionMapper = (ActionMapper) context.get(ActionContext.ACTION_MAPPER);
+			ActionMapper actionMapper = context.getActionMapper();
 
 			Action action = actionMapper.resolve(context);
 			if (null == action) {
 				return null;
 			}
 
-			context.put(ActionContext.ACTION, action);
+			context.setAction(action);
 
-			context.put(ActionContext.ACTION_PARAMS, new Object[] { context.getRequest(), context.getResponse() });
+			context.setActionParams(new Object[] { context.getRequest(), context.getResponse() });
 
 			Object controllerInstance = context.getApplicationContext().getBeanFactory()
 					.getBean(action.getController().getControllerClass());
 			invocation = new DefaultActionInvocation(controllerInstance, context);
-			context.put(ActionContext.ACTION_INVOCATION, invocation);
+			context.setActionInvocation(invocation);
 		}
 		return invocation;
 	}

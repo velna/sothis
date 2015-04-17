@@ -30,8 +30,8 @@ public class DefaultApplicationContext implements ApplicationContext {
 		regBean(this.configuration.getActionMapper());
 		regBean(this.configuration.getModelAndViewResolver());
 
-		Map<String, Class<View>> views = this.configuration.getViews();
-		for (Map.Entry<String, Class<View>> entry : views.entrySet()) {
+		Map<String, Class<? extends View>> views = this.configuration.getViews();
+		for (Map.Entry<String, Class<? extends View>> entry : views.entrySet()) {
 			regBean(entry.getValue());
 		}
 

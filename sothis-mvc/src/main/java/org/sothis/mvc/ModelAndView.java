@@ -1,5 +1,6 @@
 package org.sothis.mvc;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author velna
  * 
  */
-public interface ModelAndView {
+public interface ModelAndView extends Serializable {
 
 	/**
 	 * 返回实际的model<br>

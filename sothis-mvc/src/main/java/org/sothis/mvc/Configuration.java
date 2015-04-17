@@ -22,8 +22,10 @@ public class Configuration extends PropertiesConfiguration {
 	private final Class<? extends ActionMapper> actionMapper;
 	private final Class<? extends ModelAndViewResolver> modelAndViewResolver;
 
-	private final Map<String, Class<View>> views;
-	private final Class<View> defaultView;
+	private final Map<String, Class<? extends View>> views;
+	private final Class<? extends View> defaultView;
+
+	private final Class<? extends Flash> flash;
 
 	private final Class<BeanFactory> beanFactoryClass;
 	private final String[] controllerPackages;
@@ -35,10 +37,17 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			interceptors = (Map) this.getAsGroup(Pattern.compile("sothis\\.interceptors\\.(\\w+)\\.class"), Class.class);
 			modelAndViewResolver = this.getClass("sothis.viewResolver.class", DefaultModelAndViewResolver.class);
-			actionMapper = this.getClass("sothis.actionMapper.class");
+			actionMapper = this.getClass("sothis.actionMapper.class", DefaultActionMapper.class);
 
 			views = (Map) this.getAsGroup(Pattern.compile("sothis\\.views\\.(\\w+)\\.class"), Class.class);
-			defaultView = views.get(get("sothis.views.default", "jsp"));
+			String defaultViewName = get("sothis.views.default");
+			if (null == defaultViewName) {
+				defaultView = DefaultView.class;
+			} else {
+				defaultView = views.get(defaultViewName);
+			}
+
+			flash = this.getClass("sothis.flash.class", DefaultFlash.class);
 
 			// sothis.interceptor.stack.*.class
 			interceptorStacks = findInterceptorStacks(interceptors);
@@ -58,7 +67,8 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
-	private Map<String, List<Class<Interceptor>>> findInterceptorStacks(Map<String, Class<Interceptor>> interceptorMap) throws ClassNotFoundException {
+	private Map<String, List<Class<Interceptor>>> findInterceptorStacks(Map<String, Class<Interceptor>> interceptorMap)
+			throws ClassNotFoundException {
 		Map<String, List<Class<Interceptor>>> map = new HashMap<String, List<Class<Interceptor>>>();
 		Map<String, String> stackMap = getAsGroup(Pattern.compile("sothis\\.interceptors\\.stack\\.(\\w+)"), String.class);
 		for (String key : stackMap.keySet()) {
@@ -99,11 +109,11 @@ public class Configuration extends PropertiesConfiguration {
 		return this.interceptors.get(name);
 	}
 
-	public Class<View> getView(String name) {
+	public Class<? extends View> getView(String name) {
 		return this.views.get(name);
 	}
 
-	public Class<View> getDefaultView() {
+	public Class<? extends View> getDefaultView() {
 		return defaultView;
 	}
 
@@ -123,8 +133,12 @@ public class Configuration extends PropertiesConfiguration {
 		return interceptors;
 	}
 
-	public Map<String, Class<View>> getViews() {
+	public Map<String, Class<? extends View>> getViews() {
 		return views;
+	}
+
+	public Class<? extends Flash> getFlash() {
+		return flash;
 	}
 
 }

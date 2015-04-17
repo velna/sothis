@@ -63,7 +63,6 @@ public class SimpleBeanFactory implements BeanFactory {
 
 	@Override
 	public void registerBean(String beanName, Class<?> beanClass) {
-		throw new UnsupportedOperationException();
 	}
 
 }

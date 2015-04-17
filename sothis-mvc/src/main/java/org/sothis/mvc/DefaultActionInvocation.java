@@ -42,7 +42,7 @@ public class DefaultActionInvocation implements ActionInvocation {
 				actionInvoked = true;
 				Method method = context.getAction().getActionMethod();
 				if (null != method) {
-					result = method.invoke(controllerInstance, (Object[]) context.get(ActionContext.ACTION_PARAMS));
+					result = method.invoke(controllerInstance, context.getActionParams());
 				}
 			}
 		} catch (InvocationTargetException e) {
