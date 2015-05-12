@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.HttpVersion;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import org.sothis.mvc.http.HttpHeaders;
@@ -18,6 +19,8 @@ public class NettyHttpResponse implements HttpResponse {
 	private final FullHttpResponse response;
 	private HttpHeaders headers;
 	private boolean committed;
+	private ByteBufOutputStream ouputStream;
+	private PrintWriter writer;
 
 	public NettyHttpResponse(FullHttpResponse response) {
 		super();
@@ -26,7 +29,18 @@ public class NettyHttpResponse implements HttpResponse {
 
 	@Override
 	public OutputStream getOutputStream() throws IOException {
-		return new ByteBufOutputStream(response.content());
+		if (null == ouputStream) {
+			ouputStream = new ByteBufOutputStream(response.content());
+		}
+		return ouputStream;
+	}
+
+	@Override
+	public PrintWriter getWriter() throws IOException {
+		if (null == writer) {
+			writer = new PrintWriter(getOutputStream());
+		}
+		return writer;
 	}
 
 	@Override
@@ -81,4 +95,5 @@ public class NettyHttpResponse implements HttpResponse {
 	public boolean isCommitted() {
 		return committed;
 	}
+
 }

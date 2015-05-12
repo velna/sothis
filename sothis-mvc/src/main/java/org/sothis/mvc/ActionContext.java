@@ -15,6 +15,7 @@ public class ActionContext {
 	public final static String ACTION_INVOCATION = "org.sothis.mvc.ACTION_INVOCATION";
 	public final static String ACTION_MAPPER = "org.sothis.mvc.ACTION_MAPPER";
 	public final static String APPLICATION_CONTEXT = "org.sothis.mvc.APPLICATION_CONTEXT";
+	public final static String EXCEPTION_HANDLER = "org.sothis.mvc.EXCEPTION_HANDLER";
 
 	protected final Map<String, Object> context = new ConcurrentHashMap<String, Object>();
 	protected AsyncContext asyncContext;
@@ -208,4 +209,11 @@ public class ActionContext {
 		return flash;
 	}
 
+	public ExceptionHandler getExceptionHandler() {
+		return get(EXCEPTION_HANDLER);
+	}
+
+	public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+		put(EXCEPTION_HANDLER, exceptionHandler);
+	}
 }

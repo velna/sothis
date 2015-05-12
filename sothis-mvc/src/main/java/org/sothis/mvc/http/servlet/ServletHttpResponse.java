@@ -2,6 +2,7 @@ package org.sothis.mvc.http.servlet;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -67,6 +68,11 @@ public class ServletHttpResponse implements HttpResponse {
 	@Override
 	public boolean isCommitted() {
 		return response.isCommitted();
+	}
+
+	@Override
+	public PrintWriter getWriter() throws IOException {
+		return response.getWriter();
 	}
 
 }

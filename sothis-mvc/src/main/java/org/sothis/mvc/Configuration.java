@@ -25,6 +25,8 @@ public class Configuration extends PropertiesConfiguration {
 	private final Map<String, Class<? extends View>> views;
 	private final Class<? extends View> defaultView;
 
+	private final Class<? extends ExceptionHandler> exceptionHandler;
+
 	private final Class<? extends Flash> flash;
 
 	private final Class<BeanFactory> beanFactoryClass;
@@ -48,6 +50,7 @@ public class Configuration extends PropertiesConfiguration {
 			}
 
 			flash = this.getClass("sothis.flash.class", DefaultFlash.class);
+			exceptionHandler = this.getClass("sothis.exceptionHandler.class", DefaultExceptionHandler.class);
 
 			// sothis.interceptor.stack.*.class
 			interceptorStacks = findInterceptorStacks(interceptors);
@@ -139,6 +142,10 @@ public class Configuration extends PropertiesConfiguration {
 
 	public Class<? extends Flash> getFlash() {
 		return flash;
+	}
+
+	public Class<? extends ExceptionHandler> getExceptionHandler() {
+		return exceptionHandler;
 	}
 
 }

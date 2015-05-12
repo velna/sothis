@@ -4,15 +4,16 @@ import org.sothis.core.beans.BeanFactory;
 
 public class ActionInvocationHelper {
 	public static boolean invoke(ApplicationContext appContext, Request req, Response resp) throws Exception {
-		BeanFactory beanFactory = appContext.getBeanFactory();
-		Configuration config = appContext.getConfiguration();
 		ActionContext context = ActionContext.getContext();
 		try {
+			BeanFactory beanFactory = appContext.getBeanFactory();
+			Configuration config = appContext.getConfiguration();
 			context.setApplicationContext(appContext);
 			context.setRequest(req);
 			context.setResponse(resp);
 			context.setActionMapper(beanFactory.getBean(config.getActionMapper()));
 			context.setModelAndViewResolver(beanFactory.getBean(config.getModelAndViewResolver()));
+			context.setExceptionHandler(beanFactory.getBean(config.getExceptionHandler()));
 
 			Flash flash = context.getFlash(false);
 			if (null != flash) {
@@ -29,6 +30,14 @@ public class ActionInvocationHelper {
 			} else {
 				return false;
 			}
+		} catch (Exception e) {
+			ExceptionHandler exceptionHandler = context.getExceptionHandler();
+			if (null != exceptionHandler) {
+				exceptionHandler.exceptionCaught(context, e);
+			} else {
+				throw e;
+			}
+			return false;
 		} finally {
 			context.clear();
 		}

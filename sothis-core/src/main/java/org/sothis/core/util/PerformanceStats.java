@@ -12,6 +12,7 @@ public class PerformanceStats {
 	private final static Logger PERFORMANCE_LOGGER = LoggerFactory.getPerformanceLogger(PerformanceStats.class);
 	private final static List<PerformanceStats> STATS = Collections.synchronizedList(new ArrayList<PerformanceStats>());
 	private static Thread STAT_THREAD;
+	private static long STEP = 1;
 
 	private final AtomicLong[] counters = new AtomicLong[21];
 	private final AtomicLong totalTime = new AtomicLong(0);
@@ -53,9 +54,9 @@ public class PerformanceStats {
 		sb.append("\n");
 		for (int i = 0; i < 21; i++) {
 			if (i == 20) {
-				sb.append(">20ms\t");
+				sb.append(String.format(">%dms\t", i * STEP));
 			} else {
-				sb.append(String.format("%dms\t", i));
+				sb.append(String.format("%dms\t", i * STEP));
 			}
 			for (int j = 0; j < STATS.size(); j++) {
 				c[j] = STATS.get(j).counters[i].get();
@@ -77,8 +78,9 @@ public class PerformanceStats {
 		return sb.toString();
 	}
 
-	synchronized public static void startLoggingThread() {
+	synchronized public static void startLoggingThread(long step) {
 		if (null == STAT_THREAD) {
+			STEP = step;
 			STAT_THREAD = new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -103,10 +105,15 @@ public class PerformanceStats {
 		return stat;
 	}
 
+	public static void setStep(long step) {
+		STEP = step;
+		clear();
+	}
+
 	public void stat(long cost) {
 		totalTime.addAndGet(cost);
 		totalCount.incrementAndGet();
-		int i = (int) cost;
+		int i = (int) (cost / STEP);
 		if (i > 20) {
 			i = 20;
 		}

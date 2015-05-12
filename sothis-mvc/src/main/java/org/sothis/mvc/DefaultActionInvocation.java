@@ -33,7 +33,7 @@ public class DefaultActionInvocation implements ActionInvocation {
 		return context;
 	}
 
-	public Object invoke() throws ActionInvocationException {
+	public Object invoke() throws Exception {
 		try {
 			if (interceptors.hasNext()) {
 				Interceptor interceptor = context.getApplicationContext().getBeanFactory().getBean(interceptors.next());
@@ -46,9 +46,11 @@ public class DefaultActionInvocation implements ActionInvocation {
 				}
 			}
 		} catch (InvocationTargetException e) {
-			throw new ActionInvocationException("error invoke action: " + context.getAction(), e.getTargetException());
-		} catch (Exception e) {
-			throw new ActionInvocationException("error invoke action: " + context.getAction(), e);
+			if (e.getCause() instanceof Exception) {
+				throw (Exception) e.getCause();
+			} else {
+				throw e;
+			}
 		}
 		return result;
 	}
