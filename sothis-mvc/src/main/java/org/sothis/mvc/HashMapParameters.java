@@ -31,4 +31,9 @@ public class HashMapParameters extends Parameters {
 		return Collections.unmodifiableMap(params).entrySet().iterator();
 	}
 
+	@Override
+	public Map<String, String[]> toMap() {
+		return Collections.unmodifiableMap(params);
+	}
+
 }

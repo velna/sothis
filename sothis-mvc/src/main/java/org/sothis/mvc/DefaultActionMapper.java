@@ -29,7 +29,7 @@ public class DefaultActionMapper implements ActionMapper {
 	@Override
 	public Action resolve(ActionContext context) {
 		Request request = context.getRequest();
-		String key = request.getUriPath();
+		String key = request.getUriPath().substring(context.getApplicationContext().getContextPath().length());
 		if (!key.startsWith("/")) {
 			key = "/" + key;
 		}

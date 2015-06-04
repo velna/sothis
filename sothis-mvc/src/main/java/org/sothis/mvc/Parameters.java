@@ -10,6 +10,8 @@ public abstract class Parameters implements Iterable<Map.Entry<String, String[]>
 
 	public abstract Iterator<String> names();
 
+	public abstract Map<String, String[]> toMap();
+
 	@Override
 	public abstract Iterator<Entry<String, String[]>> iterator();
 

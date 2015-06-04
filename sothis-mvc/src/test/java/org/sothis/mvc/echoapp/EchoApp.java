@@ -41,7 +41,7 @@ public class EchoApp {
 
 		BeanFactory beanFactory = new SimpleBeanFactory();
 
-		ApplicationContext applicationContext = new DefaultApplicationContext(beanFactory, config);
+		ApplicationContext applicationContext = new DefaultApplicationContext(beanFactory, config, null);
 		new EchoApp(applicationContext).start();
 	}
 }

@@ -16,4 +16,7 @@ public interface ApplicationContext {
 
 	Map<Object, Action> getActions();
 
+	String getContextPath();
+
+	Object getNativeContext();
 }

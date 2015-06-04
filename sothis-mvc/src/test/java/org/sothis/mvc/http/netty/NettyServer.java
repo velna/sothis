@@ -36,7 +36,7 @@ public class NettyServer {
 		properties.put("sothis.interceptors.echoapp.class", "org.sothis.mvc.echoapp.EchoAppInterceptor");
 		properties.put("sothis.interceptors.stack.default", "echoapp");
 
-		return new DefaultApplicationContext(new SimpleBeanFactory(), new Configuration(properties));
+		return new DefaultApplicationContext(new SimpleBeanFactory(), new Configuration(properties), null);
 	}
 
 	public static void main(String[] args) throws Exception {

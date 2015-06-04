@@ -13,11 +13,23 @@ public class DefaultApplicationContext implements ApplicationContext {
 	private final Map<Object, Action> actions = new HashMap<Object, Action>();
 	private final BeanFactory beanFactory;
 	private final Configuration configuration;
+	private final String contextPath;
+	private final Object nativeContext;
 
-	public DefaultApplicationContext(BeanFactory beanFactory, Configuration configuration) throws BeanInstantiationException,
-			ClassNotFoundException, IOException, ConfigurationException {
+	public DefaultApplicationContext(BeanFactory beanFactory, Configuration configuration, Object nativeContext)
+			throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
+		this("", beanFactory, configuration, nativeContext);
+	}
+
+	public DefaultApplicationContext(String contextPath, BeanFactory beanFactory, Configuration configuration,
+			Object nativeContext) throws BeanInstantiationException, ClassNotFoundException, IOException, ConfigurationException {
+		if (null == contextPath) {
+			throw new IllegalArgumentException("context path can not be null.");
+		}
+		this.contextPath = contextPath;
 		this.beanFactory = beanFactory;
 		this.configuration = configuration;
+		this.nativeContext = nativeContext;
 		regBeans();
 		initActions();
 	}
@@ -115,6 +127,14 @@ public class DefaultApplicationContext implements ApplicationContext {
 	@Override
 	public Map<Object, Action> getActions() {
 		return this.actions;
+	}
+
+	public String getContextPath() {
+		return contextPath;
+	}
+
+	public Object getNativeContext() {
+		return nativeContext;
 	}
 
 }
