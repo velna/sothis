@@ -47,9 +47,7 @@ public class SqlQueryBuilder {
 
 	public static void main(String[] args) {
 		StringBuilder sql = new StringBuilder();
-		appendWhere(
-				Cnd.or(Cnd.make("a", "a").and(Cnd.or(Cnd.make("c", "de"), Cnd.make("e", "f"))),
-						Cnd.and(Cnd.make("g", "h"), Cnd.make("i", "k"))), sql);
+		appendWhere(Cnd.make("a", "a").and(Cnd.make("c", "de").or("e", "f")).or(Cnd.make("g", "h").and("i", "k")), sql);
 		System.out.println(sql);
 	}
 

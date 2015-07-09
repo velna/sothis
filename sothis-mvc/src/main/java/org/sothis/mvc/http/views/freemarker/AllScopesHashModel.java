@@ -1,4 +1,7 @@
-package org.sothis.mvc.views.freemarker;
+package org.sothis.mvc.http.views.freemarker;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.Flash;
@@ -35,7 +38,18 @@ public class AllScopesHashModel extends WrappingTemplateModel implements Templat
 			return this.getObjectWrapper().wrap(obj);
 		}
 		if ("params".equals(key)) {
-			return this.getObjectWrapper().wrap(request.parameters().toMap());
+			Map<String, Object> paramModel = new HashMap<>();
+			Map<String, String[]> paramMap = request.parameters().toMap();
+			for (Map.Entry<String, String[]> param : paramMap.entrySet()) {
+				if (null == param.getValue() || param.getValue().length == 0) {
+					paramModel.put(param.getKey(), "");
+				} else if (param.getValue().length == 1) {
+					paramModel.put(param.getKey(), param.getValue()[0]);
+				} else {
+					paramModel.put(param.getKey(), param.getValue());
+				}
+			}
+			return this.getObjectWrapper().wrap(paramModel);
 		} else if ("session".equals(key)) {
 			return new SessionHashModel(request.getSession(false), this.getObjectWrapper());
 		} else if ("flash".equals(key)) {

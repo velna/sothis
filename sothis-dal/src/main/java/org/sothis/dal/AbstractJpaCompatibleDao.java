@@ -94,11 +94,16 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	private static <T extends Annotation> T getAnnotation(Class<?> entityClass, PropertyDescriptor descriptor,
 			Class<T> annotationClass) {
 		T a = null;
-		try {
-			Field f = entityClass.getDeclaredField(descriptor.getName());
-			a = f.getAnnotation(annotationClass);
-		} catch (NoSuchFieldException e) {
-		} catch (SecurityException e) {
+		for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
+			try {
+				Field f = clazz.getDeclaredField(descriptor.getName());
+				a = f.getAnnotation(annotationClass);
+				if (a != null) {
+					break;
+				}
+			} catch (NoSuchFieldException e) {
+			} catch (SecurityException e) {
+			}
 		}
 		if (null == a) {
 			Method readMethod = descriptor.getReadMethod();
@@ -246,6 +251,9 @@ public abstract class AbstractJpaCompatibleDao<E extends Entity, K extends Seria
 	@Override
 	public List<E> findByIds(Collection<K> idList) {
 		assertIdColumnNameNotNull();
+		if (null == idList || idList.isEmpty()) {
+			return Collections.emptyList();
+		}
 		return find(Cnd.make(this.getIdColumnName(), Op.IN, idList), null, null);
 	}
 

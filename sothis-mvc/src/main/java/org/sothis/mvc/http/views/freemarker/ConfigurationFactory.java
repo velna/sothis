@@ -1,4 +1,4 @@
-package org.sothis.mvc.views.freemarker;
+package org.sothis.mvc.http.views.freemarker;
 
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ConfigurationException;

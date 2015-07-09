@@ -1,13 +1,9 @@
-package org.sothis.mvc.views.freemarker;
+package org.sothis.mvc.http.views.freemarker;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.beans.Scope;
@@ -19,6 +15,7 @@ import org.sothis.mvc.View;
 import org.sothis.mvc.ViewRenderException;
 import org.sothis.mvc.http.HttpHeaders;
 import org.sothis.mvc.http.HttpResponse;
+import org.sothis.mvc.util.MvcUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -53,7 +50,7 @@ public class FreemarkerView implements View {
 	}
 
 	private void renderAsTemplate(Object model, Map<String, Object> params, ActionInvocation invocation) throws IOException {
-		String path = resolvePath(MapUtils.getString(params, "path"), invocation) + ".ftl";
+		String path = MvcUtils.resolvePath(MapUtils.getString(params, "location"), invocation) + ".ftl";
 		ActionContext context = invocation.getActionContext();
 		HttpResponse response = (HttpResponse) context.getResponse();
 		try {
@@ -70,8 +67,6 @@ public class FreemarkerView implements View {
 			}
 			response.headers().setString(HttpHeaders.Names.CONTENT_TYPE, contentType.toString());
 			template.process(new AllScopesHashModel(context, model), response.getWriter());
-		} catch (FileNotFoundException e) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (TemplateException e) {
 			throw new IOException("error processing freemarker template '" + path + "': ", e);
 		}
@@ -84,15 +79,4 @@ public class FreemarkerView implements View {
 		response.getWriter().append(text);
 	}
 
-	private static String resolvePath(String path, ActionInvocation invocation) {
-		if (StringUtils.isEmpty(path)) {
-			return invocation.getAction().getFullName();
-		} else {
-			if (path.charAt(0) == '/') {
-				return path;
-			} else {
-				return new StringBuilder().append(invocation.getAction().getController().getFullName()).append(path).toString();
-			}
-		}
-	}
 }

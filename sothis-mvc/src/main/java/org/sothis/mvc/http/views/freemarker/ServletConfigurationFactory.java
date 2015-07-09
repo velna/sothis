@@ -1,4 +1,4 @@
-package org.sothis.mvc.views.freemarker;
+package org.sothis.mvc.http.views.freemarker;
 
 import javax.servlet.ServletContext;
 

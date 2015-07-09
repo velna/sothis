@@ -11,11 +11,11 @@ import java.util.List;
  * 
  */
 public class Cnd implements OrderBy {
-	private final Object left;
-	private final Object op;
-	private final Object right;
+	private Object left;
+	private Object op;
+	private Object right;
 	private boolean not;
-	private final List<Sort> sorts = new LinkedList<Sort>();
+	private List<Sort> sorts;
 
 	private Cnd() {
 		this.left = null;
@@ -59,108 +59,6 @@ public class Cnd implements OrderBy {
 	}
 
 	/**
-	 * 向当前条件添加一个简单表达式，并用and逻辑运算符进行连接
-	 * 
-	 * @param field
-	 * @param op
-	 * @param value
-	 * @return
-	 */
-	public Cnd and(String field, Object op, Object value) {
-		Cnd cnd = new Cnd(field, op, value);
-		return and(this, cnd);
-	}
-
-	/**
-	 * 相当于cnd.and(field, Op.EQ, value);
-	 * 
-	 * @param field
-	 * @param value
-	 * @return
-	 */
-	public Cnd and(String field, Object value) {
-		Cnd cnd = new Cnd(field, Op.EQ, value);
-		return and(this, cnd);
-	}
-
-	/**
-	 * 向当前条件添加一个条件，并用and逻辑运算符进行连接
-	 * 
-	 * @param cnd
-	 * @return
-	 */
-	public Cnd and(Cnd cnd) {
-		return and(this, cnd);
-	}
-
-	/**
-	 * 向当前条件添加一个条件，并用or逻辑运算符进行连接
-	 * 
-	 * @param cnd
-	 * @return
-	 */
-	public Cnd or(Cnd cnd) {
-		return or(this, cnd);
-	}
-
-	/**
-	 * 向当前条件添加一个简单表达式，并用or逻辑运算符进行连接
-	 * 
-	 * @param field
-	 * @param op
-	 * @param value
-	 * @return
-	 */
-	public Cnd or(String field, Object op, Object value) {
-		Cnd cnd = new Cnd(field, op, value);
-		return or(this, cnd);
-	}
-
-	/**
-	 * 相当于cnd.or(field, Op.EQ, value);
-	 * 
-	 * @param field
-	 * @param value
-	 * @return
-	 */
-	public Cnd or(String field, Object value) {
-		Cnd cnd = new Cnd(field, Op.EQ, value);
-		return or(this, cnd);
-	}
-
-	/**
-	 * 创建一个由两个条件组成的条件，这两个条件用and逻辑运算符进行连接
-	 * 
-	 * @param left
-	 * @param right
-	 * @return
-	 */
-	public static Cnd and(Cnd left, Cnd right) {
-		return new Cnd(left, Logic.AND, right);
-	}
-
-	/**
-	 * 创建一个由两个条件组成的条件，这两个条件用or逻辑运算符进行连接
-	 * 
-	 * @param left
-	 * @param right
-	 * @return
-	 */
-	public static Cnd or(Cnd left, Cnd right) {
-		return new Cnd(left, Logic.OR, right);
-	}
-
-	/**
-	 * 对当前条件进行取反逻辑运算
-	 * 
-	 * @return
-	 */
-	public Cnd not() {
-		this.not = true;
-		return this;
-	}
-
-	/**
 	 * 创建一个只有排序的条件
 	 * 
 	 * @param field
@@ -175,15 +73,120 @@ public class Cnd implements OrderBy {
 		}
 	}
 
+	private List<Sort> sorts() {
+		if (null == this.sorts) {
+			this.sorts = new LinkedList<Sort>();
+		}
+		return sorts;
+	}
+
+	private void append(Cnd cnd, Logic logic) {
+		if (null == this.op) {
+			this.left = cnd.left;
+			this.right = cnd.right;
+			this.op = cnd.op;
+		} else {
+			Cnd left = new Cnd(this.left, this.op, this.right);
+			this.left = left;
+			this.right = cnd;
+			this.op = logic;
+		}
+		if (null != cnd.sorts) {
+			this.sorts().addAll(cnd.sorts);
+		}
+	}
+
+	/**
+	 * 向当前条件添加一个条件，并用and逻辑运算符进行连接
+	 * 
+	 * @param cnd
+	 * @return
+	 */
+	public Cnd and(Cnd cnd) {
+		append(cnd, Logic.AND);
+		return this;
+	}
+
+	/**
+	 * 向当前条件添加一个简单表达式，并用and逻辑运算符进行连接
+	 * 
+	 * @param field
+	 * @param op
+	 * @param value
+	 * @return
+	 */
+	public Cnd and(String field, Object op, Object value) {
+		append(new Cnd(field, op, value), Logic.AND);
+		return this;
+	}
+
+	/**
+	 * 相当于cnd.and(field, Op.EQ, value);
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public Cnd and(String field, Object value) {
+		append(new Cnd(field, Op.EQ, value), Logic.AND);
+		return this;
+	}
+
+	/**
+	 * 向当前条件添加一个条件，并用or逻辑运算符进行连接
+	 * 
+	 * @param cnd
+	 * @return
+	 */
+	public Cnd or(Cnd cnd) {
+		append(cnd, Logic.OR);
+		return this;
+	}
+
+	/**
+	 * 向当前条件添加一个简单表达式，并用or逻辑运算符进行连接
+	 * 
+	 * @param field
+	 * @param op
+	 * @param value
+	 * @return
+	 */
+	public Cnd or(String field, Object op, Object value) {
+		append(new Cnd(field, op, value), Logic.OR);
+		return this;
+	}
+
+	/**
+	 * 相当于cnd.or(field, Op.EQ, value);
+	 * 
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public Cnd or(String field, Object value) {
+		append(new Cnd(field, Op.EQ, value), Logic.OR);
+		return this;
+	}
+
+	/**
+	 * 对当前条件进行取反逻辑运算
+	 * 
+	 * @return
+	 */
+	public Cnd not() {
+		this.not = true;
+		return this;
+	}
+
 	@Override
 	public Cnd asc(String field) {
-		this.sorts.add(new Sort(field, true));
+		this.sorts().add(new Sort(field, true));
 		return this;
 	}
 
 	@Override
 	public Cnd desc(String field) {
-		this.sorts.add(new Sort(field, false));
+		this.sorts().add(new Sort(field, false));
 		return this;
 	}
 
@@ -250,6 +253,9 @@ public class Cnd implements OrderBy {
 
 	@Override
 	public List<Sort> getSorts() {
+		if (null == this.sorts) {
+			return Collections.emptyList();
+		}
 		return Collections.unmodifiableList(sorts);
 	}
 

@@ -1,6 +1,7 @@
 package org.sothis.mvc;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +65,8 @@ public class DefaultApplicationContext implements ApplicationContext {
 			final Class<?>[] classes = ClassUtils.getClasses(packageName);
 			for (Class<?> c : classes) {
 				if (c.isLocalClass() || c.isMemberClass() || c.isAnonymousClass() || c.isAnnotationPresent(Ignore.class)
-						|| c.getPackage().isAnnotationPresent(Ignore.class)) {
+						|| c.getPackage().isAnnotationPresent(Ignore.class) || Modifier.isAbstract(c.getModifiers())
+						|| Modifier.isInterface(c.getModifiers()) || !Modifier.isPublic(c.getModifiers())) {
 					continue;
 				}
 				final String className = c.getName().substring(packageName.length() + 1);

@@ -41,22 +41,37 @@ public class DefaultController extends AbstractActionBase implements Controller 
 		this.fullName = ret.toString();
 
 		this.controllerClass = controllerClass;
-		this.actionMap = new HashMap<String, Action>();
-		final Method[] methods = this.controllerClass.getMethods();
+		Map<String, Method> methods = new HashMap<>();
+		for (Class<?> clazz = this.controllerClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
+			Map<String, Method> ms = getActionMethods(clazz);
+			ms.putAll(methods);
+			methods = ms;
+		}
+
+		this.actionMap = new HashMap<String, Action>(methods.size());
+		for (Map.Entry<String, Method> entry : methods.entrySet()) {
+			actionMap.put(entry.getKey(), new DefaultAction(config, entry.getValue(), this));
+		}
+	}
+
+	private Map<String, Method> getActionMethods(Class<?> clazz) {
+		Map<String, Method> actionMethods = new HashMap<>();
+		final Method[] methods = clazz.getDeclaredMethods();
 		for (Method method : methods) {
 			final String methodName = method.getName();
 			if (!methodName.endsWith(Action.ACTION_SUFFIX) || method.isAnnotationPresent(Ignore.class)) {
 				continue;
 			}
 			final String actionName = methodName.substring(0, methodName.length() - Action.ACTION_SUFFIX.length());
-			if (actionMap.containsKey(actionName)) {
+			if (actionMethods.containsKey(actionName)) {
 				if (LOGGER.isWarnEnabled()) {
-					LOGGER.warn("action already exist:{} of controller: {}", actionName, controllerClass);
+					LOGGER.warn("action already exist:{} of controller: {}", actionName, clazz);
 				}
 				continue;
 			}
-			actionMap.put(actionName, new DefaultAction(config, method, this));
+			actionMethods.put(actionName, method);
 		}
+		return actionMethods;
 	}
 
 	public Action getAction(final String actionName) {
