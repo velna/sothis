@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.config.PropertiesConfiguration;
+import org.sothis.mvc.http.views.DefaultView;
+import org.sothis.mvc.http.views.NullView;
 
 public class Configuration extends PropertiesConfiguration {
 
@@ -48,6 +50,8 @@ public class Configuration extends PropertiesConfiguration {
 			} else {
 				defaultView = views.get(defaultViewName);
 			}
+			views.put(View.NULL_VIEW_TYPE, NullView.class);
+			views.put(View.DEFAULT_VIEW_TYPE, defaultView);
 
 			flash = this.getClass("sothis.flash.class", DefaultFlash.class);
 			exceptionHandler = this.getClass("sothis.exceptionHandler.class", DefaultExceptionHandler.class);

@@ -9,6 +9,17 @@ import java.io.IOException;
  * 
  */
 public interface View {
+
+	/**
+	 * 缺省view的类型
+	 */
+	static final String DEFAULT_VIEW_TYPE = "org.sothis.mvc.views.DEFAULT_VIEW_TYPE";
+
+	/**
+	 * null view的类型，该类型的view不执行任何操作。
+	 */
+	static final String NULL_VIEW_TYPE = "org.sothis.mvc.views.NULL_VIEW_TYPE";
+
 	/**
 	 * 使用当前的view渲染请求结果
 	 * 

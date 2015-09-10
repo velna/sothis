@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.sothis.mvc.AbstractRequest;
+import org.sothis.mvc.Attachments;
 import org.sothis.mvc.DefaultSession;
 import org.sothis.mvc.Session;
 
@@ -39,6 +40,11 @@ public class EchoAppRequest extends AbstractRequest {
 	@Override
 	public Session getSession() {
 		return session;
+	}
+
+	@Override
+	public Attachments attachments() throws IOException {
+		return null;
 	}
 
 }

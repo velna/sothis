@@ -23,7 +23,7 @@ public class ActionInvocationHelper {
 			ActionInvocation invocation = prepareActionInvocation(context);
 			if (null != invocation) {
 				Object result = invocation.invoke();
-				if (!context.isAsyncStarted()) {
+				if (!context.isAsyncStarted() && invocation.getAction().getActionMethod().getReturnType() != void.class) {
 					render(invocation, result);
 				}
 				return true;

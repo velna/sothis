@@ -4,121 +4,129 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public abstract class Parameters implements Iterable<Map.Entry<String, String[]>> {
+public abstract class Parameters implements Iterable<Map.Entry<String, Object[]>> {
 
-	public abstract String[] getStrings(String name);
+	public abstract Object[] getValues(String name);
 
 	public abstract Iterator<String> names();
 
-	public abstract Map<String, String[]> toMap();
+	public abstract Map<String, Object[]> toMap();
 
 	@Override
-	public abstract Iterator<Entry<String, String[]>> iterator();
+	public abstract Iterator<Entry<String, Object[]>> iterator();
+
+	public Object get(String name) {
+		return get(name, null);
+	}
+
+	public Object get(String name, Object defaultValue) {
+		Object[] values = getValues(name);
+		return (null == values || values.length == 0 || null == values[0]) ? defaultValue : values[0];
+	}
 
 	public String getString(String name) {
-		String[] values = getStrings(name);
-		return (null == values || values.length == 0) ? null : values[0];
+		return getString(name, null);
 	}
 
 	public String getString(String name, String defaultValue) {
-		String ret = getString(name);
-		return null == ret ? defaultValue : ret;
+		Object value = get(name);
+		return null == value ? defaultValue : (value instanceof String ? (String) value : value.toString());
+	}
+
+	public String[] getStrings(String name) {
+		Object[] values = getValues(name);
+		if (values instanceof String[]) {
+			return (String[]) values;
+		}
+		String[] ret = new String[values.length];
+		for (int i = 0; i < values.length; i++) {
+			ret[i] = null == values[i] ? null : values[i].toString();
+		}
+		return ret;
 	}
 
 	public Boolean getBoolean(String name) {
-		String value = getString(name);
-		return null == value ? null : Boolean.parseBoolean(value);
+		return getBoolean(name, null);
 	}
 
 	public Boolean getBoolean(String name, Boolean defaultValue) {
-		String value = getString(name);
-		return null == value ? defaultValue : Boolean.parseBoolean(value);
+		Object value = get(name);
+		return null == value ? defaultValue : (value instanceof Boolean ? (Boolean) value : Boolean.valueOf(value.toString()));
 	}
 
 	public Boolean[] getBooleans(String name) {
-		String[] values = getStrings(name);
-		Boolean[] booleans;
-		if (values.length > 0) {
-			booleans = new Boolean[values.length];
-			for (int i = 0; i < values.length; i++) {
-				booleans[i] = Boolean.parseBoolean(values[i]);
-			}
-		} else {
-			booleans = new Boolean[0];
+		Object[] values = getValues(name);
+		if (values instanceof Boolean[]) {
+			return (Boolean[]) values;
 		}
-		return booleans;
+		Boolean[] ret = new Boolean[values.length];
+		for (int i = 0; i < values.length; i++) {
+			ret[i] = null == values[i] ? null : Boolean.valueOf(values[i].toString());
+		}
+		return ret;
 	}
 
 	public Integer getInteger(String name) {
-		String value = getString(name);
-		return null == value ? null : Integer.parseInt(value);
+		return getInteger(name, null);
 	}
 
 	public Integer getInteger(String name, Integer defaultValue) {
-		String value = getString(name);
-		return null == value ? defaultValue : Integer.parseInt(value);
+		Object value = get(name);
+		return null == value ? defaultValue : (value instanceof Integer ? (Integer) value : Integer.valueOf(value.toString()));
 	}
 
 	public Integer[] getIntegers(String name) {
-		String[] values = getStrings(name);
-		Integer[] integers;
-		if (values.length > 0) {
-			integers = new Integer[values.length];
-			for (int i = 0; i < values.length; i++) {
-				integers[i] = Integer.parseInt(values[i]);
-			}
-		} else {
-			integers = new Integer[0];
+		Object[] values = getValues(name);
+		if (values instanceof Integer[]) {
+			return (Integer[]) values;
 		}
-		return integers;
+		Integer[] ret = new Integer[values.length];
+		for (int i = 0; i < values.length; i++) {
+			ret[i] = null == values[i] ? null : Integer.valueOf(values[i].toString());
+		}
+		return ret;
 	}
 
 	public Long getLong(String name) {
-		String value = getString(name);
-		return null == value ? null : Long.parseLong(value);
+		return getLong(name, null);
 	}
 
 	public Long getLong(String name, Long defaultValue) {
-		String value = getString(name);
-		return null == value ? defaultValue : Long.parseLong(value);
+		Object value = get(name);
+		return null == value ? defaultValue : (value instanceof Long ? (Long) value : Long.valueOf(value.toString()));
 	}
 
 	public Long[] getLongs(String name) {
-		String[] values = getStrings(name);
-		Long[] longs;
-		if (values.length > 0) {
-			longs = new Long[values.length];
-			for (int i = 0; i < values.length; i++) {
-				longs[i] = Long.parseLong(values[i]);
-			}
-		} else {
-			longs = new Long[0];
+		Object[] values = getValues(name);
+		if (values instanceof Long[]) {
+			return (Long[]) values;
 		}
-		return longs;
+		Long[] ret = new Long[values.length];
+		for (int i = 0; i < values.length; i++) {
+			ret[i] = null == values[i] ? null : Long.valueOf(values[i].toString());
+		}
+		return ret;
 	}
 
 	public Double getDouble(String name) {
-		String value = getString(name);
-		return null == value ? null : Double.parseDouble(value);
+		return getDouble(name, null);
 	}
 
 	public Double getDouble(String name, Double defaultValue) {
-		String value = getString(name);
-		return null == value ? defaultValue : Double.parseDouble(value);
+		Object value = get(name);
+		return null == value ? defaultValue : (value instanceof Double ? (Double) value : Double.valueOf(value.toString()));
 	}
 
 	public Double[] getDoubles(String name) {
-		String[] values = getStrings(name);
-		Double[] doubles;
-		if (values.length > 0) {
-			doubles = new Double[values.length];
-			for (int i = 0; i < values.length; i++) {
-				doubles[i] = Double.parseDouble(values[i]);
-			}
-		} else {
-			doubles = new Double[0];
+		Object[] values = getValues(name);
+		if (values instanceof Double[]) {
+			return (Double[]) values;
 		}
-		return doubles;
+		Double[] ret = new Double[values.length];
+		for (int i = 0; i < values.length; i++) {
+			ret[i] = null == values[i] ? null : Double.valueOf(values[i].toString());
+		}
+		return ret;
 	}
 
 }

@@ -12,11 +12,6 @@ import org.sothis.core.beans.BeanFactory;
 public interface ModelAndViewResolver {
 
 	/**
-	 * 缺省view的类型
-	 */
-	static final String DEFAULT_VIEW_TYPE = "org.sothis.web.mvc.view.DEFAULT_VIEW_TYPE";
-
-	/**
 	 * 解析model和view，view必须使用{@link BeanFactory#getBean(Class)}方法创建
 	 * 
 	 * @param actionResult

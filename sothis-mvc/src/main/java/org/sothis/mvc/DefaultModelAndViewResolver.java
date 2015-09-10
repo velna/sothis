@@ -20,11 +20,12 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 		return createView(typeName, invocation.getActionContext());
 	}
 
-	public ResolvedModelAndView resolve(final Object actionResult, final ActionInvocation invocation) throws ViewCreationException {
+	public ResolvedModelAndView resolve(final Object actionResult, final ActionInvocation invocation)
+			throws ViewCreationException {
 		ModelAndView model = null;
 		View view = null;
 		Sothis[] ss = invocation.getAction().getAnnotation(Sothis.class);
-		String viewType = DEFAULT_VIEW_TYPE;
+		String viewType = View.DEFAULT_VIEW_TYPE;
 		for (Sothis sothis : ss) {
 			if (null != sothis && StringUtils.isNotEmpty(sothis.view())) {
 				viewType = sothis.view();
@@ -33,7 +34,7 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 		}
 		if (actionResult instanceof ModelAndView) {
 			model = (ModelAndView) actionResult;
-			if (!model.viewType().equals(DEFAULT_VIEW_TYPE)) {
+			if (!model.viewType().equals(View.DEFAULT_VIEW_TYPE)) {
 				viewType = model.viewType();
 			}
 			view = createView(viewType, invocation.getActionContext());
@@ -62,10 +63,10 @@ public class DefaultModelAndViewResolver implements ModelAndViewResolver {
 
 	private View createView(String typeName, ActionContext context) throws ViewCreationException {
 		if (null == typeName) {
-			typeName = DEFAULT_VIEW_TYPE;
+			typeName = View.DEFAULT_VIEW_TYPE;
 		}
 		Configuration config = context.getApplicationContext().getConfiguration();
-		Class<? extends View> viewClass = DEFAULT_VIEW_TYPE == typeName ? config.getDefaultView() : config.getView(typeName);
+		Class<? extends View> viewClass = config.getView(typeName);
 		if (null == viewClass) {
 			throw new ViewCreationException("no view type of:" + typeName);
 		}

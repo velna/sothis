@@ -38,9 +38,7 @@ public class FreemarkerView implements View {
 	}
 
 	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ViewRenderException {
-		if (invocation.getAction().getActionMethod().getReturnType() == void.class) {
-			// empty
-		} else if (null == mav.model()) {
+		if (null == mav.model()) {
 			renderAsTemplate(null, null, invocation);
 		} else if (mav.model() instanceof String) {
 			renderAsText((String) mav.model(), invocation);

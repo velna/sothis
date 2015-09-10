@@ -23,7 +23,7 @@ public class NettyHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
 	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
 		FullHttpResponse respMsg = new DefaultFullHttpResponse(msg.getProtocolVersion(), HttpResponseStatus.OK, ctx.alloc()
 				.buffer(512));
-		NettyHttpRequest request = new NettyHttpRequest(msg);
+		NettyHttpRequest request = new NettyHttpRequest(msg, ctx.channel());
 		NettyHttpResponse response = new NettyHttpResponse(respMsg);
 		ActionInvocationHelper.invoke(applicationContext, request, response);
 		response.commit();

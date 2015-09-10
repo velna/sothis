@@ -75,4 +75,9 @@ public class ServletHttpResponse implements HttpResponse {
 		return response.getWriter();
 	}
 
+	@Override
+	public void reset() {
+		response.reset();
+	}
+
 }

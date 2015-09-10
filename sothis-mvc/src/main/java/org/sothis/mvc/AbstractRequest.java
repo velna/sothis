@@ -2,6 +2,7 @@ package org.sothis.mvc;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 
 public abstract class AbstractRequest implements Request {
 
@@ -41,7 +42,7 @@ public abstract class AbstractRequest implements Request {
 	@Override
 	public Parameters parameters() {
 		if (null == parameters) {
-			parameters = new HashMapParameters(getUriParser().parameters());
+			parameters = new HashMapParameters(new HashMap<String, Object[]>(getUriParser().parameters()));
 		}
 		return parameters;
 	}

@@ -8,17 +8,11 @@ import java.util.Map.Entry;
 
 public class HashMapParameters extends Parameters {
 
-	protected final Map<String, String[]> params;
+	protected final Map<String, Object[]> params;
 
-	public HashMapParameters(Map<String, String[]> params) {
+	public HashMapParameters(Map<String, Object[]> params) {
 		super();
 		this.params = params;
-	}
-
-	@Override
-	public String[] getStrings(String name) {
-		String[] strings = params.get(name);
-		return null == strings ? null : Arrays.copyOf(strings, strings.length);
 	}
 
 	@Override
@@ -27,13 +21,24 @@ public class HashMapParameters extends Parameters {
 	}
 
 	@Override
-	public Iterator<Entry<String, String[]>> iterator() {
+	public Iterator<Entry<String, Object[]>> iterator() {
 		return Collections.unmodifiableMap(params).entrySet().iterator();
 	}
 
 	@Override
-	public Map<String, String[]> toMap() {
+	public Map<String, Object[]> toMap() {
 		return Collections.unmodifiableMap(params);
+	}
+
+	@Override
+	public String toString() {
+		return params.toString();
+	}
+
+	@Override
+	public Object[] getValues(String name) {
+		Object[] values = params.get(name);
+		return null == values ? new Object[0] : Arrays.copyOf(values, values.length);
 	}
 
 }

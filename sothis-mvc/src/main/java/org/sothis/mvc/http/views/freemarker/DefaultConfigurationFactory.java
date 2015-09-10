@@ -3,11 +3,16 @@ package org.sothis.mvc.http.views.freemarker;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletContext;
+
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ConfigurationException;
 
+import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import freemarker.cache.WebappTemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateHashModel;
 
@@ -27,17 +32,16 @@ public class DefaultConfigurationFactory implements ConfigurationFactory {
 			}
 
 			BeansWrapper wrapper = BeansWrapper.getDefaultInstance();
-
 			configuration.setSharedVariable("enums", wrapper.getEnumModels());
 			// shared directives
-			Map<String, Class<?>> sharedDirectiveVariables = (Map) config.getAsGroup(
+			Map<String, Class> sharedDirectiveVariables = config.getAsGroup(
 					Pattern.compile("freemarker\\.directive\\.(\\w+)\\.class"), Class.class);
 			for (String key : sharedDirectiveVariables.keySet()) {
 				configuration.setSharedVariable(key, sharedDirectiveVariables.get(key).newInstance());
 			}
 
 			// shared statics
-			Map<String, String> sharedStaticVariables = (Map) config.getAsGroup(
+			Map<String, String> sharedStaticVariables = config.getAsGroup(
 					Pattern.compile("freemarker\\.static\\.(\\w+)\\.class"), String.class);
 			TemplateHashModel staticModels = wrapper.getStaticModels();
 			for (String key : sharedStaticVariables.keySet()) {
@@ -51,6 +55,11 @@ public class DefaultConfigurationFactory implements ConfigurationFactory {
 	}
 
 	protected TemplateLoader buildTemplateLoader(ActionContext actionContext) {
-		return new ClassPathTemplateLoader();
+		return new MultiTemplateLoader(
+				new TemplateLoader[] {
+						new ClassPathTemplateLoader(),
+						new WebappTemplateLoader((ServletContext) actionContext.getApplicationContext().getNativeContext()),
+						new WebappTemplateLoader((ServletContext) actionContext.getApplicationContext().getNativeContext(),
+								"/WEB-INF/") });
 	}
 }

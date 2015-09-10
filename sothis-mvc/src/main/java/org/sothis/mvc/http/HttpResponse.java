@@ -15,6 +15,8 @@ public interface HttpResponse extends Response, HttpMessage {
 
 	void setProtocolVersion(String protocolVersion);
 
+	void reset();
+
 	/**
 	 * Server status codes; see RFC 2068.
 	 */

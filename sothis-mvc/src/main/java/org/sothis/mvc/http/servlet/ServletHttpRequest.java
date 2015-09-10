@@ -3,10 +3,13 @@ package org.sothis.mvc.http.servlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Attributes;
 import org.sothis.mvc.HashMapParameters;
 import org.sothis.mvc.Parameters;
@@ -19,6 +22,7 @@ public class ServletHttpRequest implements HttpRequest {
 	private final HttpServletRequest request;
 	private Parameters parameters;
 	private HttpHeaders headers;
+	private Attachments attachments;
 	private Session session;
 	private Attributes attributes;
 	private String uri;
@@ -41,7 +45,7 @@ public class ServletHttpRequest implements HttpRequest {
 	@Override
 	public Parameters parameters() {
 		if (null == parameters) {
-			parameters = new HashMapParameters(request.getParameterMap());
+			parameters = new HashMapParameters(new HashMap<String, Object[]>(request.getParameterMap()));
 		}
 		return parameters;
 	}
@@ -113,6 +117,47 @@ public class ServletHttpRequest implements HttpRequest {
 	@Override
 	public String getUriPath() {
 		return request.getRequestURI();
+	}
+
+	@Override
+	public Attachments attachments() throws IOException {
+		if (null == attachments) {
+			try {
+				String contentType = request.getContentType();
+				if (null != contentType && contentType.toLowerCase().startsWith("multipart/")) {
+					if (request.getServletContext().getMajorVersion() == 3 && request.getServletContext().getMinorVersion() == 1) {
+						attachments = new Servlet31Attachments(request);
+					} else {
+						attachments = new CommonsUploadAttachments(request);
+					}
+				} else {
+					attachments = ServletAttachments.EMPTY;
+				}
+			} catch (ServletException e) {
+				attachments = ServletAttachments.EMPTY;
+			}
+		}
+		return attachments;
+	}
+
+	@Override
+	public String getLocalAddr() {
+		return request.getLocalAddr();
+	}
+
+	@Override
+	public int getLocalPort() {
+		return request.getLocalPort();
+	}
+
+	@Override
+	public String getRemoteAddr() {
+		return request.getRemoteAddr();
+	}
+
+	@Override
+	public int getRemotePort() {
+		return request.getRemotePort();
 	}
 
 }

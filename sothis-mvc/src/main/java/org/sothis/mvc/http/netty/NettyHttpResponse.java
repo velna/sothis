@@ -96,4 +96,11 @@ public class NettyHttpResponse implements HttpResponse {
 		return committed;
 	}
 
+	@Override
+	public void reset() {
+		response.setStatus(HttpResponseStatus.OK);
+		response.content().clear();
+		response.headers().clear();
+	}
+
 }

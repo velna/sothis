@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class BaseModelAndView implements ModelAndView {
 
-	private String viewType = ModelAndViewResolver.DEFAULT_VIEW_TYPE;
+	private String viewType = View.DEFAULT_VIEW_TYPE;
 
 	private Map<String, Object> viewParams;
 

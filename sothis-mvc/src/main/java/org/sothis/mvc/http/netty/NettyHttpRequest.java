@@ -1,12 +1,15 @@
 package org.sothis.mvc.http.netty;
 
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.channel.Channel;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 
 import org.sothis.mvc.AbstractRequest;
+import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Session;
 import org.sothis.mvc.http.HttpHeaders;
 import org.sothis.mvc.http.HttpRequest;
@@ -14,12 +17,14 @@ import org.sothis.mvc.http.HttpRequest;
 public class NettyHttpRequest extends AbstractRequest implements HttpRequest {
 
 	private final FullHttpRequest request;
+	private final Channel channel;
 	private InputStream inputStream;
 	private HttpHeaders headers;
 
-	public NettyHttpRequest(FullHttpRequest request) {
+	public NettyHttpRequest(FullHttpRequest request, Channel channel) {
 		super();
 		this.request = request;
+		this.channel = channel;
 	}
 
 	@Override
@@ -65,6 +70,31 @@ public class NettyHttpRequest extends AbstractRequest implements HttpRequest {
 			headers = new NettyHttpHeaders(request.headers());
 		}
 		return headers;
+	}
+
+	@Override
+	public Attachments attachments() throws IOException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String getLocalAddr() {
+		return ((InetSocketAddress) channel.localAddress()).getHostString();
+	}
+
+	@Override
+	public int getLocalPort() {
+		return ((InetSocketAddress) channel.localAddress()).getPort();
+	}
+
+	@Override
+	public String getRemoteAddr() {
+		return ((InetSocketAddress) channel.remoteAddress()).getHostString();
+	}
+
+	@Override
+	public int getRemotePort() {
+		return ((InetSocketAddress) channel.remoteAddress()).getPort();
 	}
 
 }

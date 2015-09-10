@@ -40,4 +40,9 @@ public class ServletSession implements Session {
 		return attributes;
 	}
 
+	@Override
+	public void invalidate() {
+		session.invalidate();
+	}
+
 }

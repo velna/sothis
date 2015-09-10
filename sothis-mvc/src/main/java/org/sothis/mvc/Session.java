@@ -10,4 +10,6 @@ public interface Session {
 	Date getLastAccessed();
 
 	Attributes attributes();
+
+	void invalidate();
 }

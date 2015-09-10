@@ -39,8 +39,8 @@ public class AllScopesHashModel extends WrappingTemplateModel implements Templat
 		}
 		if ("params".equals(key)) {
 			Map<String, Object> paramModel = new HashMap<>();
-			Map<String, String[]> paramMap = request.parameters().toMap();
-			for (Map.Entry<String, String[]> param : paramMap.entrySet()) {
+			Map<String, Object[]> paramMap = request.parameters().toMap();
+			for (Map.Entry<String, Object[]> param : paramMap.entrySet()) {
 				if (null == param.getValue() || param.getValue().length == 0) {
 					paramModel.put(param.getKey(), "");
 				} else if (param.getValue().length == 1) {

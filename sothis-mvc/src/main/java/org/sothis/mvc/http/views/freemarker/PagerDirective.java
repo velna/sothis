@@ -79,8 +79,8 @@ public class PagerDirective implements TemplateDirectiveModel {
 			pagerCount = num.getAsNumber().intValue();
 		}
 
-		Map<String, String[]> requestParams = actionContext.getRequest().parameters().toMap();
-		Map<String, String[]> allParams = filterPagerParams(new HashMap<String, String[]>(requestParams));
+		Map<String, Object[]> requestParams = actionContext.getRequest().parameters().toMap();
+		Map<String, Object[]> allParams = filterPagerParams(new HashMap<String, Object[]>(requestParams));
 
 		Template template = env.getConfiguration().getTemplate("/ftl/pager.ftl");
 		Map<String, Object> templateContext = new HashMap<String, Object>();
@@ -113,7 +113,7 @@ public class PagerDirective implements TemplateDirectiveModel {
 		template.process(templateContext, env.getOut());
 	}
 
-	private String buildPagerUrl(ActionContext actionContext, String name, String uri, Map<String, String[]> allParams,
+	private String buildPagerUrl(ActionContext actionContext, String name, String uri, Map<String, Object[]> allParams,
 			int pageIndex, String anchor) throws IOException {
 		allParams.put(name + ".currentPage", new String[] { String.valueOf(pageIndex) });
 		String params = UrlUtils.appendParams("", allParams);
@@ -139,7 +139,7 @@ public class PagerDirective implements TemplateDirectiveModel {
 	 * @param params
 	 * @return
 	 */
-	protected Map<String, String[]> filterPagerParams(Map<String, String[]> params) {
+	protected Map<String, Object[]> filterPagerParams(Map<String, Object[]> params) {
 		return params;
 	}
 

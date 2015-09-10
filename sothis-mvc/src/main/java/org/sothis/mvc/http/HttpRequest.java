@@ -7,6 +7,14 @@ public interface HttpRequest extends Request, HttpMessage {
 
 	String getQueryString();
 
+	String getLocalAddr();
+
+	int getLocalPort();
+
+	String getRemoteAddr();
+
+	int getRemotePort();
+
 	public static final class Methods {
 		public static final String GET = "GET";
 		public static final String POST = "POST";
