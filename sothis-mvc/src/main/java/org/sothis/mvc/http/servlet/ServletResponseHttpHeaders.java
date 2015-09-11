@@ -6,9 +6,9 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.sothis.mvc.http.HttpHeaders;
+import org.sothis.mvc.Headers;
 
-public class ServletResponseHttpHeaders extends HttpHeaders {
+public class ServletResponseHttpHeaders extends Headers {
 	private final HttpServletResponse response;
 
 	public ServletResponseHttpHeaders(HttpServletResponse response) {

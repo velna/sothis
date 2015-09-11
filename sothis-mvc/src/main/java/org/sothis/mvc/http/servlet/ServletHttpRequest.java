@@ -14,16 +14,16 @@ import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Attributes;
 import org.sothis.mvc.HashMapParameters;
+import org.sothis.mvc.Headers;
 import org.sothis.mvc.Parameters;
+import org.sothis.mvc.Request;
 import org.sothis.mvc.Session;
-import org.sothis.mvc.http.HttpHeaders;
-import org.sothis.mvc.http.HttpRequest;
 
-public class ServletHttpRequest implements HttpRequest {
+public class ServletHttpRequest implements Request {
 
 	private final HttpServletRequest request;
 	private Parameters parameters;
-	private HttpHeaders headers;
+	private Headers headers;
 	private Attachments attachments;
 	private Session session;
 	private Attributes attributes;
@@ -96,7 +96,7 @@ public class ServletHttpRequest implements HttpRequest {
 	}
 
 	@Override
-	public HttpHeaders headers() {
+	public Headers headers() {
 		if (null == headers) {
 			headers = new ServletRequestHttpHeaders(request);
 		}

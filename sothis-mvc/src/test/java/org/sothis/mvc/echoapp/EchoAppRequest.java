@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import org.sothis.mvc.AbstractRequest;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.DefaultSession;
+import org.sothis.mvc.Headers;
 import org.sothis.mvc.Session;
 
 public class EchoAppRequest extends AbstractRequest {
@@ -44,6 +45,41 @@ public class EchoAppRequest extends AbstractRequest {
 
 	@Override
 	public Attachments attachments() throws IOException {
+		return null;
+	}
+
+	@Override
+	public String getMethod() {
+		return null;
+	}
+
+	@Override
+	public String getLocalAddr() {
+		return null;
+	}
+
+	@Override
+	public int getLocalPort() {
+		return 0;
+	}
+
+	@Override
+	public String getRemoteAddr() {
+		return null;
+	}
+
+	@Override
+	public int getRemotePort() {
+		return 0;
+	}
+
+	@Override
+	public Headers headers() {
+		return null;
+	}
+
+	@Override
+	public String getProtocolVersion() {
 		return null;
 	}
 

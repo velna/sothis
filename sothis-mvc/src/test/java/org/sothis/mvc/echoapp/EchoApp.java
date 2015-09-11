@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.beans.SimpleBeanFactory;
+import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ActionInvocationHelper;
 import org.sothis.mvc.ApplicationContext;
 import org.sothis.mvc.Configuration;
@@ -25,7 +26,8 @@ public class EchoApp {
 		while (true) {
 			String line = reader.readLine();
 			if (null != line) {
-				ActionInvocationHelper.invoke(applicationContext, new EchoAppRequest("/", line), new EchoAppResponse());
+				ActionInvocationHelper.invoke(ActionContext.getContext(), applicationContext, new EchoAppRequest("/", line),
+						new EchoAppResponse());
 			} else {
 				break;
 			}

@@ -3,8 +3,8 @@ package org.sothis.mvc;
 import org.sothis.core.beans.BeanFactory;
 
 public class ActionInvocationHelper {
-	public static boolean invoke(ApplicationContext appContext, Request req, Response resp) throws Exception {
-		ActionContext context = ActionContext.getContext();
+	public static boolean invoke(ActionContext context, ApplicationContext appContext, Request req, Response resp)
+			throws Exception {
 		try {
 			BeanFactory beanFactory = appContext.getBeanFactory();
 			Configuration config = appContext.getConfiguration();

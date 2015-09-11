@@ -12,12 +12,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
-import org.sothis.mvc.http.HttpHeaders;
-import org.sothis.mvc.http.HttpResponse;
+import org.sothis.mvc.Headers;
+import org.sothis.mvc.Response;
 
-public class NettyHttpResponse implements HttpResponse {
+public class NettyHttpResponse implements Response {
 	private final FullHttpResponse response;
-	private HttpHeaders headers;
+	private Headers headers;
 	private boolean committed;
 	private ByteBufOutputStream ouputStream;
 	private PrintWriter writer;
@@ -44,7 +44,7 @@ public class NettyHttpResponse implements HttpResponse {
 	}
 
 	@Override
-	public HttpHeaders headers() {
+	public Headers headers() {
 		if (null == headers) {
 			headers = new NettyHttpHeaders(response.headers());
 		}

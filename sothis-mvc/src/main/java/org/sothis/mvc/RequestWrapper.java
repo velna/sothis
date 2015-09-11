@@ -67,4 +67,39 @@ public class RequestWrapper implements Request {
 		return request.getSession(create);
 	}
 
+	@Override
+	public String getMethod() {
+		return request.getMethod();
+	}
+
+	@Override
+	public String getLocalAddr() {
+		return request.getLocalAddr();
+	}
+
+	@Override
+	public int getLocalPort() {
+		return request.getLocalPort();
+	}
+
+	@Override
+	public String getRemoteAddr() {
+		return request.getRemoteAddr();
+	}
+
+	@Override
+	public int getRemotePort() {
+		return request.getRemotePort();
+	}
+
+	@Override
+	public Headers headers() {
+		return request.headers();
+	}
+
+	@Override
+	public String getProtocolVersion() {
+		return request.getProtocolVersion();
+	}
+
 }

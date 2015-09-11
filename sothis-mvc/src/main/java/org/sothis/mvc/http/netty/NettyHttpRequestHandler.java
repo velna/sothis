@@ -25,7 +25,7 @@ public class NettyHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
 				.buffer(512));
 		NettyHttpRequest request = new NettyHttpRequest(msg, ctx.channel());
 		NettyHttpResponse response = new NettyHttpResponse(respMsg);
-		ActionInvocationHelper.invoke(applicationContext, request, response);
+		ActionInvocationHelper.invoke(ActionContext.getContext(), applicationContext, request, response);
 		response.commit();
 		ctx.writeAndFlush(respMsg);
 	}

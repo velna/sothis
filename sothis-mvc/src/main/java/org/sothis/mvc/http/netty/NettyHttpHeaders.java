@@ -3,9 +3,9 @@ package org.sothis.mvc.http.netty;
 import java.util.Iterator;
 import java.util.List;
 
-import org.sothis.mvc.http.HttpHeaders;
+import org.sothis.mvc.Headers;
 
-public class NettyHttpHeaders extends HttpHeaders {
+public class NettyHttpHeaders extends Headers {
 
 	private final io.netty.handler.codec.http.HttpHeaders headers;
 

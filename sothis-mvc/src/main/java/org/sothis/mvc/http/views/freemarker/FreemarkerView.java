@@ -11,10 +11,10 @@ import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.ModelAndView;
+import org.sothis.mvc.Response;
 import org.sothis.mvc.View;
 import org.sothis.mvc.ViewRenderException;
-import org.sothis.mvc.http.HttpHeaders;
-import org.sothis.mvc.http.HttpResponse;
+import org.sothis.mvc.http.HttpConstants;
 import org.sothis.mvc.util.MvcUtils;
 
 import freemarker.template.Configuration;
@@ -50,7 +50,7 @@ public class FreemarkerView implements View {
 	private void renderAsTemplate(Object model, Map<String, Object> params, ActionInvocation invocation) throws IOException {
 		String path = MvcUtils.resolvePath(MapUtils.getString(params, "location"), invocation) + ".ftl";
 		ActionContext context = invocation.getActionContext();
-		HttpResponse response = (HttpResponse) context.getResponse();
+		Response response = context.getResponse();
 		try {
 			Template template = configuration.getTemplate(path);
 			Object contentType = template.getCustomAttribute("content_type");
@@ -63,7 +63,7 @@ public class FreemarkerView implements View {
 			if (status != null) {
 				response.setStatus(status);
 			}
-			response.headers().setString(HttpHeaders.Names.CONTENT_TYPE, contentType.toString());
+			response.headers().setString(HttpConstants.HeaderNames.CONTENT_TYPE, contentType.toString());
 			template.process(new AllScopesHashModel(context, model), response.getWriter());
 		} catch (TemplateException e) {
 			throw new IOException("error processing freemarker template '" + path + "': ", e);
@@ -72,8 +72,9 @@ public class FreemarkerView implements View {
 
 	private void renderAsText(String text, ActionInvocation invocation) throws IOException {
 		ActionContext context = invocation.getActionContext();
-		HttpResponse response = (HttpResponse) context.getResponse();
-		response.headers().setString(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=" + context.getRequest().getCharset());
+		Response response = context.getResponse();
+		response.headers().setString(HttpConstants.HeaderNames.CONTENT_TYPE,
+				"text/plain; charset=" + context.getRequest().getCharset());
 		response.getWriter().append(text);
 	}
 

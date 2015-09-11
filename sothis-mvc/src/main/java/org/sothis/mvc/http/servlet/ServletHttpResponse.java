@@ -7,13 +7,13 @@ import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.sothis.mvc.http.HttpHeaders;
-import org.sothis.mvc.http.HttpResponse;
+import org.sothis.mvc.Headers;
+import org.sothis.mvc.Response;
 
-public class ServletHttpResponse implements HttpResponse {
+public class ServletHttpResponse implements Response {
 
 	private final HttpServletResponse response;
-	private HttpHeaders headers;
+	private Headers headers;
 	private String protocolVersion;
 
 	public ServletHttpResponse(HttpServletResponse response, String protocolVersion) {
@@ -28,7 +28,7 @@ public class ServletHttpResponse implements HttpResponse {
 	}
 
 	@Override
-	public HttpHeaders headers() {
+	public Headers headers() {
 		if (null == headers) {
 			headers = new ServletResponseHttpHeaders(response);
 		}

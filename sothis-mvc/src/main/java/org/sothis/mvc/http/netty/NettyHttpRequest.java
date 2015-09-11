@@ -10,16 +10,15 @@ import java.net.InetSocketAddress;
 
 import org.sothis.mvc.AbstractRequest;
 import org.sothis.mvc.Attachments;
+import org.sothis.mvc.Headers;
 import org.sothis.mvc.Session;
-import org.sothis.mvc.http.HttpHeaders;
-import org.sothis.mvc.http.HttpRequest;
 
-public class NettyHttpRequest extends AbstractRequest implements HttpRequest {
+public class NettyHttpRequest extends AbstractRequest {
 
 	private final FullHttpRequest request;
 	private final Channel channel;
 	private InputStream inputStream;
-	private HttpHeaders headers;
+	private Headers headers;
 
 	public NettyHttpRequest(FullHttpRequest request, Channel channel) {
 		super();
@@ -65,7 +64,7 @@ public class NettyHttpRequest extends AbstractRequest implements HttpRequest {
 	}
 
 	@Override
-	public HttpHeaders headers() {
+	public Headers headers() {
 		if (null == headers) {
 			headers = new NettyHttpHeaders(request.headers());
 		}

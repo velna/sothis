@@ -7,10 +7,10 @@ import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ModelAndView;
+import org.sothis.mvc.Response;
 import org.sothis.mvc.View;
 import org.sothis.mvc.ViewRenderException;
-import org.sothis.mvc.http.HttpHeaders;
-import org.sothis.mvc.http.HttpResponse;
+import org.sothis.mvc.http.HttpConstants;
 import org.sothis.mvc.util.MvcUtils;
 
 @Bean(scope = Scope.SINGLETON)
@@ -18,7 +18,7 @@ public class RedirectView implements View {
 
 	@Override
 	public void render(ModelAndView mav, ActionInvocation invocation) throws IOException, ViewRenderException {
-		HttpResponse response = (HttpResponse) invocation.getActionContext().getResponse();
+		Response response = invocation.getActionContext().getResponse();
 		String location = MapUtils.getString(mav.viewParams(), "location");
 		if (null == location) {
 			throw new ViewRenderException("no location found.");
@@ -29,9 +29,9 @@ public class RedirectView implements View {
 				location = contextPath + MvcUtils.resolvePath(location, invocation);
 			}
 		}
-		Integer status = MapUtils.getInteger(mav.viewParams(), "status", HttpResponse.StatusCodes.SC_MOVED_TEMPORARILY);
+		Integer status = MapUtils.getInteger(mav.viewParams(), "status", HttpConstants.StatusCodes.SC_MOVED_TEMPORARILY);
 		response.setStatus(status);
-		response.headers().setString(HttpHeaders.Names.LOCATION, location);
+		response.headers().setString(HttpConstants.HeaderNames.LOCATION, location);
 		response.getWriter().print(location);
 	}
 

@@ -8,9 +8,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections4.iterators.EnumerationIterator;
-import org.sothis.mvc.http.HttpHeaders;
+import org.sothis.mvc.Headers;
 
-public class ServletRequestHttpHeaders extends HttpHeaders {
+public class ServletRequestHttpHeaders extends Headers {
 	private final HttpServletRequest request;
 
 	public ServletRequestHttpHeaders(HttpServletRequest request) {

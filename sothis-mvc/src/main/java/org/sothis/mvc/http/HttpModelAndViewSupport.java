@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 import org.apache.commons.io.IOUtils;
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ModelAndViewSupport;
+import org.sothis.mvc.Response;
 import org.sothis.mvc.View;
 
 public class HttpModelAndViewSupport extends ModelAndViewSupport {
@@ -22,7 +23,7 @@ public class HttpModelAndViewSupport extends ModelAndViewSupport {
 	 */
 	public final HttpModelAndViewSupport redirect(String location) {
 		this.viewType("redirect");
-		this.viewParam("status", HttpResponse.StatusCodes.SC_MOVED_TEMPORARILY);
+		this.viewParam("status", HttpConstants.StatusCodes.SC_MOVED_TEMPORARILY);
 		this.viewParam("location", location);
 		return this;
 	}
@@ -36,7 +37,7 @@ public class HttpModelAndViewSupport extends ModelAndViewSupport {
 	 */
 	public final HttpModelAndViewSupport redirectPermanently(String location) {
 		this.viewType("redirect");
-		this.viewParam("status", HttpResponse.StatusCodes.SC_MOVED_PERMANENTLY);
+		this.viewParam("status", HttpConstants.StatusCodes.SC_MOVED_PERMANENTLY);
 		this.viewParam("location", location);
 		return this;
 	}
@@ -49,7 +50,7 @@ public class HttpModelAndViewSupport extends ModelAndViewSupport {
 	 * @return
 	 */
 	public final HttpModelAndViewSupport notFound(String path) {
-		this.viewParam("status", HttpResponse.StatusCodes.SC_NOT_FOUND);
+		this.viewParam("status", HttpConstants.StatusCodes.SC_NOT_FOUND);
 		this.viewParam("location", path);
 		return this;
 	}
@@ -112,7 +113,7 @@ public class HttpModelAndViewSupport extends ModelAndViewSupport {
 	 */
 	public final HttpModelAndViewSupport download(String fileName, long fileSize, InputStream fileStream) throws IOException {
 		this.viewType(View.NULL_VIEW_TYPE);
-		HttpResponse resp = (HttpResponse) ActionContext.getContext().getResponse();
+		Response resp = ActionContext.getContext().getResponse();
 		resp.headers().addString("Content-Disposition",
 				"attachment;filename=" + new String(fileName.getBytes("UTF-8"), "ISO8859-1"));
 		if (fileSize > 0) {
@@ -120,7 +121,8 @@ public class HttpModelAndViewSupport extends ModelAndViewSupport {
 		}
 		ServletContext servletContext = (ServletContext) ActionContext.getContext().getApplicationContext().getNativeContext();
 		String contentType = servletContext.getMimeType(fileName);
-		resp.headers().setString(HttpHeaders.Names.CONTENT_TYPE, null == contentType ? "application/octet-stream" : contentType);
+		resp.headers().setString(HttpConstants.HeaderNames.CONTENT_TYPE,
+				null == contentType ? "application/octet-stream" : contentType);
 		if (null != fileStream) {
 			IOUtils.copy(new BufferedInputStream(fileStream), resp.getOutputStream());
 		}

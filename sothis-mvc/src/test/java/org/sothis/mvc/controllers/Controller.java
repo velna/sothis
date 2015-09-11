@@ -1,10 +1,10 @@
 package org.sothis.mvc.controllers;
 
-import org.sothis.mvc.http.HttpRequest;
-import org.sothis.mvc.http.HttpResponse;
+import org.sothis.mvc.Request;
+import org.sothis.mvc.Response;
 
 public class Controller {
-	public Object indexAction(HttpRequest req, HttpResponse resp) throws Exception {
+	public Object indexAction(Request req, Response resp) throws Exception {
 		return req.parameters().getString("message");
 	}
 }
