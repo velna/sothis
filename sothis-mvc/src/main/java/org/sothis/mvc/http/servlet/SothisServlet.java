@@ -114,7 +114,7 @@ public class SothisServlet extends HttpServlet {
 			if (!ActionInvocationHelper.invoke(applicationContext, new ServletHttpRequest((HttpServletRequest) req),
 					new ServletHttpResponse((HttpServletResponse) resp, ((HttpServletRequest) req).getProtocol()))
 					&& !resp.isCommitted()) {
-				req.getServletContext().getNamedDispatcher("default").forward(req, resp);
+				servletContext.getNamedDispatcher("default").forward(req, resp);
 			}
 		} catch (Exception e) {
 			throw new ServletException(e);

@@ -5,10 +5,12 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Attributes;
 import org.sothis.mvc.HashMapParameters;
@@ -125,7 +127,10 @@ public class ServletHttpRequest implements HttpRequest {
 			try {
 				String contentType = request.getContentType();
 				if (null != contentType && contentType.toLowerCase().startsWith("multipart/")) {
-					if (request.getServletContext().getMajorVersion() == 3 && request.getServletContext().getMinorVersion() == 1) {
+					ServletContext servletContext = (ServletContext) ActionContext.getContext().getApplicationContext()
+							.getNativeContext();
+					if (servletContext.getMajorVersion() > 3
+							|| (servletContext.getMajorVersion() == 3 && servletContext.getMinorVersion() >= 1)) {
 						attachments = new Servlet31Attachments(request);
 					} else {
 						attachments = new CommonsUploadAttachments(request);

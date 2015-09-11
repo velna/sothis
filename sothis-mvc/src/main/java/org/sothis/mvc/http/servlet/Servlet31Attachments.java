@@ -2,13 +2,17 @@ package org.sothis.mvc.http.servlet;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+
+import org.apache.commons.io.IOUtils;
 
 public class Servlet31Attachments extends ServletAttachments {
 
@@ -17,7 +21,12 @@ public class Servlet31Attachments extends ServletAttachments {
 	public Servlet31Attachments(HttpServletRequest request) throws IOException, ServletException {
 		this.attachments = new HashMap<>();
 		for (Part part : request.getParts()) {
-			this.attachments.put(part.getName(), new Servlet31PartWrapper(part));
+			List<ServletPart> parts = (List<ServletPart>) this.attachments.get(part.getName());
+			if (null == parts) {
+				parts = new ArrayList<ServletPart>();
+				this.attachments.put(part.getName(), parts);
+			}
+			parts.add(new Servlet31PartWrapper(part));
 		}
 	}
 
@@ -26,7 +35,7 @@ public class Servlet31Attachments extends ServletAttachments {
 		return attachments;
 	}
 
-	private class Servlet31PartWrapper implements Servlet31Part {
+	private class Servlet31PartWrapper implements ServletPart {
 
 		private final Part part;
 
@@ -83,6 +92,16 @@ public class Servlet31Attachments extends ServletAttachments {
 		@Override
 		public String getSubmittedFileName() {
 			return part.getSubmittedFileName();
+		}
+
+		@Override
+		public boolean isFormField() {
+			return part.getContentType() == null;
+		}
+
+		@Override
+		public String getString(String charset) throws IOException {
+			return IOUtils.toString(part.getInputStream(), charset);
 		}
 
 	}

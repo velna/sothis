@@ -30,7 +30,12 @@ public class CommonsUploadAttachments extends ServletAttachments {
 			List<FileItem> items = upload.parseRequest(request);
 			for (Iterator<FileItem> i = items.iterator(); i.hasNext();) {
 				FileItem item = i.next();
-				this.attachments.put(item.getFieldName(), new CommonsFileUploadPart(item));
+				List<ServletPart> parts = (List<ServletPart>) this.attachments.get(item.getFieldName());
+				if (null == parts) {
+					parts = new ArrayList<ServletPart>();
+					this.attachments.put(item.getFieldName(), parts);
+				}
+				parts.add(new CommonsFileUploadPart(item));
 			}
 		} catch (FileUploadException e) {
 			throw new ServletException(e);
@@ -42,7 +47,7 @@ public class CommonsUploadAttachments extends ServletAttachments {
 		return attachments;
 	}
 
-	private class CommonsFileUploadPart implements Servlet31Part {
+	private class CommonsFileUploadPart implements ServletPart {
 		private final FileItem fileItem;
 
 		public CommonsFileUploadPart(FileItem fileItem) {
@@ -111,6 +116,16 @@ public class CommonsUploadAttachments extends ServletAttachments {
 				names.add(i.next());
 			}
 			return names;
+		}
+
+		@Override
+		public boolean isFormField() {
+			return fileItem.isFormField();
+		}
+
+		@Override
+		public String getString(String charset) throws IOException {
+			return fileItem.getString(charset);
 		}
 
 	}

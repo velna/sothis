@@ -2,13 +2,16 @@ package org.sothis.mvc.http.servlet.interceptors;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Interceptor;
-import org.sothis.mvc.http.servlet.Servlet31Part;
+import org.sothis.mvc.http.servlet.ServletPart;
 import org.sothis.mvc.interceptors.param.ParametersInterceptor;
 
 public class ServletFileUploadInterceptor implements Interceptor {
@@ -18,12 +21,22 @@ public class ServletFileUploadInterceptor implements Interceptor {
 		Attachments attachments = invocation.getActionContext().getRequest().attachments();
 		if (!attachments.isEmpty()) {
 			Map<String, Object[]> params = new HashMap<>(invocation.getActionContext().getRequest().parameters().toMap());
+			ServletContext servletContext = (ServletContext) invocation.getActionContext().getApplicationContext()
+					.getNativeContext();
+			String charset = invocation.getActionContext().getRequest().getCharset();
 			for (Map.Entry<String, Object> entry : attachments) {
-				Servlet31Part part = (Servlet31Part) entry.getValue();
-				if (part.getContentType() != null) {
-					append(params, entry.getKey(), part.getSubmittedFileName());
-					append(params, entry.getKey() + "InputStream", part.getInputStream());
-					append(params, entry.getKey() + "ContentType", part.getContentType());
+				List<ServletPart> parts = (List<ServletPart>) entry.getValue();
+				for (ServletPart part : parts) {
+					if (!part.isFormField()) {
+						append(params, entry.getKey(), part.getSubmittedFileName());
+						append(params, entry.getKey() + "InputStream", part.getInputStream());
+						append(params, entry.getKey() + "ContentType", part.getContentType());
+					} else {
+						if (servletContext.getMajorVersion() < 3
+								|| (servletContext.getMajorVersion() == 3 && servletContext.getMinorVersion() == 0)) {
+							append(params, entry.getKey(), part.getString(charset));
+						}
+					}
 				}
 			}
 			invocation.getActionContext().put(ParametersInterceptor.PARAMETER_KEY, params);
