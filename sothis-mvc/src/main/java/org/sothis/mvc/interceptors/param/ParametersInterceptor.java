@@ -43,16 +43,9 @@ import org.sothis.mvc.Response;
 @Bean(scope = Scope.SINGLETON)
 public class ParametersInterceptor implements Interceptor {
 
-	public static final String PARAMETER_KEY = "ParametersInterceptor.PARAMETER_KEY";
-
 	public Object intercept(ActionInvocation invocation) throws Exception {
 		ActionContext context = (ActionContext) invocation.getActionContext();
-
-		Map<String, Object[]> parameterMap = context.get(PARAMETER_KEY);
-		if (null == parameterMap) {
-			parameterMap = context.getRequest().parameters().toMap();
-		}
-
+		Map<String, Object[]> parameterMap = context.getRequestParameters();
 		Class<?>[] paramTypes = invocation.getAction().getActionMethod().getParameterTypes();
 		final Object[] actionParams = new Object[paramTypes.length];
 		Annotation[][] paramAnnotations = invocation.getAction().getActionMethod().getParameterAnnotations();

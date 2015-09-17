@@ -12,7 +12,6 @@ import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Interceptor;
 import org.sothis.mvc.http.servlet.ServletPart;
-import org.sothis.mvc.interceptors.param.ParametersInterceptor;
 
 public class ServletFileUploadInterceptor implements Interceptor {
 
@@ -39,7 +38,7 @@ public class ServletFileUploadInterceptor implements Interceptor {
 					}
 				}
 			}
-			invocation.getActionContext().put(ParametersInterceptor.PARAMETER_KEY, params);
+			invocation.getActionContext().setRequestParameters(params);
 		}
 		return invocation.invoke();
 	}

@@ -10,6 +10,7 @@ public class ActionInvocationHelper {
 			Configuration config = appContext.getConfiguration();
 			context.setApplicationContext(appContext);
 			context.setRequest(req);
+			context.setRequestParameters(req.parameters().toMap());
 			context.setResponse(resp);
 			context.setActionMapper(beanFactory.getBean(config.getActionMapper()));
 			context.setModelAndViewResolver(beanFactory.getBean(config.getModelAndViewResolver()));

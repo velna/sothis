@@ -10,6 +10,7 @@ public class ActionContext {
 	public final static String RESPONSE = "org.sothis.mvc.ACTION_RESPONSE";
 	public final static String FLASH = "org.sothis.web.mvc.FLAH";
 	public final static String ACTION_PARAMS = "org.sothis.mvc.ACTION_PARAMS";
+	public final static String REQUEST_PARAMS = "org.sothis.mvc.REQUEST_PARAMS";
 	public final static String ACTION = "org.sothis.mvc.ACTION";
 	public final static String MODEL_AND_VIEW_RESOLVER = "org.sothis.mvc.MODEL_AND_VIEW_RESOLVER";
 	public final static String ACTION_INVOCATION = "org.sothis.mvc.ACTION_INVOCATION";
@@ -77,6 +78,14 @@ public class ActionContext {
 
 	public void setRequest(Request request) {
 		put(REQUEST, request);
+	}
+
+	public Map<String, Object[]> getRequestParameters() {
+		return get(REQUEST_PARAMS);
+	}
+
+	public void setRequestParameters(Map<String, Object[]> params) {
+		put(REQUEST_PARAMS, params);
 	}
 
 	public Response getResponse() {

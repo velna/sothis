@@ -71,7 +71,7 @@ public class HttpModelAndViewSupport extends ModelAndViewSupport {
 	 * @return
 	 */
 	public final HttpModelAndViewSupport forward(String path) {
-		this.viewParam("path", path);
+		this.viewParam("location", path);
 		return this;
 	}
 
