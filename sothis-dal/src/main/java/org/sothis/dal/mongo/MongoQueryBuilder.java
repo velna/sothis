@@ -3,6 +3,7 @@ package org.sothis.dal.mongo;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.sothis.dal.AbstractJpaCompatibleDao.PropertyInfo;
 import org.sothis.dal.query.Chain;
 import org.sothis.dal.query.Cnd;
@@ -42,9 +43,11 @@ public class MongoQueryBuilder {
 	}
 	private final Map<String, PropertyInfo> propertyMap;
 	private final DBObject defaultFields;
+	private final boolean idGeneratedValue;
 
-	public MongoQueryBuilder(Map<String, PropertyInfo> propertyMap) {
+	public MongoQueryBuilder(Map<String, PropertyInfo> propertyMap, boolean idGeneratedValue) {
 		this.propertyMap = propertyMap;
+		this.idGeneratedValue = idGeneratedValue;
 		defaultFields = new BasicDBObject();
 		for (PropertyInfo p : propertyMap.values()) {
 			defaultFields.put(p.getColumn().name(), 1);
@@ -52,11 +55,15 @@ public class MongoQueryBuilder {
 	}
 
 	private String mapField(String property) {
+		return mapProperty(property).getColumn().name();
+	}
+
+	private PropertyInfo mapProperty(String property) {
 		PropertyInfo pi = propertyMap.get(property);
 		if (null == pi) {
 			throw new IllegalArgumentException("no property named [" + property + "] found.");
 		}
-		return pi.getColumn().name();
+		return pi;
 	}
 
 	/**
@@ -72,11 +79,15 @@ public class MongoQueryBuilder {
 		DBObject query = new BasicDBObject();
 		Object op = cnd.getOp();
 		if (op instanceof Op) {
+			PropertyInfo pi = mapProperty((String) cnd.getLeft());
+			Object value = cnd.getRight();
+			if (pi.isID() && this.idGeneratedValue) {
+				value = new ObjectId((String) cnd.getRight());
+			}
 			if (op == Op.EQ) {
-				query.put(mapField((String) cnd.getLeft()), cnd.getRight());
+				query.put(pi.getColumn().name(), value);
 			} else {
-				query.put(mapField((String) cnd.getLeft()),
-						new BasicDBObject(OP_MAP[((Op) op).ordinal()], cnd.getRight()));
+				query.put(pi.getColumn().name(), new BasicDBObject(OP_MAP[((Op) op).ordinal()], value));
 			}
 		} else if (op instanceof Logic) {
 			BasicDBList logicQuery = new BasicDBList();
@@ -86,7 +97,12 @@ public class MongoQueryBuilder {
 		} else if (op instanceof String) {
 			String _op = (String) op;
 			if (_op.length() > 1 && _op.charAt(0) == '$') {
-				query.put(mapField((String) cnd.getLeft()), new BasicDBObject(_op, cnd.getRight()));
+				PropertyInfo pi = mapProperty((String) cnd.getLeft());
+				Object value = cnd.getRight();
+				if (pi.isID() && this.idGeneratedValue) {
+					value = new ObjectId((String) cnd.getRight());
+				}
+				query.put(pi.getColumn().name(), new BasicDBObject(_op, value));
 			} else {
 				throw new RuntimeException("unknown op: " + op);
 			}
@@ -129,10 +145,17 @@ public class MongoQueryBuilder {
 		if (null == chain) {
 			return null;
 		}
+		return new BasicDBObject("$set", chainToData(chain));
+	}
+
+	private DBObject chainToData(Chain chain) {
+		if (null == chain) {
+			return null;
+		}
 		DBObject update = new BasicDBObject();
 		for (Chain c : chain) {
 			if (c.value() instanceof Chain) {
-				update.put(mapField(c.name()), chainToUpdate((Chain) c.value()));
+				update.put(mapField(c.name()), chainToData((Chain) c.value()));
 			} else {
 				update.put(mapField(c.name()), c.value());
 			}

@@ -47,7 +47,7 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 		}
 		dbName = tableName.substring(0, i);
 		this.collectionName = tableName.substring(i + 1);
-		queryBuilder = new MongoQueryBuilder(getPropertyMap());
+		queryBuilder = new MongoQueryBuilder(getPropertyMap(), this.isIdGeneratedValue());
 	}
 
 	/**
@@ -55,10 +55,14 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 	 * 
 	 * @return
 	 */
-	private final DBCollection getDbCollection() {
+	protected final DBCollection getDbCollection() {
 		DBCollection dbCollection = mongo.getDB(dbName).getCollection(collectionName);
 		dbCollection.setWriteConcern(WriteConcern.SAFE);
 		return dbCollection;
+	}
+
+	public Mongo getMongo() {
+		return mongo;
 	}
 
 	public void setMongo(Mongo mongo) {
