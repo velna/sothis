@@ -75,8 +75,13 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 		DBObject fields = queryBuilder.chainToFields(chain);
 		DBObject sorts = queryBuilder.orderByToSorts(cnd);
 
-		List<DBObject> dbObjects = this.getDbCollection().find(query, fields).sort(sorts).limit(pager.getPageSize())
-				.skip(pager.getStartRow()).batchSize(pager.getPageSize()).toArray();
+		DBCursor cursor = this.getDbCollection().find(query, fields).sort(sorts);
+		if (null != pager) {
+			cursor.limit(pager.getPageSize()).skip(pager.getStartRow()).batchSize(pager.getPageSize());
+		} else {
+			cursor.limit(Integer.MAX_VALUE).skip(0);
+		}
+		List<DBObject> dbObjects = cursor.toArray();
 		List<E> ret = new ArrayList<E>(dbObjects.size());
 		for (DBObject object : dbObjects) {
 			ret.add(this.dbObjectToEntity(object));
