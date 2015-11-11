@@ -63,25 +63,20 @@ public class ActionInvocationHelper {
 	}
 
 	private static ActionInvocation prepareActionInvocation(ActionContext context) {
-		ActionInvocation invocation = context.getActionInvocation();
-		if (null == invocation) {
-			ActionMapper actionMapper = context.getActionMapper();
+		ActionMapper actionMapper = context.getActionMapper();
 
-			Action action = actionMapper.resolve(context);
-			if (null == action) {
-				return null;
-			}
-
-			context.setAction(action);
-
-			context.setActionParams(new Object[] { context.getRequest(), context.getResponse() });
-
-			Object controllerInstance = context.getApplicationContext().getBeanFactory()
-					.getBean(action.getController().getControllerClass());
-			invocation = new DefaultActionInvocation(controllerInstance, context);
-			context.setActionInvocation(invocation);
+		Action action = actionMapper.resolve(context);
+		if (null == action) {
+			return null;
 		}
-		return invocation;
+
+		context.setAction(action);
+
+		context.setActionParams(new Object[] { context.getRequest(), context.getResponse() });
+
+		Object controllerInstance = context.getApplicationContext().getBeanFactory()
+				.getBean(action.getController().getControllerClass());
+		return new DefaultActionInvocation(controllerInstance, context);
 	}
 
 }

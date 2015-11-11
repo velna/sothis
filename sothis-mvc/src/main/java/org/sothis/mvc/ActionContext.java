@@ -1,6 +1,5 @@
 package org.sothis.mvc;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,7 +12,6 @@ public class ActionContext {
 	public final static String REQUEST_PARAMS = "org.sothis.mvc.REQUEST_PARAMS";
 	public final static String ACTION = "org.sothis.mvc.ACTION";
 	public final static String MODEL_AND_VIEW_RESOLVER = "org.sothis.mvc.MODEL_AND_VIEW_RESOLVER";
-	public final static String ACTION_INVOCATION = "org.sothis.mvc.ACTION_INVOCATION";
 	public final static String ACTION_MAPPER = "org.sothis.mvc.ACTION_MAPPER";
 	public final static String APPLICATION_CONTEXT = "org.sothis.mvc.APPLICATION_CONTEXT";
 	public final static String EXCEPTION_HANDLER = "org.sothis.mvc.EXCEPTION_HANDLER";
@@ -120,14 +118,6 @@ public class ActionContext {
 		put(MODEL_AND_VIEW_RESOLVER, modelAndViewResolver);
 	}
 
-	public ActionInvocation getActionInvocation() {
-		return get(ACTION_INVOCATION);
-	}
-
-	public void setActionInvocation(ActionInvocation actionInvocation) {
-		put(ACTION_INVOCATION, actionInvocation);
-	}
-
 	public Object[] getActionParams() {
 		return get(ACTION_PARAMS);
 	}
@@ -147,7 +137,7 @@ public class ActionContext {
 	}
 
 	public Map<String, Object> getContextMap() {
-		return Collections.unmodifiableMap(this.context);
+		return new HashMap<>(this.context);
 	}
 
 	public Map<String, Object> setContextMap(Map<String, Object> context) {
