@@ -23,6 +23,7 @@ import org.sothis.mvc.ApplicationContext;
 import org.sothis.mvc.Configuration;
 import org.sothis.mvc.ConfigurationException;
 import org.sothis.mvc.DefaultApplicationContext;
+import org.sothis.mvc.Flash;
 import org.sothis.mvc.Request;
 import org.sothis.mvc.Response;
 
@@ -171,6 +172,13 @@ public class ServletApplication {
 			ActionContext context = ActionContext.getContext();
 			Request request = new ServletHttpRequest((HttpServletRequest) req);
 			Response response = new ServletHttpResponse((HttpServletResponse) resp, ((HttpServletRequest) req).getProtocol());
+			context.setRequest(request);
+			context.setResponse(response);
+			context.setApplicationContext(applicationContext);
+			Flash flash = context.getFlash(false);
+			if (null != flash) {
+				flash.flash();
+			}
 			return ActionInvocationHelper.invoke(context, applicationContext, request, response) || resp.isCommitted();
 		} catch (Exception e) {
 			throw new ServletException(e);

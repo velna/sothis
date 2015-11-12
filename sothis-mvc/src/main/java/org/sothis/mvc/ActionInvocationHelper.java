@@ -16,10 +16,6 @@ public class ActionInvocationHelper {
 			context.setModelAndViewResolver(beanFactory.getBean(config.getModelAndViewResolver()));
 			context.setExceptionHandler(beanFactory.getBean(config.getExceptionHandler()));
 
-			Flash flash = context.getFlash(false);
-			if (null != flash) {
-				flash.flash();
-			}
 			actionContextCheck(context);
 			ActionInvocation invocation = prepareActionInvocation(context);
 			if (null != invocation) {
