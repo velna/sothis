@@ -30,7 +30,7 @@ public class MongoQueryBuilder {
 		OP_MAP[Op.EQ.ordinal()] = "$eq";
 		OP_MAP[Op.GT.ordinal()] = "$gt";
 		OP_MAP[Op.GTE.ordinal()] = "$gte";
-		OP_MAP[Op.IN.ordinal()] = "$im";
+		OP_MAP[Op.IN.ordinal()] = "$in";
 		OP_MAP[Op.LIKE.ordinal()] = "$regex";
 		OP_MAP[Op.LT.ordinal()] = "$lt";
 		OP_MAP[Op.LTE.ordinal()] = "$lte";

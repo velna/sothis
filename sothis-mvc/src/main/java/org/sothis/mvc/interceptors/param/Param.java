@@ -26,7 +26,7 @@ import java.util.Date;
  * @author velna
  * 
  */
-@Target({ ElementType.PARAMETER })
+@Target({ ElementType.PARAMETER, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Param {
 	/**

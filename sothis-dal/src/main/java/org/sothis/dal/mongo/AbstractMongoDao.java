@@ -133,7 +133,7 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 		}
 		this.getDbCollection().insert(objects, WriteConcern.SAFE);
 		for (int i = 0; i < objects.size(); i++) {
-			entityList.get(i).setId(this.toEntityId(objects.get(i)));
+			entityList.get(i).setId(this.toEntityId(objects.get(i).get(ID)));
 		}
 		return entityList;
 	}

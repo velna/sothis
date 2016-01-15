@@ -53,17 +53,19 @@ public class FreemarkerView implements View {
 		Response response = context.getResponse();
 		try {
 			Template template = configuration.getTemplate(path);
-			Object contentType = template.getCustomAttribute("content_type");
-			if (null == contentType) {
-				contentType = "text/html; charset=" + context.getRequest().getCharset();
-			} else {
-				contentType = template.getCustomAttribute("content_type").toString();
+			if (!response.headers().contains(HttpConstants.HeaderNames.CONTENT_TYPE)) {
+				Object contentType = template.getCustomAttribute("content_type");
+				if (null == contentType) {
+					contentType = "text/html; charset=" + context.getRequest().getCharset();
+				} else {
+					contentType = template.getCustomAttribute("content_type").toString();
+				}
+				response.headers().setString(HttpConstants.HeaderNames.CONTENT_TYPE, contentType.toString());
 			}
 			Integer status = MapUtils.getInteger(params, "status");
 			if (status != null) {
 				response.setStatus(status);
 			}
-			response.headers().setString(HttpConstants.HeaderNames.CONTENT_TYPE, contentType.toString());
 			template.process(new AllScopesHashModel(context, model), response.getWriter());
 		} catch (TemplateException e) {
 			throw new IOException("error processing freemarker template '" + path + "': ", e);
