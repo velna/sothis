@@ -72,6 +72,8 @@ public class AllScopesHashModel extends WrappingTemplateModel implements Templat
 				} else {
 					return TemplateModel.NOTHING;
 				}
+			} else {
+				return TemplateModel.NOTHING;
 			}
 		}
 		return null;
