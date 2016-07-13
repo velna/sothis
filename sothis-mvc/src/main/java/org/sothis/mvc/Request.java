@@ -29,6 +29,7 @@ public interface Request extends Attributed, Parameterized, Attachable {
 
 	Headers headers();
 
-	String getProtocolVersion();
+	String getProtocol();
 
+	String getScheme();
 }

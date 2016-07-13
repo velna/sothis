@@ -3,6 +3,7 @@ package org.sothis.mvc.http.netty;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.ssl.SslHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import org.sothis.mvc.AbstractRequest;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Headers;
 import org.sothis.mvc.Session;
+import org.sothis.mvc.http.HttpConstants;
 
 public class NettyHttpRequest extends AbstractRequest {
 
@@ -19,6 +21,7 @@ public class NettyHttpRequest extends AbstractRequest {
 	private final Channel channel;
 	private InputStream inputStream;
 	private Headers headers;
+	private String scheme;
 
 	public NettyHttpRequest(FullHttpRequest request, Channel channel) {
 		super();
@@ -54,7 +57,7 @@ public class NettyHttpRequest extends AbstractRequest {
 	}
 
 	@Override
-	public String getProtocolVersion() {
+	public String getProtocol() {
 		return request.getProtocolVersion().text();
 	}
 
@@ -94,6 +97,14 @@ public class NettyHttpRequest extends AbstractRequest {
 	@Override
 	public int getRemotePort() {
 		return ((InetSocketAddress) channel.remoteAddress()).getPort();
+	}
+
+	@Override
+	public String getScheme() {
+		if (null == scheme) {
+			scheme = channel.pipeline().get(SslHandler.class) == null ? HttpConstants.Schemes.HTTP : HttpConstants.Schemes.HTTPS;
+		}
+		return scheme;
 	}
 
 }

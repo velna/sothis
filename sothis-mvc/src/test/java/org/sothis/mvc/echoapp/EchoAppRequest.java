@@ -79,7 +79,12 @@ public class EchoAppRequest extends AbstractRequest {
 	}
 
 	@Override
-	public String getProtocolVersion() {
+	public String getProtocol() {
+		return null;
+	}
+
+	@Override
+	public String getScheme() {
 		return null;
 	}
 

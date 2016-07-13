@@ -5,6 +5,11 @@ public final class HttpConstants {
 	private HttpConstants() {
 	}
 
+	public static final class Schemes {
+		public static final String HTTP = "http";
+		public static final String HTTPS = "https";
+	}
+
 	public static final class Methods {
 		public static final String GET = "GET";
 		public static final String POST = "POST";

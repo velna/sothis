@@ -80,7 +80,7 @@ public class ServletHttpRequest implements Request {
 	}
 
 	@Override
-	public String getProtocolVersion() {
+	public String getProtocol() {
 		return request.getProtocol();
 	}
 
@@ -163,6 +163,11 @@ public class ServletHttpRequest implements Request {
 	@Override
 	public int getRemotePort() {
 		return request.getRemotePort();
+	}
+
+	@Override
+	public String getScheme() {
+		return request.getScheme();
 	}
 
 }

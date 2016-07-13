@@ -98,8 +98,13 @@ public class RequestWrapper implements Request {
 	}
 
 	@Override
-	public String getProtocolVersion() {
-		return request.getProtocolVersion();
+	public String getProtocol() {
+		return request.getProtocol();
+	}
+
+	@Override
+	public String getScheme() {
+		return request.getScheme();
 	}
 
 }

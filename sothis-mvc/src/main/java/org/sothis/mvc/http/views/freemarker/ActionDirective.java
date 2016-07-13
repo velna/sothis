@@ -64,7 +64,7 @@ public class ActionDirective implements TemplateDirectiveModel {
 			}
 		}
 		Map<String, Object> orgContext = actionContext.getContextMap();
-		StringResponse response = new StringResponse(actionContext.getRequest().getProtocolVersion(), actionContext.getRequest()
+		StringResponse response = new StringResponse(actionContext.getRequest().getProtocol(), actionContext.getRequest()
 				.getCharset());
 		ActionRequest myRequest = new ActionRequest(actionContext.getApplicationContext().getContextPath() + controller + "/"
 				+ action, actionContext.getRequest(), myParams);
@@ -147,8 +147,8 @@ public class ActionDirective implements TemplateDirectiveModel {
 		}
 
 		@Override
-		public String getProtocolVersion() {
-			return request.getProtocolVersion();
+		public String getProtocol() {
+			return request.getProtocol();
 		}
 
 		@Override
@@ -159,6 +159,11 @@ public class ActionDirective implements TemplateDirectiveModel {
 		@Override
 		public Parameters parameters() {
 			return this.parameters;
+		}
+
+		@Override
+		public String getScheme() {
+			return request.getScheme();
 		}
 
 	}
