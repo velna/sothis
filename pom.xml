@@ -240,5 +240,6 @@
 		<module>sothis-web</module>
 		<module>sothis-example</module>
 		<module>sothis-web-start</module>
+		<module>sothis-thrift</module>
 	</modules>
 </project>
