@@ -7,6 +7,10 @@ import java.lang.annotation.Target;
 
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BWName {
-	String value();
+public @interface MatcherConf {
+
+	String name();
+
+	boolean hasValues();
+
 }
