@@ -10,16 +10,16 @@ public final class Source {
 	private final BWList bwList;
 	private Map<Object, Object> attributes = new HashMap<>();
 
-	public Source(BWList bwList, String uri) {
+	public Source(BWList bwList, URI uri) {
 		super();
 		this.bwList = bwList;
-		this.uri = URI.create(uri);
+		this.uri = uri;
 	}
 
-	SourceData load(boolean forceReload) throws SourceLoadException {
+	SourceData load(boolean forceReload) throws CompileException {
 		SourceLoader loader = bwList.findSourceLoader(uri.getScheme(), null);
 		if (null == loader) {
-			throw new SourceLoadException("can not find loader of type: " + uri.getScheme());
+			throw new CompileException("can not find loader of type: " + uri.getScheme());
 		}
 		return loader.load(this, forceReload);
 	}

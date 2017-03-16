@@ -1,0 +1,16 @@
+$host host.list
+
+$url
+	www.baidu.com/s
+	www.baidu.com/ss
+	baidu.com/s
+	baidu.com/ss
+	baidu.com/
+	s.baidu.com/
+
+$host2
+	*.google.com$
+
+url matches url.list
+
+@host equals $host or url equals $url or (host matches $host2 && user-agent exists)

@@ -8,9 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.sothis.core.util.bwlist.CompileException;
+import org.sothis.core.util.bwlist.MatcherConf;
 import org.sothis.core.util.bwlist.Source;
 import org.sothis.core.util.bwlist.SourceData;
-import org.sothis.core.util.bwlist.SourceLoadException;
 import org.sothis.core.util.bwlist.SourceLoader;
 
 public abstract class InputStreamSourceLoader implements SourceLoader {
@@ -32,42 +33,55 @@ public abstract class InputStreamSourceLoader implements SourceLoader {
 		return values;
 	}
 
-	protected void loadFromStream(Source source, SourceData sourceData, InputStream in) throws IOException {
+	protected void loadFromStream(Source source, SourceData sourceData, InputStream in) throws IOException, CompileException {
 		String line, name = null, varName = null;
 		int ln = 0, nextVarId = 0;
 		BufferedReader reader = null;
+		MatcherConf matcherConf = null;
 		reader = new BufferedReader(new InputStreamReader(in));
 		try {
 			while ((line = reader.readLine()) != null) {
 				ln++;
-				if (line.length() == 0 || line.charAt(0) == '#') {
+				if (line.trim().length() == 0 || line.charAt(0) == '#') {
 					continue;
 				}
 				char ch = line.charAt(0);
 				if (Character.isWhitespace(ch)) {
-					if (name == null || varName == null) {
-						throw new SourceLoadException("bwlist syntax error, no group found at line " + ln + ": [" + line + "]");
+					if (varName == null) {
+						if (null != matcherConf && !matcherConf.hasValues()) {
+							throw new CompileException("bwlist syntax error, matcher of type \"" + matcherConf.name()
+									+ "\" can not have values: [" + line + "] at line " + ln);
+						} else {
+							throw new CompileException("bwlist syntax error: [" + line + "] at line " + ln);
+						}
 					}
 					sourceData.addValue(varName, line.trim());
+				} else if (ch == '@') {
+					sourceData.addExpression(line.trim());
 				} else {
 					StringTokenizer tokenizer = new StringTokenizer(line);
 					if (!tokenizer.hasMoreTokens()) {
-						throw new SourceLoadException("bwlist syntax error, group name expected at line " + ln + ": [" + line
-								+ "]");
+						throw new CompileException("bwlist syntax error: [" + line + "] at line " + ln);
 					}
 					name = tokenizer.nextToken();
-					if (name.charAt(0) == '@') {
-						sourceData.addExpression(line.trim());
+					matcherConf = null;
+					varName = null;
+					if (name.charAt(0) == '$') {
+						varName = name;
+						if (varName.length() == 1) {
+							throw new CompileException("bwlist syntax error, empty variable name: [" + line + "] at line " + ln);
+						}
 					} else {
-						if (name.charAt(0) == '$') {
-							varName = name;
-						} else {
-							if (!tokenizer.hasMoreTokens()) {
-								throw new SourceLoadException("bwlist syntax error, group type expected at line " + ln + ": ["
-										+ line + "]");
-							}
+						if (!tokenizer.hasMoreTokens()) {
+							throw new CompileException("bwlist syntax error, matcher type expected: [" + line + "] at line " + ln);
+						}
+						String matcherName = tokenizer.nextToken();
+						matcherConf = source.getBwList().getMatcherConf(matcherName);
+						if (matcherConf.hasValues()) {
 							varName = "#$var_" + (++nextVarId);
-							sourceData.addExpression("@" + name + " " + tokenizer.nextToken() + " " + varName);
+							sourceData.addExpression("@" + name + " " + matcherName + " " + varName);
+						} else {
+							sourceData.addExpression("@" + name + " " + matcherName);
 						}
 					}
 					if (tokenizer.hasMoreTokens()) {

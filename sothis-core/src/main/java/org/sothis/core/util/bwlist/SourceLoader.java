@@ -11,8 +11,8 @@ public interface SourceLoader {
 	 * @param forceReload
 	 * @return
 	 */
-	SourceData load(Source source, boolean forceReload) throws SourceLoadException;
+	SourceData load(Source source, boolean forceReload) throws CompileException;
 
-	Set<String> loadValues(Source source, String uri) throws SourceLoadException;
+	Set<String> loadValues(Source source, String uri) throws CompileException;
 
 }

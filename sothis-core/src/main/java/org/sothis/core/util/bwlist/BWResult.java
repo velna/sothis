@@ -1,11 +1,13 @@
 package org.sothis.core.util.bwlist;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public final class BWResult {
+public final class BWResult implements Iterable<Integer> {
 
 	private final Map<Integer, Field> matches = new HashMap<>();
 	private final Set<Integer> sources = new HashSet<>();
@@ -59,5 +61,10 @@ public final class BWResult {
 	void clear() {
 		this.matches.clear();
 		this.sources.clear();
+	}
+
+	@Override
+	public Iterator<Integer> iterator() {
+		return Collections.unmodifiableSet(this.sources).iterator();
 	}
 }

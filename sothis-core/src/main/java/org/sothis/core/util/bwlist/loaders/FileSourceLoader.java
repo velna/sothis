@@ -7,17 +7,17 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sothis.core.util.bwlist.CompileException;
 import org.sothis.core.util.bwlist.Logic;
 import org.sothis.core.util.bwlist.Source;
 import org.sothis.core.util.bwlist.SourceData;
-import org.sothis.core.util.bwlist.SourceLoadException;
 
 public class FileSourceLoader extends InputStreamSourceLoader {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileSourceLoader.class);
 
 	@Override
-	public SourceData load(Source source, boolean forceReload) throws SourceLoadException {
+	public SourceData load(Source source, boolean forceReload) throws CompileException {
 		try {
 			File file = new File(source.getUri());
 			long lm = file.lastModified();
@@ -31,16 +31,16 @@ public class FileSourceLoader extends InputStreamSourceLoader {
 			LOGGER.info("load {} items from file {}", sourceData.size(), file);
 			return sourceData;
 		} catch (IOException e) {
-			throw new SourceLoadException(e);
+			throw new CompileException(e);
 		}
 	}
 
 	@Override
-	public Set<String> loadValues(Source source, String uri) throws SourceLoadException {
+	public Set<String> loadValues(Source source, String uri) throws CompileException {
 		try {
 			return loadValuesFromStream(new FileInputStream(new File(source.getUri().resolve(uri))));
 		} catch (IOException e) {
-			throw new SourceLoadException("error load values from uri: " + uri, e);
+			throw new CompileException("error load values from uri: " + uri, e);
 		}
 	}
 

@@ -1,0 +1,7 @@
+host equals
+	www.baidu.com
+	www.abc.com
+
+user-agent exists
+	Chrome
+	Firefox

@@ -1,5 +1,6 @@
 package org.sothis.core.util.bwlist.matchers;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -20,6 +21,9 @@ public class WumanberMatcher extends Matcher {
 
 	@Override
 	public Set<Integer> matches(String target) {
+		if (null == target) {
+			return Collections.emptySet();
+		}
 		WumanberMatchHandler handler = new WumanberMatchHandler();
 		wm.matches(target, handler);
 		return handler.matchIds;

@@ -90,6 +90,10 @@ public final class SourceData {
 	}
 
 	public int size() {
-		return this.values.size();
+		int size = 0;
+		for (Set<String> vs : this.values.values()) {
+			size += vs.size();
+		}
+		return size;
 	}
 }

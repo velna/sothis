@@ -223,7 +223,7 @@ class BWData {
 		result.clear();
 		boolean matches = false;
 		for (SourceInfo sourceInfo : this.sources.values()) {
-			if (sourceInfo.expression.matches(targets, result)) {
+			if (sourceInfo.expression != null && sourceInfo.expression.matches(targets, result)) {
 				result.set(sourceInfo.source.getId());
 				matches = true;
 			}

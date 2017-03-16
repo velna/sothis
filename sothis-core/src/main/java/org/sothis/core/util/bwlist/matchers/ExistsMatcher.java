@@ -1,5 +1,6 @@
 package org.sothis.core.util.bwlist.matchers;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,9 +17,10 @@ public class ExistsMatcher extends Matcher {
 		super();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Integer> matches(String target) {
-		return matchIds;
+		return null == target ? Collections.EMPTY_SET : matchIds;
 	}
 
 	@Override

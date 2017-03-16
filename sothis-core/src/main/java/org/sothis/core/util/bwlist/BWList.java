@@ -1,5 +1,6 @@
 package org.sothis.core.util.bwlist;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -47,7 +48,7 @@ public final class BWList {
 		return this;
 	}
 
-	public SourceLoader findSourceLoader(String str, SourceLoader defaultLoader) throws SourceLoadException {
+	public SourceLoader findSourceLoader(String str, SourceLoader defaultLoader) {
 		int i = str.indexOf("://");
 		SourceLoader loader;
 		if (i < 0) {
@@ -70,7 +71,16 @@ public final class BWList {
 		}
 	}
 
-	public Source add(String uri) {
+	public MatcherConf getMatcherConf(String matcherName) throws CompileException {
+		Class<? extends Matcher> matcherClass = this.matcherRegistry.get(matcherName);
+		if (null == matcherClass) {
+			throw new CompileException("no matcher found: " + matcherName);
+		}
+		MatcherConf config = matcherClass.getAnnotation(MatcherConf.class);
+		return config;
+	}
+
+	public Source add(URI uri) {
 		Source source;
 		this.lock.lock();
 		try {

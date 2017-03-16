@@ -1,0 +1,4 @@
+^www.baidu.com/s*
+^baidu.com/*
+^www.baidu.com/ss*
+^www.baidu.com/$
