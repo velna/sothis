@@ -18,13 +18,13 @@ public abstract class InputStreamSourceLoader implements SourceLoader {
 
 	protected Set<String> loadValuesFromStream(InputStream in) throws IOException {
 		Set<String> values = new HashSet<>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String line;
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		try {
 			while ((line = reader.readLine()) != null) {
 				line = line.trim();
 				if (!line.isEmpty()) {
-					values.add(line.trim());
+					values.add(line);
 				}
 			}
 		} finally {
@@ -36,9 +36,8 @@ public abstract class InputStreamSourceLoader implements SourceLoader {
 	protected void loadFromStream(Source source, SourceData sourceData, InputStream in) throws IOException, CompileException {
 		String line, name = null, varName = null;
 		int ln = 0, nextVarId = 0;
-		BufferedReader reader = null;
 		MatcherConf matcherConf = null;
-		reader = new BufferedReader(new InputStreamReader(in));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		try {
 			while ((line = reader.readLine()) != null) {
 				ln++;

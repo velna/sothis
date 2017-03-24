@@ -2,61 +2,70 @@ package org.sothis.core.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Counters {
+import org.sothis.core.util.Counters.Counter;
+
+public class Counters implements Iterable<Counter> {
 
 	public static final int OPT_TOTAL_ONLY = 0x01;
 	public static final int OPT_NO_PRINT = 0x02;
 	public static final int OPT_NO_RESET = 0x04;
 
-	private Map<String, Counter> counterMap = new HashMap<>();
-	private List<Counter> counterList = new ArrayList<>();
+	private Map<String, Counter> counterMap = new LinkedHashMap<>();
 
-	public Counter create(String group, String name, int opt) {
+	private static String fullName(String group, String name) {
 		String nm;
 		if (null != group) {
 			nm = group + "." + name;
 		} else {
 			nm = name;
 		}
+		return nm;
+	}
+
+	public Counter create(String group, String name, int opt) {
+		String nm = fullName(group, name);
 		if (counterMap.containsKey(nm)) {
 			throw new IllegalArgumentException("counter with name " + nm + " already exists.");
 		}
 		Counter counter = new Counter(group, name, opt);
 		counterMap.put(counter.getFullName(), counter);
-		counterList.add(counter);
 		return counter;
 	}
 
+	public Counter remove(String group, String name) {
+		String nm = fullName(group, name);
+		return this.counterMap.remove(nm);
+	}
+
+	@Override
+	public Iterator<Counter> iterator() {
+		return counterMap.values().iterator();
+	}
+
 	public Counter get(String group, String name) {
-		String nm;
-		if (null != group) {
-			nm = group + "." + name;
-		} else {
-			nm = name;
-		}
+		String nm = fullName(group, name);
 		return counterMap.get(nm);
 	}
 
 	public void reset() {
-		for (Counter counter : counterList) {
+		for (Counter counter : counterMap.values()) {
 			counter.reset();
 		}
 	}
 
 	public void snapshot() {
-		for (Counter counter : counterList) {
+		for (Counter counter : counterMap.values()) {
 			counter.snapshot();
 		}
 	}
 
 	public void enable(String group, int opt) {
-		for (Counter counter : counterList) {
+		for (Counter counter : counterMap.values()) {
 			if (StringUtils.equals(counter.getGroup(), group)) {
 				counter.enable(opt);
 			}
@@ -64,7 +73,7 @@ public class Counters {
 	}
 
 	public void disable(String group, int opt) {
-		for (Counter counter : counterList) {
+		for (Counter counter : counterMap.values()) {
 			if (StringUtils.equals(counter.getGroup(), group)) {
 				counter.disable(opt);
 			}
@@ -72,22 +81,27 @@ public class Counters {
 	}
 
 	public void print(PrintStream out) {
-		for (Counter counter : counterList) {
+		for (Counter counter : counterMap.values()) {
 			counter.print(out);
 		}
+	}
+
+	public int size() {
+		return this.counterMap.size();
 	}
 
 	@Override
 	public String toString() {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PrintStream stream = new PrintStream(out);
-		for (Counter counter : counterList) {
+		for (Counter counter : counterMap.values()) {
 			counter.print(stream);
 		}
 		return out.toString();
 	}
 
 	public static class Counter {
+		private long snapshotTimestamp;
 		private long lastTimestamp;
 		private final long initTimestamp;
 		private final String group;
@@ -102,13 +116,9 @@ public class Counters {
 			super();
 			this.group = group;
 			this.name = name;
-			if (null != group) {
-				fullName = group + "." + name;
-			} else {
-				fullName = name;
-			}
+			fullName = fullName(group, name);
 			this.opt = opt;
-			this.initTimestamp = this.lastTimestamp = System.currentTimeMillis();
+			this.initTimestamp = this.lastTimestamp = this.snapshotTimestamp = System.currentTimeMillis();
 		}
 
 		public long getSnapshot() {
@@ -139,40 +149,52 @@ public class Counters {
 			return value.getAndDecrement();
 		}
 
-		public void set(long newValue) {
+		public Counter set(long newValue) {
 			value.set(newValue);
+			return this;
 		}
 
-		public void reset() {
+		public Counter reset() {
 			if ((opt & OPT_NO_RESET) == 0) {
 				set(0);
 				last = snapshot = 0;
 			}
+			return this;
 		}
 
-		public void snapshot() {
+		public Counter snapshot() {
 			last = snapshot;
 			snapshot = value.get();
+			this.lastTimestamp = this.snapshotTimestamp;
+			this.snapshotTimestamp = System.currentTimeMillis();
+			return this;
 		}
 
-		public void print(PrintStream out) {
-			long now = System.currentTimeMillis();
-			long diffTotal = (now - this.initTimestamp) / 1000;
-			long diff = (now - this.lastTimestamp) / 1000;
+		public long avg() {
+			long diffTotal = (this.snapshotTimestamp - this.initTimestamp) / 1000;
 			if (diffTotal == 0) {
 				diffTotal = 1;
 			}
+			return this.snapshot / diffTotal;
+		}
+
+		public long inst() {
+			long diff = (this.snapshotTimestamp - this.lastTimestamp) / 1000;
 			if (diff == 0) {
 				diff = 1;
 			}
+			return (snapshot - last) / diff;
+		}
+
+		public Counter print(PrintStream out) {
 			if ((opt & OPT_NO_PRINT) == 0 && snapshot > 0) {
 				if ((opt & OPT_TOTAL_ONLY) != 0) {
 					out.format("%s:\t%s\n", fullName, snapshot);
 				} else {
-					out.format("%s:\t%s\t%s\t%s\n", fullName, snapshot, snapshot / diffTotal, (snapshot - last) / diff);
+					out.format("%s:\t%s\t%s\t%s\n", fullName, snapshot, avg(), inst());
 				}
 			}
-			this.lastTimestamp = now;
+			return this;
 		}
 
 		@Override
@@ -186,12 +208,14 @@ public class Counters {
 			return opt;
 		}
 
-		public void enable(int opt) {
+		public Counter enable(int opt) {
 			this.opt |= opt;
+			return this;
 		}
 
-		public void disable(int opt) {
+		public Counter disable(int opt) {
 			this.opt &= ~opt;
+			return this;
 		}
 
 		public String getGroup() {

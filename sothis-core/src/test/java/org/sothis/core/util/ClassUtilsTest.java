@@ -10,11 +10,13 @@ import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.BeanFactory;
 import org.sothis.core.beans.BeanInstantiationException;
 import org.sothis.core.beans.BeanPackageAutoProxyCreator;
+import org.sothis.core.beans.Scope;
+import org.sothis.core.beans.SimpleBeanFactory;
 import org.sothis.core.beans.SothisBeanNameGenerator;
+import org.sothis.core.beans.SpringClasspathBeanFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.sothis.core.beans.Scope;
 
 /**
  * ClassUtils测试类
@@ -48,7 +50,7 @@ public class ClassUtilsTest {
 				"org.sothis.core.beans",
 				new Class[] { AbstractSpringBeanFactory.class, Autowire.class, Bean.class, BeanFactory.class,
 						BeanInstantiationException.class, BeanPackageAutoProxyCreator.class, Scope.class,
-						SothisBeanNameGenerator.class } });
+						SimpleBeanFactory.class, SothisBeanNameGenerator.class, SpringClasspathBeanFactory.class } });
 		Object[][] result = new Object[paramList.size()][2];
 		result = paramList.toArray(result);
 

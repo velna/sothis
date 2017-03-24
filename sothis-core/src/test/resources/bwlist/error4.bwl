@@ -1,0 +1,30 @@
+$host
+	www.baidu.com
+	baidu.com
+	www.jd.com
+	www.hao123.com
+
+$url
+	www.baidu.com/s
+	www.baidu.com/ss
+	baidu.com/s
+	baidu.com/ss
+	baidu.com/
+	s.baidu.com/
+
+host matches
+	^www.baidu.com$
+	^baidu.com$
+	*.baidu.com$
+	^baidu*
+	*baidu.com$
+	^baidu$
+
+url matches
+	^www.baidu.com/s*
+	^baidu.com/*
+	^www.baidu.com/ss*
+	^www.baidu.com/$
+
+
+@host equals $host or (url equals $url and user-agent exists

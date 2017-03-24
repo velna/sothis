@@ -299,6 +299,7 @@ public class Wumanber<T> {
 		int options;
 		int hash;
 		int prefix;
+		@SuppressWarnings("unchecked")
 		Set<T>[] users = new HashSet[16];
 	}
 

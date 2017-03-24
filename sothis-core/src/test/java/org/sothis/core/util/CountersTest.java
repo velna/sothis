@@ -1,6 +1,10 @@
 package org.sothis.core.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.sothis.core.util.Counters.Counter;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class CountersTest {
@@ -8,12 +12,27 @@ public class CountersTest {
 	@Test
 	public void test() {
 		Counters counters = new Counters();
-		new CounterThread(counters).start();
-		for (int i = 0; i < 50; i++) {
+		CounterThread thread = new CounterThread(counters);
+		thread.start();
+		List<Long> lasts = new ArrayList<>();
+		List<Long> snapshots = new ArrayList<>();
+		for (Counter counter : counters) {
+			lasts.add(counter.getLast());
+			snapshots.add(counter.getSnapshot());
+		}
+		for (int i = 0; i < 10; i++) {
+			Assert.assertEquals(snapshots, lasts);
+			snapshots.clear();
+			for (Counter counter : counters) {
+				snapshots.add(counter.getSnapshot());
+			}
 			counters.snapshot();
-			System.out.println(counters.toString());
+			lasts.clear();
+			for (Counter counter : counters) {
+				lasts.add(counter.getLast());
+			}
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -35,13 +54,13 @@ public class CountersTest {
 
 		@Override
 		public void run() {
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 100; i++) {
 				total.add(10);
 				ok.add(5);
 				error.incr();
 				hide.incr();
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					break;
 				}

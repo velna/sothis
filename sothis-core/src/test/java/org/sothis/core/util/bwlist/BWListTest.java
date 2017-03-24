@@ -1,6 +1,7 @@
 package org.sothis.core.util.bwlist;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -92,9 +93,9 @@ public class BWListTest {
 	}
 
 	@Test(dataProvider = "compileException", expectedExceptions = { CompileException.class })
-	public void testCompileException(URI uri) throws CompileException {
+	public void testCompileException(String uri) throws CompileException, URISyntaxException {
 		BWList bwlist = BWList.createDefaultBWList();
-		bwlist.add(uri);
+		bwlist.add(this.getClass().getClassLoader().getResource(uri).toURI());
 		bwlist.compile();
 	}
 
@@ -102,13 +103,12 @@ public class BWListTest {
 	public Object[][] compileExceptionData() throws Exception {
 		List<Object[]> paramList = new ArrayList<Object[]>();
 
-		URI error1 = this.getClass().getClassLoader().getResource("bwlist/error1.bwl").toURI();
-		URI error2 = this.getClass().getClassLoader().getResource("bwlist/error2.bwl").toURI();
-		URI error3 = this.getClass().getClassLoader().getResource("bwlist/error3.bwl").toURI();
-
-		paramList.add(new Object[] { error1 });
-		paramList.add(new Object[] { error2 });
-		paramList.add(new Object[] { error3 });
+		paramList.add(new Object[] { "bwlist/error1.bwl" });
+		paramList.add(new Object[] { "bwlist/error2.bwl" });
+		paramList.add(new Object[] { "bwlist/error3.bwl" });
+		paramList.add(new Object[] { "bwlist/error4.bwl" });
+		paramList.add(new Object[] { "bwlist/error5.bwl" });
+		paramList.add(new Object[] { "bwlist/error6.bwl" });
 
 		return paramList.toArray(new Object[paramList.size()][1]);
 	}
