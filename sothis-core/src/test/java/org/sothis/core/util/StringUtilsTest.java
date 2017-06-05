@@ -12,7 +12,7 @@ public class StringUtilsTest {
 	@Test(dataProvider = "underlined")
 	public void testUnderlined(String test, String expect) {
 		String result = StringUtils.underlined(test);
-		Assert.assertEquals(expect, result);
+		Assert.assertEquals(result, expect);
 	}
 
 	@DataProvider(name = "underlined")
@@ -32,6 +32,7 @@ public class StringUtilsTest {
 		paramList.add(new Object[] { "get_some_value", "get_some_value" });
 		paramList.add(new Object[] { "__Get_Some", "__get_some" });
 		paramList.add(new Object[] { "/abcDef/doSomeAction", "/abc_def/do_some_action" });
+		paramList.add(new Object[] { "/AbcDef/DoSomeAction", "/abc_def/do_some_action" });
 
 		Object[][] result = new Object[paramList.size()][2];
 		result = paramList.toArray(result);
