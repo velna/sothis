@@ -86,7 +86,11 @@ public class NettyHttpResponse implements Response {
 			throw new IllegalStateException("response has already committed.");
 		}
 		committed = true;
-		this.getOutputStream().flush();
+		if (null != this.writer) {
+			this.writer.flush();
+		} else {
+			this.getOutputStream().flush();
+		}
 		headers().setInteger(Names.CONTENT_LENGTH, response.content().readableBytes());
 		headers().setString(Names.CONNECTION, Values.KEEP_ALIVE);
 	}
