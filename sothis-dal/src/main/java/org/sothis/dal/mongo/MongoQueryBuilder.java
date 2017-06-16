@@ -1,5 +1,6 @@
 package org.sothis.dal.mongo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,7 +83,17 @@ public class MongoQueryBuilder {
 			PropertyInfo pi = mapProperty((String) cnd.getLeft());
 			Object value = cnd.getRight();
 			if (pi.isID() && this.idGeneratedValue) {
-				value = new ObjectId((String) cnd.getRight());
+				if (value instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<String> values = (List<String>) value;
+					List<ObjectId> idList = new ArrayList<>(values.size());
+					for (String v : values) {
+						idList.add(new ObjectId(v));
+					}
+					value = idList;
+				} else {
+					value = new ObjectId((String) value);
+				}
 			}
 			if (op == Op.EQ) {
 				query.put(pi.getColumn().name(), value);
