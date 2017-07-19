@@ -94,6 +94,8 @@ public class MongoQueryBuilder {
 				} else {
 					value = new ObjectId((String) value);
 				}
+			} else if (value instanceof Enum) {
+				value = ((Enum) value).name();
 			}
 			if (op == Op.EQ) {
 				query.put(pi.getColumn().name(), value);
@@ -168,7 +170,11 @@ public class MongoQueryBuilder {
 			if (c.value() instanceof Chain) {
 				update.put(mapField(c.name()), chainToData((Chain) c.value()));
 			} else {
-				update.put(mapField(c.name()), c.value());
+				if (c.value() != null && c.value() instanceof Enum) {
+					update.put(mapField(c.name()), ((Enum) c.value()).name());
+				} else {
+					update.put(mapField(c.name()), c.value());
+				}
 			}
 		}
 		return update;

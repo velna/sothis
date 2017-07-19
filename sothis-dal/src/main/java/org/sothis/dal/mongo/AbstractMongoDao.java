@@ -30,7 +30,8 @@ import com.mongodb.WriteResult;
  * 
  * @param <E>
  */
-public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJpaCompatibleDao<E, String> implements MongoDao<E> {
+public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJpaCompatibleDao<E, String>
+		implements MongoDao<E> {
 	public static final String ID = "_id";
 
 	private final String dbName;
@@ -43,7 +44,8 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 		String tableName = this.getTableName();
 		int i = tableName.indexOf('.');
 		if (i <= 0 || i == tableName.length() - 1) {
-			throw new RuntimeException("invalid table name: " + tableName + " of entity class: " + this.getEntityClass());
+			throw new RuntimeException(
+					"invalid table name: " + tableName + " of entity class: " + this.getEntityClass());
 		}
 		dbName = tableName.substring(0, i);
 		this.collectionName = tableName.substring(i + 1);
@@ -156,13 +158,27 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 			for (String key : keySet) {
 				PropertyInfo propertyInfo = fieldMap.get(key);
 				if (null == propertyInfo) {
-					throw new RuntimeException("un-mapped field '" + key + "' of entity class " + this.getEntityClass());
+					throw new RuntimeException(
+							"un-mapped field '" + key + "' of entity class " + this.getEntityClass());
 				}
 				PropertyDescriptor descriptor = propertyInfo.getPropertyDescriptor();
 				Method writeMethod = descriptor.getWriteMethod();
 				Object value = dbObject.get(key);
 				if (value instanceof ObjectId) {
 					value = ((ObjectId) value).toString();
+				}
+				if (descriptor.getPropertyType().isEnum()) {
+					Enum[] es = ((Class<Enum>) descriptor.getPropertyType()).getEnumConstants();
+					for (Enum e : es) {
+						if (e.name().equals(value)) {
+							value = e;
+							break;
+						}
+					}
+					if (!(value instanceof Enum)) {
+						throw new RuntimeException(
+								"invalid enum value of class " + descriptor.getPropertyType() + ": " + value);
+					}
 				}
 				try {
 					writeMethod.invoke(entity, value);
@@ -188,7 +204,8 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 			if (propertyInfo.isTransient()) {
 				continue;
 			}
-			Method readMethod = propertyInfo.getPropertyDescriptor().getReadMethod();
+			PropertyDescriptor descriptor = propertyInfo.getPropertyDescriptor();
+			Method readMethod = descriptor.getReadMethod();
 			Object value;
 			try {
 				value = readMethod.invoke(entity, (Object[]) null);
@@ -197,6 +214,9 @@ public abstract class AbstractMongoDao<E extends MongoEntity> extends AbstractJp
 			}
 			if (propertyInfo.isID()) {
 				value = toMongoId(value);
+			}
+			if (descriptor.getPropertyType().isEnum()) {
+				value = ((Enum) value).name();
 			}
 			if (null != value) {
 				dbObject.put(propertyInfo.getColumn().name(), value);
