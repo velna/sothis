@@ -79,7 +79,6 @@ public class ParametersInterceptor implements Interceptor {
 	private Object getActionParamByAnnotation(Param parameter, Map<String, Object[]> parameterMap, Class<?> type,
 			ActionContext context) throws InstantiationException, IllegalAccessException, InvocationTargetException {
 		String name = null == parameter ? "" : parameter.name();
-		String pattern = null == parameter ? "" : parameter.pattern();
 		if ("".equals(name)) {
 			if (type.isPrimitive()) {
 				return getPrimitiveDefaultValue(type);
@@ -91,9 +90,9 @@ public class ParametersInterceptor implements Interceptor {
 				return getEnumValue(parameterMap, (Class<Enum<?>>) type);
 			}
 			Object paramBean = newInstance(type);
-			return populate(parameterMap, paramBean, pattern);
+			return populate(parameterMap, paramBean, parameter);
 		} else {
-			return convert(parameterMap.get(name), type, pattern);
+			return convert(parameterMap.get(name), type, parameter);
 		}
 	}
 
@@ -146,18 +145,19 @@ public class ParametersInterceptor implements Interceptor {
 	}
 
 	private boolean isPrimitiveLike(Class<?> type) {
-		if (type == Boolean.class || type == Short.class || type == Byte.class || type == Integer.class || type == Long.class
-				|| type == Double.class || type == Float.class || type == String.class || type == Character.class
-				|| type == Date.class || type == Number.class) {
+		if (type == Boolean.class || type == Short.class || type == Byte.class || type == Integer.class
+				|| type == Long.class || type == Double.class || type == Float.class || type == String.class
+				|| type == Character.class || type == Date.class || type == Number.class) {
 			return true;
 		}
 		return false;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Object populate(Map<String, Object[]> parameterMap, Object paramBean, String p) throws IllegalAccessException,
-			InvocationTargetException, InstantiationException {
-		Pattern pattern = "".equals(p) ? null : Pattern.compile(p);
+	private Object populate(Map<String, Object[]> parameterMap, Object paramBean, Param parentParam)
+			throws IllegalAccessException, InvocationTargetException, InstantiationException {
+		Pattern pattern = (null == parentParam || "".equals(parentParam.pattern())) ? null
+				: Pattern.compile(parentParam.pattern());
 		for (Map.Entry<String, Object[]> entry : parameterMap.entrySet()) {
 			if (null == entry.getKey() || (null != pattern && !pattern.matcher(entry.getKey()).matches())) {
 				continue;
@@ -187,7 +187,7 @@ public class ParametersInterceptor implements Interceptor {
 				}
 				Type[] types = writeMethod.getGenericParameterTypes();
 				Annotation[] as = writeMethod.getParameterAnnotations()[0];
-				Param parameter = null;
+				Param parameter = parentParam;
 				for (Annotation a : as) {
 					if (a.annotationType() == Param.class) {
 						parameter = (Param) a;
@@ -221,7 +221,7 @@ public class ParametersInterceptor implements Interceptor {
 					}
 					bean = propertyValue;
 				} else {
-					Object propertyValue = convert(entry.getValue(), propertyType, parameter != null ? parameter.pattern() : p);
+					Object propertyValue = convert(entry.getValue(), propertyType, parameter);
 					if (null != propertyValue) {
 						writeMethod.invoke(bean, propertyValue);
 					}
@@ -232,13 +232,24 @@ public class ParametersInterceptor implements Interceptor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object convert(Object[] values, Class<?> targetType, String pattern) throws InstantiationException,
-			IllegalAccessException {
-		if (null == values || values.length == 0) {
+	private Object convert(Object[] vs, Class<?> targetType, Param parameter)
+			throws InstantiationException, IllegalAccessException {
+		if (null == vs || vs.length == 0) {
 			if (targetType.isPrimitive()) {
 				return getPrimitiveDefaultValue(targetType);
 			} else {
 				return null;
+			}
+		}
+		Object[] values = vs;
+		if (null != parameter && parameter.trim()) {
+			values = new Object[vs.length];
+			for (int i = 0; i < vs.length; i++) {
+				if (vs[i] instanceof String) {
+					values[i] = ((String) vs[i]).trim();
+				} else {
+					values[i] = vs[i];
+				}
 			}
 		}
 		Object bean = null;
@@ -247,7 +258,7 @@ public class ParametersInterceptor implements Interceptor {
 			Object objectArray = Array.newInstance(componentType, values.length);
 			int notNullCount = 0;
 			for (int i = 0; i < values.length; i++) {
-				Object value = convert(new Object[] { values[i] }, componentType, pattern);
+				Object value = convert(new Object[] { values[i] }, componentType, parameter);
 				if (null != value) {
 					Array.set(objectArray, notNullCount, value);
 					notNullCount++;
@@ -293,7 +304,8 @@ public class ParametersInterceptor implements Interceptor {
 						bean = Integer.parseInt(stringValue);
 					} else if (targetType == long.class || targetType == Long.class) {
 						bean = Long.parseLong(stringValue);
-					} else if ((targetType == float.class || targetType == Float.class) && isSimpleNumberic(stringValue)) {
+					} else if ((targetType == float.class || targetType == Float.class)
+							&& isSimpleNumberic(stringValue)) {
 						bean = Float.parseFloat(stringValue);
 					} else if ((targetType == double.class || targetType == Double.class || targetType == Number.class)
 							&& isSimpleNumberic(stringValue)) {
@@ -309,7 +321,9 @@ public class ParametersInterceptor implements Interceptor {
 					} else if (Date.class.isAssignableFrom(targetType)) {
 						Date date = (Date) targetType.newInstance();
 						date.setTime(DateUtils.parseDate(stringValue,
-								new String[] { "".equals(pattern) ? "yyyy-MM-dd" : pattern }).getTime());
+								new String[] { (null == parameter || "".equals(parameter.pattern())) ? "yyyy-MM-dd"
+										: parameter.pattern() })
+								.getTime());
 						bean = date;
 					}
 				} catch (NumberFormatException e) {

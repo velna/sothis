@@ -42,4 +42,11 @@ public @interface Param {
 	 * @return
 	 */
 	String pattern() default "";
+
+	/**
+	 * 注入前对字符串进行String.trim()操作.
+	 * 
+	 * @return
+	 */
+	boolean trim() default false;
 }
