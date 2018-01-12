@@ -4,10 +4,10 @@
 	<groupId>org.sothis</groupId>
 	<artifactId>sothis-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sothis.version>4.0.0-SNAPSHOT</sothis.version>
+		<sothis.version>4.1.0-SNAPSHOT</sothis.version>
 		<springframework.version>4.3.9.RELEASE</springframework.version>
 	</properties>
 	<build>
