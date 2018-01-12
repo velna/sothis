@@ -36,8 +36,8 @@ public final class BWList {
 	public BWList addMatcher(Class<? extends Matcher> matcherClass) {
 		MatcherConf config = matcherClass.getAnnotation(MatcherConf.class);
 		if (null == config) {
-			throw new IllegalArgumentException("matcher class " + matcherClass.getName() + " must be annotated by "
-					+ MatcherConf.class.getName());
+			throw new IllegalArgumentException(
+					"matcher class " + matcherClass.getName() + " must be annotated by " + MatcherConf.class.getName());
 		}
 		this.matcherRegistry.put(config.name(), matcherClass);
 		return this;
@@ -101,7 +101,7 @@ public final class BWList {
 		try {
 			BWData data = this.nextData;
 			if (data.isEmpty()) {
-				data.copySources(this.nextData);
+				data.copySources(this.data);
 			}
 			data.remove(sourceId);
 		} finally {

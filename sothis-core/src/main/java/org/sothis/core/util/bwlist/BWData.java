@@ -59,11 +59,11 @@ class BWData {
 		this.sources.remove(sourceId);
 	}
 
-	private int getExprId(int sourceId, String field, String matcherName, String groupId) {
+	private int getExprId(int sourceId, String field, String matcherName, String varName) {
 		String exprIdKey;
 		Integer exprId;
-		if (null != groupId) {
-			exprIdKey = String.format("%d:%s %s %s", sourceId, field, matcherName, groupId);
+		if (null != varName) {
+			exprIdKey = String.format("%d:%s %s %s", sourceId, field, matcherName, varName);
 		} else {
 			exprIdKey = String.format("%d:%s %s", sourceId, field, matcherName);
 		}

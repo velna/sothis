@@ -19,7 +19,7 @@ public class EchoAppRequest extends AbstractRequest {
 	private final InputStream inputStream;
 
 	public EchoAppRequest(String uri, String message) throws UnsupportedEncodingException {
-		this.uri = uri;
+		this.uri = uri + "?message=" + message;
 		this.inputStream = new ByteArrayInputStream(message.getBytes("UTF-8"));
 	}
 

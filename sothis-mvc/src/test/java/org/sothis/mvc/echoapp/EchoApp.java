@@ -11,6 +11,7 @@ import org.sothis.mvc.ActionInvocationHelper;
 import org.sothis.mvc.ApplicationContext;
 import org.sothis.mvc.Configuration;
 import org.sothis.mvc.DefaultApplicationContext;
+import org.sothis.mvc.interceptors.param.ParametersInterceptor;
 
 public class EchoApp {
 
@@ -26,8 +27,8 @@ public class EchoApp {
 		while (true) {
 			String line = reader.readLine();
 			if (null != line) {
-				ActionInvocationHelper.invoke(ActionContext.getContext(), applicationContext, new EchoAppRequest("/", line),
-						new EchoAppResponse());
+				ActionInvocationHelper.invoke(ActionContext.getContext(), applicationContext,
+						new EchoAppRequest("/", line), new EchoAppResponse());
 			} else {
 				break;
 			}
@@ -37,8 +38,9 @@ public class EchoApp {
 	public static void main(String[] args) throws Exception {
 		Properties properties = new Properties();
 		properties.put("sothis.controller.packages", "org.sothis.mvc.controllers");
-		properties.put("sothis.interceptors.echoapp.class", "org.sothis.mvc.EchoAppInterceptor");
-		properties.put("sothis.interceptors.stack.default", "echoapp");
+		properties.put("sothis.interceptors.param.class", ParametersInterceptor.class.getName());
+		properties.put("sothis.interceptors.echoapp.class", EchoAppInterceptor.class.getName());
+		properties.put("sothis.interceptors.stack.default", "param,echoapp");
 		Configuration config = new Configuration(properties);
 
 		BeanFactory beanFactory = new SimpleBeanFactory();

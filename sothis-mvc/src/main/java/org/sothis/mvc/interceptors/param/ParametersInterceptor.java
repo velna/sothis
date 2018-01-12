@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
@@ -26,6 +28,7 @@ import org.sothis.core.beans.Bean;
 import org.sothis.core.beans.Scope;
 import org.sothis.core.util.DateUtils;
 import org.sothis.core.util.StringUtils;
+import org.sothis.mvc.Action;
 import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.ActionInvocation;
 import org.sothis.mvc.ActionInvocationException;
@@ -45,27 +48,23 @@ public class ParametersInterceptor implements Interceptor {
 
 	public Object intercept(ActionInvocation invocation) throws Exception {
 		ActionContext context = (ActionContext) invocation.getActionContext();
+		Action action = invocation.getAction();
+		Method actionMethod = action.getActionMethod();
 		Map<String, Object[]> parameterMap = context.getRequestParameters();
-		Class<?>[] paramTypes = invocation.getAction().getActionMethod().getParameterTypes();
-		final Object[] actionParams = new Object[paramTypes.length];
-		Annotation[][] paramAnnotations = invocation.getAction().getActionMethod().getParameterAnnotations();
+		Parameter[] params = actionMethod.getParameters();
+		final Object[] actionParams = new Object[params.length];
 
-		for (int i = 0; i < paramTypes.length; i++) {
-			Class<?> type = paramTypes[i];
-			if (type.isAssignableFrom(Request.class)) {
+		for (int i = 0; i < params.length; i++) {
+			Parameter param = params[i];
+			if (param.getType().isAssignableFrom(Request.class)) {
 				actionParams[i] = context.getRequest();
-			} else if (type.isAssignableFrom(Response.class)) {
+			} else if (param.getType().isAssignableFrom(Response.class)) {
 				actionParams[i] = context.getResponse();
 			} else {
-				Annotation[] annotations = paramAnnotations[i];
-				Param parameter = null;
-				for (Annotation a : annotations) {
-					if (a.annotationType() == Param.class) {
-						parameter = (Param) a;
-					}
-				}
 				try {
-					actionParams[i] = getActionParamByAnnotation(parameter, parameterMap, type, context);
+					Param parameter = param.getAnnotation(Param.class);
+					Class<?> type = getRealType(action.getController().getControllerClass(), param);
+					actionParams[i] = getActionParam(parameter, parameterMap, type, context);
 				} catch (Exception e) {
 					throw new ActionInvocationException(e);
 				}
@@ -76,9 +75,9 @@ public class ParametersInterceptor implements Interceptor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object getActionParamByAnnotation(Param parameter, Map<String, Object[]> parameterMap, Class<?> type,
-			ActionContext context) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-		String name = null == parameter ? "" : parameter.name();
+	private Object getActionParam(Param param, Map<String, Object[]> parameterMap, Class<?> type, ActionContext context)
+			throws InstantiationException, IllegalAccessException, InvocationTargetException {
+		String name = null == param ? "" : param.name();
 		if ("".equals(name)) {
 			if (type.isPrimitive()) {
 				return getPrimitiveDefaultValue(type);
@@ -90,9 +89,9 @@ public class ParametersInterceptor implements Interceptor {
 				return getEnumValue(parameterMap, (Class<Enum<?>>) type);
 			}
 			Object paramBean = newInstance(type);
-			return populate(parameterMap, paramBean, parameter);
+			return populate(parameterMap, paramBean, param);
 		} else {
-			return convert(parameterMap.get(name), type, parameter);
+			return convert(parameterMap.get(name), type, param);
 		}
 	}
 
@@ -351,4 +350,60 @@ public class ParametersInterceptor implements Interceptor {
 		}
 		return true;
 	}
+
+	private static Class<?> getRealType(Class<?> realClass, Parameter param) {
+		Class<?> realType = null;
+		Type type = param.getParameterizedType();
+		if (type instanceof TypeVariable) {
+			@SuppressWarnings("unchecked")
+			TypeVariable<Class<?>> tv = (TypeVariable<Class<?>>) type;
+			realType = findRealType(tv, realClass);
+		}
+		if (null == realType) {
+			realType = param.getType();
+		}
+		return realType;
+	}
+
+	private static int indexOfTypeVar(TypeVariable<Class<?>> tv) {
+		TypeVariable<?>[] tvs = tv.getGenericDeclaration().getTypeParameters();
+		int index = -1;
+		for (index = 0; index < tvs.length; index++) {
+			if (tvs[index] == tv) {
+				break;
+			}
+		}
+		if (index < 0) {
+			throw new RuntimeException();
+		}
+		return index;
+	}
+
+	public static Class<?> findRealType(TypeVariable<Class<?>> tv, Class<?> realClass) {
+		if (!tv.getGenericDeclaration().isAssignableFrom(realClass)) {
+			return null;
+		}
+		int index = indexOfTypeVar(tv);
+		Stack<ParameterizedType> stack = new Stack<>();
+		Class<?> clazz = realClass;
+		while (clazz != tv.getGenericDeclaration()) {
+			ParameterizedType paramType = (ParameterizedType) clazz.getGenericSuperclass();
+			stack.push(paramType);
+			clazz = (Class<?>) paramType.getRawType();
+		}
+		Type type = tv.getBounds()[0];
+		while (!stack.isEmpty()) {
+			ParameterizedType paramType = stack.pop();
+			Type argType = paramType.getActualTypeArguments()[index];
+			if (argType instanceof Class) {
+				type = argType;
+			} else if (argType instanceof TypeVariable) {
+				@SuppressWarnings("unchecked")
+				TypeVariable<Class<?>> typeVar = (TypeVariable<Class<?>>) argType;
+				index = indexOfTypeVar(typeVar);
+			}
+		}
+		return (type instanceof Class) ? (Class<?>) type : null;
+	}
+
 }
