@@ -2,10 +2,12 @@ package org.sothis.mvc;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 public interface Request extends Attributed, Parameterized, Attachable {
 
-	public static final String DEFAULT_CHARSET = "UTF-8";
+	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
 	String getMethod();
 
@@ -32,4 +34,9 @@ public interface Request extends Attributed, Parameterized, Attachable {
 	String getProtocol();
 
 	String getScheme();
+
+	Charset getCharset();
+
+	void setCharset(Charset charset) throws UnsupportedEncodingException;
+
 }

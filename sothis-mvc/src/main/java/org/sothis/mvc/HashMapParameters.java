@@ -12,22 +12,22 @@ public class HashMapParameters extends Parameters {
 
 	public HashMapParameters(Map<String, Object[]> params) {
 		super();
-		this.params = params;
+		this.params = Collections.unmodifiableMap(params);
 	}
 
 	@Override
 	public Iterator<String> names() {
-		return Collections.unmodifiableSet(params.keySet()).iterator();
+		return params.keySet().iterator();
 	}
 
 	@Override
 	public Iterator<Entry<String, Object[]>> iterator() {
-		return Collections.unmodifiableMap(params).entrySet().iterator();
+		return params.entrySet().iterator();
 	}
 
 	@Override
 	public Map<String, Object[]> toMap() {
-		return Collections.unmodifiableMap(params);
+		return params;
 	}
 
 	@Override

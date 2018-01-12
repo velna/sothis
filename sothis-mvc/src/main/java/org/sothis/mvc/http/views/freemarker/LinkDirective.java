@@ -38,7 +38,8 @@ public class LinkDirective implements TemplateDirectiveModel {
 		String anchor = MapUtils.getString(directiveParams, "anchor");
 		boolean absolute = MapUtils.getBoolean(directiveParams, "absolute", false);
 		String base = MapUtils.getString(directiveParams, "base");
-		boolean noTag = Boolean.valueOf(String.valueOf(DeepUnwrap.unwrap((TemplateModel) directiveParams.get("notag"))));
+		boolean noTag = Boolean
+				.valueOf(String.valueOf(DeepUnwrap.unwrap((TemplateModel) directiveParams.get("notag"))));
 
 		StringBuilder url = new StringBuilder();
 		if (base == null && absolute) {
@@ -61,7 +62,7 @@ public class LinkDirective implements TemplateDirectiveModel {
 		TemplateModel linkParamsModel = (TemplateModel) directiveParams.get("params");
 		if (linkParamsModel instanceof TemplateHashModelEx) {
 			Map<String, Object> linkParams = (Map<String, Object>) DeepUnwrap.unwrap(linkParamsModel);
-			UrlUtils.appendParams(url, linkParams, context.getRequest().getCharset());
+			UrlUtils.appendParams(url, linkParams, context.getRequest().getCharset().name());
 		} else if (null != linkParamsModel) {
 			Object linkParams = DeepUnwrap.unwrap(linkParamsModel);
 			url.append('?').append(String.valueOf(linkParams));

@@ -9,6 +9,7 @@ import org.sothis.mvc.AbstractRequest;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.DefaultSession;
 import org.sothis.mvc.Headers;
+import org.sothis.mvc.RequestParseExecption;
 import org.sothis.mvc.Session;
 
 public class EchoAppRequest extends AbstractRequest {
@@ -44,7 +45,7 @@ public class EchoAppRequest extends AbstractRequest {
 	}
 
 	@Override
-	public Attachments attachments() throws IOException {
+	public Attachments attachments() throws RequestParseExecption {
 		return null;
 	}
 

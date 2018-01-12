@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 public interface Response {
 
@@ -17,9 +18,9 @@ public interface Response {
 
 	void setProtocolVersion(String protocolVersion);
 
-	String getCharset();
+	Charset getCharset();
 
-	void setCharset(String charset) throws UnsupportedEncodingException;
+	void setCharset(Charset charset) throws UnsupportedEncodingException;
 
 	int getStatus();
 

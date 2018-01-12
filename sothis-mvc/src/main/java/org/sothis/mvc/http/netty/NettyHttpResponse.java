@@ -1,5 +1,14 @@
 package org.sothis.mvc.http.netty;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+
+import org.sothis.mvc.Headers;
+import org.sothis.mvc.Response;
+
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders.Names;
@@ -7,20 +16,13 @@ import io.netty.handler.codec.http.HttpHeaders.Values;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-
-import org.sothis.mvc.Headers;
-import org.sothis.mvc.Response;
-
 public class NettyHttpResponse implements Response {
 	private final FullHttpResponse response;
 	private Headers headers;
 	private boolean committed;
 	private ByteBufOutputStream ouputStream;
 	private PrintWriter writer;
+	private Charset charset;
 
 	public NettyHttpResponse(FullHttpResponse response) {
 		super();
@@ -72,13 +74,18 @@ public class NettyHttpResponse implements Response {
 	}
 
 	@Override
-	public String getCharset() {
-		return headers().getString(Names.CONTENT_ENCODING);
+	public Charset getCharset() {
+		if (null == charset) {
+			String encoding = headers().getString(Names.CONTENT_ENCODING);
+			charset = null == encoding ? null : Charset.forName(encoding);
+		}
+		return charset;
 	}
 
 	@Override
-	public void setCharset(String charset) throws UnsupportedEncodingException {
-		headers().setString(Names.CONTENT_ENCODING, charset);
+	public void setCharset(Charset charset) throws UnsupportedEncodingException {
+		this.charset = charset;
+		headers().setString(Names.CONTENT_ENCODING, charset.name());
 	}
 
 	public void commit() throws IOException {

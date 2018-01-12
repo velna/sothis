@@ -2,18 +2,17 @@ package org.sothis.mvc;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 
 public abstract class AbstractRequest implements Request {
 
 	private Attributes attributes;
-	private String charset;
+	private Charset charset;
 	private UriParser uriParser;
 	private Parameters parameters;
 
 	protected UriParser getUriParser() {
 		if (null == uriParser) {
-			uriParser = new UriParser(getUri(), Charset.forName(getCharset()));
+			uriParser = new UriParser(getUri(), getCharset());
 		}
 		return uriParser;
 	}
@@ -27,7 +26,7 @@ public abstract class AbstractRequest implements Request {
 	}
 
 	@Override
-	public String getCharset() {
+	public Charset getCharset() {
 		if (null == charset) {
 			charset = DEFAULT_CHARSET;
 		}
@@ -35,14 +34,14 @@ public abstract class AbstractRequest implements Request {
 	}
 
 	@Override
-	public void setCharset(String charset) throws UnsupportedEncodingException {
+	public void setCharset(Charset charset) throws UnsupportedEncodingException {
 		this.charset = charset;
 	}
 
 	@Override
 	public Parameters parameters() {
 		if (null == parameters) {
-			parameters = new HashMapParameters(new HashMap<String, Object[]>(getUriParser().parameters()));
+			parameters = new HashMapParameters(getUriParser().parameters());
 		}
 		return parameters;
 	}

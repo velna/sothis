@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import org.sothis.mvc.HashMapParameters;
 import org.sothis.mvc.Headers;
 import org.sothis.mvc.Parameters;
 import org.sothis.mvc.Request;
+import org.sothis.mvc.RequestParseExecption;
 import org.sothis.mvc.Response;
 import org.sothis.mvc.Session;
 import org.sothis.mvc.http.HttpConstants;
@@ -44,7 +46,8 @@ public class ActionDirective implements TemplateDirectiveModel {
 		if (StringUtils.isBlank(actionContext.getAction().getName())) {
 			throw new IllegalArgumentException("d_action actionName is null!");
 		}
-		String controller = MapUtils.getString(params, "controller", actionContext.getAction().getController().getName());
+		String controller = MapUtils.getString(params, "controller",
+				actionContext.getAction().getController().getName());
 		if (StringUtils.isNotBlank(controller)) {
 			controller = "/" + controller;
 		}
@@ -64,10 +67,11 @@ public class ActionDirective implements TemplateDirectiveModel {
 			}
 		}
 		Map<String, Object> orgContext = actionContext.getContextMap();
-		StringResponse response = new StringResponse(actionContext.getRequest().getProtocol(), actionContext.getRequest()
-				.getCharset());
-		ActionRequest myRequest = new ActionRequest(actionContext.getApplicationContext().getContextPath() + controller + "/"
-				+ action, actionContext.getRequest(), myParams);
+		StringResponse response = new StringResponse(actionContext.getRequest().getProtocol(),
+				actionContext.getRequest().getCharset());
+		ActionRequest myRequest = new ActionRequest(
+				actionContext.getApplicationContext().getContextPath() + controller + "/" + action,
+				actionContext.getRequest(), myParams);
 		ApplicationContext appContext = actionContext.getApplicationContext();
 		try {
 			actionContext.clear();
@@ -152,7 +156,7 @@ public class ActionDirective implements TemplateDirectiveModel {
 		}
 
 		@Override
-		public Attachments attachments() throws IOException {
+		public Attachments attachments() throws RequestParseExecption {
 			return null;
 		}
 
@@ -173,11 +177,11 @@ public class ActionDirective implements TemplateDirectiveModel {
 		private ByteArrayOutputStream content;
 		private PrintWriter writer;
 		private String protocolVersion;
-		private String charset;
+		private Charset charset;
 		private int status;
 		private Headers headers;
 
-		public StringResponse(String protocolVersion, String charset) {
+		public StringResponse(String protocolVersion, Charset charset) {
 			super();
 			this.protocolVersion = protocolVersion;
 			this.charset = charset;
@@ -230,12 +234,12 @@ public class ActionDirective implements TemplateDirectiveModel {
 		}
 
 		@Override
-		public String getCharset() {
+		public Charset getCharset() {
 			return charset;
 		}
 
 		@Override
-		public void setCharset(String charset) throws UnsupportedEncodingException {
+		public void setCharset(Charset charset) throws UnsupportedEncodingException {
 			this.charset = charset;
 		}
 

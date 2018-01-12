@@ -23,7 +23,8 @@ public class ParamDirective implements TemplateDirectiveModel {
 		if (params != null && params.containsKey(NAME) && params.containsKey(VALUE)) {
 			String name = params.get(NAME).toString();
 			String value = params.get(VALUE).toString();
-			env.setCustomAttribute(name, URLEncoder.encode(value, ActionContext.getContext().getRequest().getCharset()));
+			env.setCustomAttribute(name,
+					URLEncoder.encode(value, ActionContext.getContext().getRequest().getCharset().name()));
 		}
 	}
 }

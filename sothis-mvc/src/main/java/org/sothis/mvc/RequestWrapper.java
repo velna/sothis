@@ -3,6 +3,7 @@ package org.sothis.mvc;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 public class RequestWrapper implements Request {
 	private final Request request;
@@ -13,12 +14,12 @@ public class RequestWrapper implements Request {
 	}
 
 	@Override
-	public String getCharset() {
+	public Charset getCharset() {
 		return request.getCharset();
 	}
 
 	@Override
-	public void setCharset(String charset) throws UnsupportedEncodingException {
+	public void setCharset(Charset charset) throws UnsupportedEncodingException {
 		request.setCharset(charset);
 	}
 
@@ -28,12 +29,12 @@ public class RequestWrapper implements Request {
 	}
 
 	@Override
-	public Parameters parameters() {
+	public Parameters parameters() throws RequestParseExecption {
 		return request.parameters();
 	}
 
 	@Override
-	public Attachments attachments() throws IOException {
+	public Attachments attachments() throws RequestParseExecption {
 		return request.attachments();
 	}
 

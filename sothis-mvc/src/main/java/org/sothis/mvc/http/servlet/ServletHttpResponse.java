@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +16,7 @@ public class ServletHttpResponse implements Response {
 	private final HttpServletResponse response;
 	private Headers headers;
 	private String protocolVersion;
+	private Charset charset;
 
 	public ServletHttpResponse(HttpServletResponse response, String protocolVersion) {
 		super();
@@ -56,13 +58,18 @@ public class ServletHttpResponse implements Response {
 	}
 
 	@Override
-	public String getCharset() {
-		return response.getCharacterEncoding();
+	public Charset getCharset() {
+		if (null == charset) {
+			String encoding = response.getCharacterEncoding();
+			charset = null == encoding ? null : Charset.forName(encoding);
+		}
+		return charset;
 	}
 
 	@Override
-	public void setCharset(String charset) throws UnsupportedEncodingException {
-		response.setCharacterEncoding(charset);
+	public void setCharset(Charset charset) throws UnsupportedEncodingException {
+		this.charset = charset;
+		response.setCharacterEncoding(charset.name());
 	}
 
 	@Override

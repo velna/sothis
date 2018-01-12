@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import org.sothis.mvc.Headers;
 import org.sothis.mvc.Response;
@@ -41,12 +42,12 @@ public class EchoAppResponse implements Response {
 	}
 
 	@Override
-	public String getCharset() {
+	public Charset getCharset() {
 		return null;
 	}
 
 	@Override
-	public void setCharset(String charset) throws UnsupportedEncodingException {
+	public void setCharset(Charset charset) throws UnsupportedEncodingException {
 
 	}
 

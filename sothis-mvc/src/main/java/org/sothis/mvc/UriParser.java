@@ -22,7 +22,7 @@ public class UriParser {
 	private final int maxParams;
 	private String path;
 	private String queryString;
-	private Map<String, String[]> params;
+	private Map<String, Object[]> params;
 	private int nParams;
 
 	/**
@@ -167,7 +167,7 @@ public class UriParser {
 	/**
 	 * Returns the decoded key-value parameter pairs of the URI.
 	 */
-	public Map<String, String[]> parameters() {
+	public Map<String, Object[]> parameters() {
 		if (params == null) {
 			String queryString = queryString();
 			if (queryString.isEmpty()) {
@@ -180,7 +180,7 @@ public class UriParser {
 	}
 
 	private void decodeParams(String s) {
-		Map<String, String[]> params = this.params = new LinkedHashMap<>();
+		Map<String, Object[]> params = this.params = new LinkedHashMap<>();
 		nParams = 0;
 		String name = null;
 		int pos = 0; // Beginning of the unprocessed region
@@ -223,12 +223,12 @@ public class UriParser {
 		}
 	}
 
-	private boolean addParam(Map<String, String[]> params, String name, String value) {
+	private boolean addParam(Map<String, Object[]> params, String name, String value) {
 		if (nParams >= maxParams) {
 			return false;
 		}
 
-		String[] values = params.get(name);
+		Object[] values = params.get(name);
 		if (values == null) {
 			values = new String[1]; // Often there's only 1 value.
 		} else {

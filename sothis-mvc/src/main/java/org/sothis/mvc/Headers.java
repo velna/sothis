@@ -12,12 +12,12 @@ import org.sothis.core.util.ThreadSafeDateFormat;
 
 public abstract class Headers implements Iterable<Map.Entry<String, String[]>> {
 
-	protected static final ThreadSafeDateFormat FORMAT1 = new ThreadSafeDateFormat("E, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH,
-			TimeZone.getTimeZone("GMT"));
-	protected static final ThreadSafeDateFormat FORMAT2 = new ThreadSafeDateFormat("E, dd-MMM-yy HH:mm:ss z", Locale.ENGLISH,
-			TimeZone.getTimeZone("GMT"));
-	protected static final ThreadSafeDateFormat FORMAT3 = new ThreadSafeDateFormat("E MMM d HH:mm:ss yyyy", Locale.ENGLISH,
-			TimeZone.getTimeZone("GMT"));
+	protected static final ThreadSafeDateFormat FORMAT1 = new ThreadSafeDateFormat("E, dd MMM yyyy HH:mm:ss z",
+			Locale.ENGLISH, TimeZone.getTimeZone("GMT"));
+	protected static final ThreadSafeDateFormat FORMAT2 = new ThreadSafeDateFormat("E, dd-MMM-yy HH:mm:ss z",
+			Locale.ENGLISH, TimeZone.getTimeZone("GMT"));
+	protected static final ThreadSafeDateFormat FORMAT3 = new ThreadSafeDateFormat("E MMM d HH:mm:ss yyyy",
+			Locale.ENGLISH, TimeZone.getTimeZone("GMT"));
 
 	public abstract Iterator<String> names();
 
@@ -80,6 +80,9 @@ public abstract class Headers implements Iterable<Map.Entry<String, String[]>> {
 
 	public Integer[] getIntegers(String name) {
 		String[] values = getStrings(name);
+		if (null == values) {
+			return null;
+		}
 		Integer[] integers;
 		if (values.length > 0) {
 			integers = new Integer[values.length];
@@ -104,6 +107,9 @@ public abstract class Headers implements Iterable<Map.Entry<String, String[]>> {
 
 	public Date[] getDates(String name) {
 		String[] values = getStrings(name);
+		if (null == values) {
+			return null;
+		}
 		Date[] dates;
 		if (values.length > 0) {
 			dates = new Date[values.length];

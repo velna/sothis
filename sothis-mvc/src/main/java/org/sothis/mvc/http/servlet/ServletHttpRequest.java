@@ -3,20 +3,20 @@ package org.sothis.mvc.http.servlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
+import java.nio.charset.Charset;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.sothis.mvc.ActionContext;
 import org.sothis.mvc.Attachments;
 import org.sothis.mvc.Attributes;
 import org.sothis.mvc.HashMapParameters;
 import org.sothis.mvc.Headers;
 import org.sothis.mvc.Parameters;
 import org.sothis.mvc.Request;
+import org.sothis.mvc.RequestParseExecption;
 import org.sothis.mvc.Session;
 
 public class ServletHttpRequest implements Request {
@@ -28,6 +28,7 @@ public class ServletHttpRequest implements Request {
 	private Session session;
 	private Attributes attributes;
 	private String uri;
+	private Charset charset;
 
 	public ServletHttpRequest(HttpServletRequest request) {
 		super();
@@ -35,21 +36,17 @@ public class ServletHttpRequest implements Request {
 	}
 
 	@Override
-	public String getCharset() {
-		return request.getCharacterEncoding();
-	}
-
-	@Override
-	public void setCharset(String charset) throws UnsupportedEncodingException {
-		request.setCharacterEncoding(charset);
-	}
-
-	@Override
-	public Parameters parameters() {
-		if (null == parameters) {
-			parameters = new HashMapParameters(new HashMap<String, Object[]>(request.getParameterMap()));
+	public Charset getCharset() {
+		if (null == charset) {
+			charset = Charset.forName(request.getCharacterEncoding());
 		}
-		return parameters;
+		return charset;
+	}
+
+	@Override
+	public void setCharset(Charset charset) throws UnsupportedEncodingException {
+		this.charset = charset;
+		request.setCharacterEncoding(charset.name());
 	}
 
 	@Override
@@ -121,25 +118,32 @@ public class ServletHttpRequest implements Request {
 		return request.getRequestURI();
 	}
 
+	private boolean isMultipart() {
+		String contentType = request.getContentType();
+		return null != contentType && contentType.toLowerCase().startsWith("multipart/form-data");
+	}
+
 	@Override
-	public Attachments attachments() throws IOException {
+	public Parameters parameters() throws RequestParseExecption {
+		if (null == parameters) {
+			this.parameters = new HashMapParameters((Map) request.getParameterMap());
+		}
+		return parameters;
+	}
+
+	@Override
+	public Attachments attachments() throws RequestParseExecption {
 		if (null == attachments) {
-			try {
-				String contentType = request.getContentType();
-				if (null != contentType && contentType.toLowerCase().startsWith("multipart/")) {
-					ServletContext servletContext = (ServletContext) ActionContext.getContext().getApplicationContext()
-							.getNativeContext();
-					if (servletContext.getMajorVersion() > 3
-							|| (servletContext.getMajorVersion() == 3 && servletContext.getMinorVersion() >= 1)) {
-						attachments = new Servlet31Attachments(request);
-					} else {
-						attachments = new CommonsUploadAttachments(request);
-					}
+			if (isMultipart()) {
+				ServletContext servletContext = request.getServletContext();
+				if (servletContext.getMajorVersion() > 3
+						|| (servletContext.getMajorVersion() == 3 && servletContext.getMinorVersion() >= 1)) {
+					attachments = Servlet31MultipartParser.parse(request);
 				} else {
-					attachments = ServletAttachments.EMPTY;
+					attachments = CommonsFileMultipartParser.parse(request);
 				}
-			} catch (ServletException e) {
-				attachments = ServletAttachments.EMPTY;
+			} else {
+				attachments = Attachments.EMPTY;
 			}
 		}
 		return attachments;
