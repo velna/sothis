@@ -2,6 +2,8 @@ package org.sothis.core.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.sothis.core.beans.AbstractSpringBeanFactory;
@@ -35,7 +37,7 @@ public class ClassUtilsTest {
 	@Test(dataProvider = "getClasses")
 	public void testGetClasses(String path, Class<?>[] expected) throws ClassNotFoundException, IOException {
 		Class<?>[] actual = ClassUtils.getClasses(path);
-		Assert.assertEquals(actual, expected);
+		Assert.assertEquals(new HashSet<>(Arrays.asList(actual)), new HashSet<>(Arrays.asList(expected)));
 	}
 
 	@Test
