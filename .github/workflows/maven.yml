@@ -1,0 +1,15 @@
+name: Maven Verify and Deploy CI
+
+on:
+  push:
+    branches:
+    paths-ignore:
+      - '.github/workflows/release.yml'
+      - 'README.md'
+
+jobs:
+  maven:
+    permissions:
+      packages: write
+    uses: dbstar-org/general/.github/workflows/maven.yml@v1
+    secrets: inherit

@@ -1,0 +1,11 @@
+name: Maven Release CI
+
+on: workflow_dispatch
+
+jobs:
+  release:
+    permissions:
+      contents: write
+      packages: write
+    uses: dbstar-org/general/.github/workflows/maven-release.yml@v1
+    secrets: inherit
